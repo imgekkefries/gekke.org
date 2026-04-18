@@ -632,6 +632,7 @@ body {
         position: relative;
         height: 640px;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
     }
@@ -958,63 +959,137 @@ body {
     }
 
     @media (max-width: 550px) {
-        .hero h1 { font-size: 1.8rem; white-space: nowrap; }
-        .hero h1 img { width: 2.5rem !important; height: 2.5rem !important; margin-right: 0 !important; }
-        .hero-desc { font-size: 0.8rem; }
-        .btn-browse { padding: 0.6rem 1.2rem; font-size: 0.75rem; gap: 6px; }
-        .showcase-section { margin: 0.5rem 0 1rem; height: auto; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
-        .showcase-container { position: relative; display: flex; gap: 1rem; padding: 1rem; height: auto; min-height: 280px; align-items: stretch; justify-content: flex-start; overflow-x: auto; scroll-behavior: smooth; }
-        .showcase-container::-webkit-scrollbar { display: none; }
-        .showcase-card { position: relative; width: 260px; min-width: 260px; transform: none !important; rotate: 0deg !important; filter: brightness(0.7); transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); scroll-snap-align: center; margin: 0 auto; }
-        .showcase-card.center { filter: brightness(1); transform: scale(1.02) !important; box-shadow: 0 30px 50px -20px rgba(0,0,0,0.8); z-index: 20; }
-        .showcase-card.left, .showcase-card.right { filter: brightness(0.5); transform: scale(0.92) !important; }
-        .showcase-container:hover .showcase-card.left,
-        .showcase-container:hover .showcase-card.right,
-        .showcase-container:hover .showcase-card.center,
-        .showcase-container:has(.center:hover) .showcase-card.left,
-        .showcase-container:has(.center:hover) .showcase-card.right,
-        .showcase-container:has(.left:hover) .showcase-card.left,
-        .showcase-container:has(.left:hover) .showcase-card.center,
-        .showcase-container:has(.left:hover) .showcase-card.right,
-        .showcase-container:has(.right:hover) .showcase-card.left,
-        .showcase-container:has(.right:hover) .showcase-card.center,
-        .showcase-container:has(.right:hover) .showcase-card.right {
-            transform: none !important;
-            translate: none !important;
+        .hero h1 { font-size: 1.6rem; white-space: nowrap; }
+        .hero h1 img { width: 2.2rem !important; height: 2.2rem !important; }
+        .hero-desc { font-size: 0.7rem; }
+        .btn-browse { padding: 0.5rem 1rem; font-size: 0.7rem; gap: 5px; }
+        
+        .showcase-section { 
+            margin: 0.5rem 0 1.5rem; 
+            height: auto; 
+            overflow: visible;
         }
-        .showcase-container:hover .showcase-card.center { transform: scale(1.02) !important; }
-        .showcase-container:has(.center:hover) .showcase-card.center { transform: scale(1.05) !important; }
-        .showcase-card:active { transform: scale(0.98) !important; transition: transform 0.1s ease; }
-        .console-frame-header { padding: 0.4rem 0.8rem; }
-        .console-frame-header span { font-size: 0.55rem; margin-left: 0.2rem; }
-        .console-frame-header .term-dot { width: 8px; height: 8px; }
-        .features { gap: 1rem; margin: 2rem 0 1rem; }
-        .feature { min-width: 100%; padding: 1.2rem 1rem; }
-        .feature-icon { width: 45px; height: 45px; margin-bottom: 1rem; }
-        .feature i { font-size: 1.5rem; }
-        .feature h3 { font-size: 1.1rem; }
-        .feature p { font-size: 0.8rem; }
-        .home-footer { margin-top: 1.5rem; padding-top: 1rem; font-size: 0.65rem; }
-        .showcase-dots-mobile { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; }
-        .showcase-dot-mobile { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.2s ease; cursor: pointer; }
-        .showcase-dot-mobile.active { background: white; transform: scale(1.2); }
+        
+        .showcase-container { 
+            display: flex; 
+            gap: 1rem; 
+            padding: 0.5rem 1rem; 
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory; 
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            position: relative;
+            height: auto;
+            min-height: 280px;
+            align-items: center;
+        }
+        
+        .showcase-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .showcase-card { 
+            position: relative !important; 
+            width: 75vw; 
+            max-width: 280px;
+            min-width: 75vw;
+            transform: none !important;
+            rotate: 0deg !important;
+            scroll-snap-align: center;
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            opacity: 0.6;
+            filter: brightness(0.6);
+            margin: 0;
+        }
+        
+        .showcase-card.active-center {
+            opacity: 1;
+            filter: brightness(1);
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.6);
+        }
+        
+        .console-frame-header { 
+            padding: 0.4rem 0.8rem; 
+        }
+        
+        .console-frame-header span { 
+            font-size: 0.55rem; 
+            margin-left: 0.2rem; 
+        }
+        
+        .console-frame-header .term-dot { 
+            width: 7px; 
+            height: 7px; 
+        }
+        
+        .showcase-dots-mobile {
+            display: flex !important;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-top: 1.2rem;
+            padding: 0.5rem 0;
+        }
+        
+        .showcase-dot-mobile {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .showcase-dot-mobile.active {
+            background: white;
+            width: 20px;
+            border-radius: 4px;
+        }
+        
+        .features { 
+            gap: 1rem; 
+            margin: 2rem 0 1rem; 
+        }
+        
+        .feature { 
+            min-width: 100%; 
+            padding: 1rem; 
+        }
+        
+        .feature-icon { 
+            width: 40px; 
+            height: 40px; 
+            margin-bottom: 0.8rem; 
+        }
+        
+        .feature i { 
+            font-size: 1.3rem; 
+        }
+        
+        .feature h3 { 
+            font-size: 1rem; 
+        }
+        
+        .feature p { 
+            font-size: 0.75rem; 
+        }
+        
+        .home-footer { 
+            margin-top: 1.5rem; 
+            padding-top: 1rem; 
+            font-size: 0.6rem; 
+        }
     }
 
     @media (max-width: 380px) {
-        .hero h1 { font-size: 1.5rem; }
-        .hero h1 img { width: 2rem !important; height: 2rem !important; }
-        .showcase-card { width: 220px; min-width: 220px; }
-        .showcase-section { min-height: 250px; }
+        .hero h1 { font-size: 1.4rem; }
+        .hero h1 img { width: 1.8rem !important; height: 1.8rem !important; }
+        .showcase-card { width: 80vw; min-width: 80vw; }
+        .showcase-section { min-height: 260px; }
     }
 
     @media (hover: none) and (pointer: coarse) {
-        .showcase-card.left,
-        .showcase-card.right {
-            filter: brightness(0.7);
-        }
-        .showcase-card.center {
-            filter: brightness(1);
-        }
         .feature:hover {
             transform: none;
         }
@@ -1042,7 +1117,7 @@ body {
 
         <div class="showcase-section">
             <div class="showcase-container" id="mobileShowcaseContainer">
-                <div class="showcase-card left" data-card-index="0">
+                <div class="showcase-card" data-card-index="0">
                     <div class="console-frame">
                         <div class="console-frame-header">
                             <div class="term-dot"></div>
@@ -1059,7 +1134,7 @@ body {
                     </div>
                 </div>
 
-                <div class="showcase-card center" data-card-index="1">
+                <div class="showcase-card" data-card-index="1">
                     <div class="console-frame">
                         <div class="console-frame-header">
                             <div class="term-dot"></div>
@@ -1076,7 +1151,7 @@ body {
                     </div>
                 </div>
 
-                <div class="showcase-card right" data-card-index="2">
+                <div class="showcase-card" data-card-index="2">
                     <div class="console-frame">
                         <div class="console-frame-header">
                             <div class="term-dot"></div>
@@ -1093,7 +1168,7 @@ body {
                     </div>
                 </div>
             </div>
-            <div class="showcase-dots-mobile" id="mobileShowcaseDots" style="display: none;"></div>
+            <div class="showcase-dots-mobile" id="mobileShowcaseDots"></div>
         </div>
 
         <div class="features">
@@ -1168,103 +1243,86 @@ body {
             const cards = document.querySelectorAll('.showcase-card');
             const dotsContainer = document.getElementById('mobileShowcaseDots');
             
-            if (dotsContainer) {
-                dotsContainer.style.display = 'flex';
-                dotsContainer.innerHTML = '';
+            if (!container || !cards.length || !dotsContainer) return;
+            
+            let activeIndex = 1;
+            let ticking = false;
+            
+            function updateCarousel() {
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.left + containerRect.width / 2;
                 
-                cards.forEach((card, index) => {
-                    const dot = document.createElement('div');
-                    dot.classList.add('showcase-dot-mobile');
-                    if (card.classList.contains('center')) {
-                        dot.classList.add('active');
+                let closestIndex = 0;
+                let closestDistance = Infinity;
+                
+                cards.forEach((card, idx) => {
+                    const cardRect = card.getBoundingClientRect();
+                    const cardCenter = cardRect.left + cardRect.width / 2;
+                    const distance = Math.abs(cardCenter - containerCenter);
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestIndex = idx;
                     }
-                    dot.addEventListener('click', () => {
-                        cards.forEach(c => {
-                            c.classList.remove('center', 'left', 'right');
-                            c.style.filter = '';
-                            c.style.transform = '';
-                        });
-                        cards[index].classList.add('center');
-                        cards.forEach((c, i) => {
-                            if (i < index) c.classList.add('left');
-                            if (i > index) c.classList.add('right');
-                        });
-                        document.querySelectorAll('.showcase-dot-mobile').forEach((d, i) => {
-                            d.classList.toggle('active', i === index);
-                        });
-                        const cardElement = cards[index];
-                        const containerRect = container.getBoundingClientRect();
-                        const cardRect = cardElement.getBoundingClientRect();
-                        const scrollLeft = cardElement.offsetLeft - (containerRect.width / 2) + (cardRect.width / 2);
-                        container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-                    });
-                    dotsContainer.appendChild(dot);
                 });
-            }
-            
-            cards.forEach(card => {
-                card.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const currentCenter = document.querySelector('.showcase-card.center');
-                    if (currentCenter === this) return;
+                
+                if (closestIndex !== activeIndex) {
+                    activeIndex = closestIndex;
                     
-                    cards.forEach(c => {
-                        c.classList.remove('center', 'left', 'right');
-                    });
-                    this.classList.add('center');
-                    
-                    const index = parseInt(this.getAttribute('data-card-index'));
-                    cards.forEach((c, i) => {
-                        if (i < index) c.classList.add('left');
-                        if (i > index) c.classList.add('right');
-                    });
-                    
-                    document.querySelectorAll('.showcase-dot-mobile').forEach((dot, i) => {
-                        dot.classList.toggle('active', i === index);
-                    });
-                    
-                    const containerRect = container.getBoundingClientRect();
-                    const cardRect = this.getBoundingClientRect();
-                    const scrollLeft = this.offsetLeft - (containerRect.width / 2) + (cardRect.width / 2);
-                    container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
-                });
-            });
-            
-            let scrollTimeout;
-            container.addEventListener('scroll', () => {
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    const containerRect = container.getBoundingClientRect();
-                    let closestCard = null;
-                    let closestDistance = Infinity;
-                    
-                    cards.forEach(card => {
-                        const cardRect = card.getBoundingClientRect();
-                        const cardCenter = cardRect.left + cardRect.width / 2;
-                        const containerCenter = containerRect.left + containerRect.width / 2;
-                        const distance = Math.abs(cardCenter - containerCenter);
-                        if (distance < closestDistance) {
-                            closestDistance = distance;
-                            closestCard = card;
+                    cards.forEach((card, idx) => {
+                        if (idx === activeIndex) {
+                            card.classList.add('active-center');
+                        } else {
+                            card.classList.remove('active-center');
                         }
                     });
                     
-                    if (closestCard && !closestCard.classList.contains('center')) {
-                        cards.forEach(c => {
-                            c.classList.remove('center', 'left', 'right');
-                        });
-                        closestCard.classList.add('center');
-                        const index = parseInt(closestCard.getAttribute('data-card-index'));
-                        cards.forEach((c, i) => {
-                            if (i < index) c.classList.add('left');
-                            if (i > index) c.classList.add('right');
-                        });
-                        document.querySelectorAll('.showcase-dot-mobile').forEach((dot, i) => {
-                            dot.classList.toggle('active', i === index);
-                        });
-                    }
-                }, 50);
+                    const dots = document.querySelectorAll('.showcase-dot-mobile');
+                    dots.forEach((dot, idx) => {
+                        if (idx === activeIndex) {
+                            dot.classList.add('active');
+                        } else {
+                            dot.classList.remove('active');
+                        }
+                    });
+                }
+            }
+            
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updateCarousel();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+            
+            cards.forEach((card, idx) => {
+                card.setAttribute('data-card-index', idx);
+                if (idx === 1) card.classList.add('active-center');
             });
+            
+            dotsContainer.innerHTML = '';
+            cards.forEach((_, idx) => {
+                const dot = document.createElement('div');
+                dot.classList.add('showcase-dot-mobile');
+                if (idx === 1) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    const targetCard = cards[idx];
+                    const containerRect = container.getBoundingClientRect();
+                    const cardRect = targetCard.getBoundingClientRect();
+                    const scrollLeft = targetCard.offsetLeft - (containerRect.width / 2) + (cardRect.width / 2);
+                    container.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                });
+                dotsContainer.appendChild(dot);
+            });
+            
+            container.addEventListener('scroll', onScroll);
+            window.addEventListener('resize', () => {
+                updateCarousel();
+            });
+            
+            setTimeout(updateCarousel, 100);
         }
     })();
 </script>
