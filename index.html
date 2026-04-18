@@ -565,7 +565,6 @@ body {
         margin-bottom: 1rem;
         letter-spacing: -1px;
         text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        white-space: nowrap;
     }
 
     .hero-desc {
@@ -680,6 +679,12 @@ body {
     .showcase-container:hover .showcase-card.right {
         transform: translateX(440px) rotate(10deg) scale(0.8);
         filter: brightness(0.45);
+    }
+
+    .showcase-container:hover .showcase-card.center {
+        transform: translateX(0) rotate(0deg) scale(1.05);
+        filter: brightness(1);
+        box-shadow: 0 50px 80px -30px rgba(0,0,0,0.95);
     }
 
     .showcase-container:has(.left:hover) .showcase-card.left {
@@ -939,98 +944,125 @@ body {
 
     @media (max-width: 768px) {
         .hero h1 {
-            font-size: 2.5rem;
-            white-space: nowrap;
-            display: inline-flex;
+            display: flex !important;
+            flex-direction: row !important;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            gap: 2px;
+            white-space: nowrap;
+            flex-wrap: nowrap;
         }
         
         .hero h1 img {
-            width: 3rem !important;
-            height: 3rem !important;
-            margin-right: 0 !important;
+            width: 3.5rem !important;
+            height: 3.5rem !important;
+            object-fit: contain;
+        }
+        
+        .hero h1 span {
+            white-space: nowrap;
         }
         
         .showcase-section {
-            height: auto !important;
+            height: auto;
             margin: 1rem 0 2rem;
-            padding: 0 1rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            padding: 1rem 0;
+        }
+        
+        .showcase-section::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        .showcase-section::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+        
+        .showcase-section::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
         }
         
         .showcase-container {
-            position: relative;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 1.5rem;
-            height: auto !important;
+            padding: 0.5rem 1rem;
+            width: max-content;
+            min-width: 100%;
+            height: auto;
+            position: relative;
         }
         
         .showcase-card {
             position: relative !important;
-            width: 100% !important;
-            max-width: 500px;
-            margin: 0 auto;
+            width: 280px;
+            flex-shrink: 0;
+            scroll-snap-align: center;
             transform: none !important;
-            filter: brightness(1) !important;
-            transition: all 0.3s ease;
+            filter: none !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .showcase-card.left,
         .showcase-card.right,
         .showcase-card.center {
             transform: none !important;
-            filter: brightness(1) !important;
-        }
-        
-        .showcase-container:hover .showcase-card.left,
-        .showcase-container:hover .showcase-card.right,
-        .showcase-container:hover .showcase-card.center,
-        .showcase-container:has(.left:hover) .showcase-card.left,
-        .showcase-container:has(.left:hover) .showcase-card.center,
-        .showcase-container:has(.left:hover) .showcase-card.right,
-        .showcase-container:has(.center:hover) .showcase-card.center,
-        .showcase-container:has(.center:hover) .showcase-card.left,
-        .showcase-container:has(.center:hover) .showcase-card.right,
-        .showcase-container:has(.right:hover) .showcase-card.right,
-        .showcase-container:has(.right:hover) .showcase-card.center,
-        .showcase-container:has(.right:hover) .showcase-card.left {
-            transform: none !important;
-            filter: brightness(1) !important;
-            scale: 1 !important;
+            filter: none !important;
+            margin: 0;
         }
         
         .showcase-card:active {
             transform: scale(0.98) !important;
-            transition: transform 0.1s ease;
         }
         
-        .console-frame-header {
-            padding: 0.6rem 1rem;
+        .showcase-container:hover .showcase-card.left,
+        .showcase-container:hover .showcase-card.right,
+        .showcase-container:hover .showcase-card.center {
+            transform: none !important;
+            filter: none !important;
         }
         
-        .console-frame-header span {
-            font-size: 0.7rem;
+        .console-frame {
+            width: 100%;
         }
         
-        .console-frame-header .term-dot {
-            width: 10px;
-            height: 10px;
+        .console-frame-body img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .showcase-section::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
         }
         
         .features {
             gap: 1rem;
-            margin: 2rem 1rem;
+            margin: 2rem 0 1.5rem;
         }
         
         .feature {
-            min-width: auto;
-            padding: 1.5rem 1.2rem;
+            min-width: 100%;
+            padding: 1.5rem 1rem;
         }
         
         .feature-icon {
             width: 50px;
             height: 50px;
+            margin-bottom: 1rem;
         }
         
         .feature i {
@@ -1045,71 +1077,60 @@ body {
             font-size: 0.85rem;
         }
         
-        .hero {
-            padding: 1rem 1rem 0.5rem;
-        }
-        
         .hero-desc {
-            font-size: 1rem;
-            padding: 0 1rem;
+            font-size: 0.95rem;
+            padding: 0 0.5rem;
         }
         
         .btn-browse {
             padding: 0.8rem 2rem;
-            font-size: 0.95rem;
-        }
-        
-        .btn-browse:active {
-            transform: scale(0.97);
+            font-size: 0.9rem;
         }
         
         .home-footer {
             margin-top: 2rem;
             padding-top: 1.5rem;
-            font-size: 0.7rem;
         }
     }
     
     @media (max-width: 480px) {
-        .hero h1 {
-            font-size: 1.8rem;
-        }
-        
         .hero h1 img {
-            width: 2.2rem !important;
-            height: 2.2rem !important;
+            width: 2.8rem !important;
+            height: 2.8rem !important;
         }
         
-        .hero-desc {
-            font-size: 0.9rem;
-        }
-        
-        .btn-browse {
-            padding: 0.7rem 1.5rem;
-            font-size: 0.85rem;
-            gap: 8px;
+        .hero h1 {
+            font-size: 2rem !important;
         }
         
         .showcase-card {
-            max-width: 100%;
+            width: 260px;
         }
         
         .console-frame-header {
-            padding: 0.5rem 0.8rem;
+            padding: 0.5rem 1rem;
         }
         
         .console-frame-header span {
-            font-size: 0.6rem;
+            font-size: 0.7rem;
+        }
+        
+        .console-frame-header .term-dot {
+            width: 10px;
+            height: 10px;
         }
         
         .feature {
-            padding: 1.2rem 1rem;
+            padding: 1.2rem 0.8rem;
         }
         
         .feature-icon {
             width: 45px;
             height: 45px;
-            margin-bottom: 1rem;
+        }
+        
+        .feature i {
+            font-size: 1.3rem;
         }
         
         .feature h3 {
@@ -1120,40 +1141,20 @@ body {
             font-size: 0.8rem;
         }
     }
-    
+
     @media (hover: none) and (pointer: coarse) {
         .showcase-card.left,
         .showcase-card.right {
-            filter: brightness(1);
+            filter: brightness(0.7);
         }
-        
         .showcase-card.center {
             filter: brightness(1);
         }
-        
         .feature:hover {
             transform: none;
         }
-        
-        .feature:active {
-            transform: scale(0.98);
-            transition: transform 0.1s ease;
-        }
-        
-        .btn-browse:hover {
-            transform: none;
-        }
-        
         .btn-browse:active {
             transform: scale(0.97);
-        }
-        
-        /* Remove all showcase hover effects on touch devices */
-        .showcase-container:hover .showcase-card.left,
-        .showcase-container:hover .showcase-card.right,
-        .showcase-container:hover .showcase-card.center {
-            transform: none !important;
-            filter: brightness(1) !important;
         }
     }
 </style>
@@ -1161,8 +1162,8 @@ body {
 <section id="page-home" class="page-section active-page">
     <div class="page-inner">
         <div class="hero">
-            <h1 style="display: inline-flex; align-items: center; gap: 2px;">
-                <img src="images/logo.png" alt="gekke logo" style="width: 5.5rem; height: 5.5rem; object-fit: contain; margin-right: -8px;"> 
+            <h1 style="display: flex; align-items: center; justify-content: center; gap: 2px; flex-wrap: nowrap;">
+                <img src="images/logo.png" alt="gekke logo" style="width: 5.5rem; height: 5.5rem; object-fit: contain;"> 
                 gekke<span style="font-weight: 300;">.org</span>
             </h1>
             <div class="hero-desc">free executables · affordable source code</div>
@@ -1186,7 +1187,7 @@ body {
                         </div>
                         <div class="console-frame-body">
                             <img src="images/showcase1.png" alt="Showcase 1" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display: none; min-height: 320px; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem;">
+                            <div style="display: none; min-height: 200px; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem;">
                                 <i class="fas fa-image" style="margin-right: 8px;"></i> showcase1.png
                             </div>
                         </div>
@@ -1203,7 +1204,7 @@ body {
                         </div>
                         <div class="console-frame-body">
                             <img src="images/showcase2.png" alt="Showcase 2" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display: none; min-height: 320px; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem;">
+                            <div style="display: none; min-height: 200px; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem;">
                                 <i class="fas fa-image" style="margin-right: 8px;"></i> showcase2.png
                             </div>
                         </div>
@@ -1220,7 +1221,7 @@ body {
                         </div>
                         <div class="console-frame-body">
                             <img src="images/showcase3.png" alt="Showcase 3" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display: none; min-height: 320px; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem;">
+                            <div style="display: none; min-height: 200px; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.9rem;">
                                 <i class="fas fa-image" style="margin-right: 8px;"></i> showcase3.png
                             </div>
                         </div>
@@ -1296,17 +1297,15 @@ body {
 
 <script>
     (function() {
-        if ('ontouchstart' in window) {
-            const cards = document.querySelectorAll('.showcase-card');
-            cards.forEach(card => {
-                card.addEventListener('touchstart', function() {
-                    this.style.transition = 'transform 0.1s ease';
-                });
-                card.addEventListener('touchend', function() {
-                    setTimeout(() => {
-                        this.style.transition = '';
-                    }, 100);
-                });
+
+        const showcaseSection = document.querySelector('.showcase-section');
+        if (showcaseSection && window.innerWidth <= 768) {
+            let scrollTimeout;
+            showcaseSection.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+
+                }, 100);
             });
         }
     })();
