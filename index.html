@@ -1512,6 +1512,54 @@ body {
         color: #27c93f;
     }
 
+    .captcha-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 40px;
+        padding: 0.3rem 0.9rem;
+        font-size: 0.65rem;
+        width: fit-content;
+        margin-bottom: 0.75rem;
+        font-family: var(--font-mono);
+        letter-spacing: 0.5px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+    .captcha-badge.supported {
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.35);
+        color: #4ade80;
+        box-shadow: 0 0 18px rgba(34, 197, 94, 0.2), inset 0 0 8px rgba(34, 197, 94, 0.05);
+        animation: captchaPulse 2.5s ease-in-out infinite;
+    }
+
+    .captcha-badge.supported i {
+        color: #4ade80;
+    }
+
+    .captcha-badge.unsupported {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        color: #f87171;
+        box-shadow: 0 0 12px rgba(239, 68, 68, 0.1);
+    }
+
+    .captcha-badge.unsupported i {
+        color: #f87171;
+    }
+
+    .captcha-badge i {
+        font-size: 0.7rem;
+    }
+
+    @keyframes captchaPulse {
+        0%, 100% { box-shadow: 0 0 18px rgba(34, 197, 94, 0.2), inset 0 0 8px rgba(34, 197, 94, 0.05); }
+        50% { box-shadow: 0 0 28px rgba(34, 197, 94, 0.4), inset 0 0 12px rgba(34, 197, 94, 0.1); }
+    }
+
     .tool-name {
         font-size: 2rem;
         font-weight: 500;
@@ -1879,6 +1927,7 @@ body {
         .tool-name { font-size: 1.4rem; }
         .tool-description { font-size: 0.8rem; }
         .feature-tag { font-size: 0.6rem; padding: 0.2rem 0.6rem; }
+        .captcha-badge { font-size: 0.6rem; padding: 0.25rem 0.7rem; }
         .btn-download, .btn-purchase { min-width: 140px; padding: 0.6rem 1rem; font-size: 0.75rem; }
         .showcase-body { min-height: 200px; }
         .showcase-header { padding: 0.5rem 1rem; }
@@ -1948,6 +1997,7 @@ body {
                 terminal: 'gekke@tools:~/guild-joiner',
                 badge: 'AVAILABLE NOW',
                 badgeIcon: 'fa-circle',
+                hcaptchaSupported: true,
                 description: 'Makes Discord tokens join a guild. Comes with a token checker. Not flagged by Discord. Full proxy support and multi-threaded for maximum performance.',
                 features: [
                     { icon: 'fa-bolt', text: 'Multi-threaded' },
@@ -1969,6 +2019,7 @@ body {
                 terminal: 'gekke@tools:~/discord-raider',
                 badge: 'AVAILABLE NOW',
                 badgeIcon: 'fa-circle',
+                hcaptchaSupported: true,
                 description: 'GUI based raider - instead of using a console you get a nice interface. Each token has its own session so headers and everything stay the same throughout the entire process, which also allows it to make requests faster since it doesn\'t need to build new headers each time. This tool will keep getting updates and suggestions from the Discord server will be added to the tool if they\'re good enough.',
                 features: [
                     { icon: 'fa-desktop', text: 'GUI Interface' },
@@ -1990,6 +2041,7 @@ body {
                 terminal: 'gekke@tools:~/placeholder',
                 badge: 'PLACEHOLDER',
                 badgeIcon: 'fa-clock',
+                hcaptchaSupported: false,
                 description: 'this tool will come soon',
                 features: [],
                 media: null,
@@ -2130,12 +2182,29 @@ body {
                 <div class="tool-badge">
                     <i class="fas ${tool.badgeIcon}"></i> ${tool.badge}
                 </div>
-                <div class="tool-name">
-                    ${tool.name}
-                    ${tool.version ? `<span class="tool-version">${tool.version}</span>` : ''}
-                </div>
-                <div class="tool-description">${tool.description}</div>
             `;
+            
+            if (tool.hcaptchaSupported !== undefined) {
+                const captchaBadge = document.createElement('div');
+                captchaBadge.className = `captcha-badge ${tool.hcaptchaSupported ? 'supported' : 'unsupported'}`;
+                captchaBadge.innerHTML = tool.hcaptchaSupported ? 
+                    '<i class="fas fa-shield-check"></i> Hcaptcha Solver Supported' : 
+                    '<i class="fas fa-shield-slash"></i> No Hcaptcha Solver';
+                infoArea.appendChild(captchaBadge);
+            }
+            
+            const nameHTML = document.createElement('div');
+            nameHTML.className = 'tool-name';
+            nameHTML.innerHTML = `
+                ${tool.name}
+                ${tool.version ? `<span class="tool-version">${tool.version}</span>` : ''}
+            `;
+            infoArea.appendChild(nameHTML);
+            
+            const descHTML = document.createElement('div');
+            descHTML.className = 'tool-description';
+            descHTML.textContent = tool.description;
+            infoArea.appendChild(descHTML);
             
             if (tool.features.length > 0) {
                 const featuresDiv = document.createElement('div');
