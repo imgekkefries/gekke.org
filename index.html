@@ -1449,6 +1449,7 @@ body {
         cursor: pointer;
         transition: all 0.2s ease;
         z-index: 10;
+        user-select: none;
     }
 
     .showcase-nav:hover {
@@ -1763,6 +1764,7 @@ body {
         font-size: 1.3rem;
         cursor: pointer;
         transition: all 0.2s ease;
+        z-index: 10;
     }
 
     .lightbox-close:hover {
@@ -1787,6 +1789,7 @@ body {
         font-size: 1.5rem;
         cursor: pointer;
         transition: all 0.2s ease;
+        z-index: 10;
     }
 
     .lightbox-nav:hover {
@@ -1915,154 +1918,8 @@ body {
             <p>free executables · affordable source code</p>
         </div>
 
-        <div class="tools-container">
-            <div class="tool-row">
-                <div class="tool-showcase-area">
-                    <div class="showcase-frame">
-                        <div class="showcase-header">
-                            <div class="term-dot"></div>
-                            <div class="term-dot"></div>
-                            <div class="term-dot"></div>
-                            <span>gekke@tools:~/guild-joiner</span>
-                        </div>
-                        <div class="showcase-body" id="joiner-showcase">
-                            <img src="showcases/joiner/showcase1.png" alt="Guild Joiner Preview" id="joiner-img" style="width:100%;height:100%;max-height:400px;object-fit:contain;">
-                            <div class="showcase-nav prev" data-tool="joiner"><i class="fas fa-chevron-left"></i></div>
-                            <div class="showcase-nav next" data-tool="joiner"><i class="fas fa-chevron-right"></i></div>
-                            <div class="showcase-dots">
-                                <span class="showcase-dot active" data-index="0"></span>
-                                <span class="showcase-dot" data-index="1"></span>
-                                <span class="showcase-dot" data-index="2"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tool-info-area">
-                    <div class="tool-badge">
-                        <i class="fas fa-circle"></i> AVAILABLE NOW
-                    </div>
-                    <div class="tool-name">
-                        Guild Joiner
-                        <span class="tool-version">v1.0</span>
-                    </div>
-                    <div class="tool-description">
-                        Makes Discord tokens join a guild. Comes with a token checker. Not flagged by Discord. Full proxy support and multi-threaded for maximum performance.
-                    </div>
-                    <div class="tool-features">
-                        <span class="feature-tag"><i class="fas fa-bolt"></i> Multi-threaded</span>
-                        <span class="feature-tag"><i class="fas fa-globe"></i> Proxy support</span>
-                        <span class="feature-tag"><i class="fas fa-check-circle"></i> Token checker</span>
-                        <span class="feature-tag"><i class="fas fa-shield-alt"></i> Not flagged</span>
-                    </div>
-                    <div class="tool-actions">
-                        <button class="btn-download" data-download="joiner">
-                            <i class="fas fa-download"></i> Download .Exe
-                            <span style="opacity: 0.6; margin-left: 6px;">Free</span>
-                        </button>
-                        <button class="btn-purchase" data-purchase="source">
-                            <i class="fas fa-code"></i> Source Code
-                            <span class="price-tag">€7.99</span>
-                        </button>
-                    </div>
-                </div>
+        <div class="tools-container" id="toolsContainer">
             </div>
-
-            <div class="tool-divider"></div>
-
-            <div class="tool-row">
-                <div class="tool-showcase-area">
-                    <div class="showcase-frame">
-                        <div class="showcase-header">
-                            <div class="term-dot"></div>
-                            <div class="term-dot"></div>
-                            <div class="term-dot"></div>
-                            <span>gekke@tools:~/discord-raider</span>
-                        </div>
-                        <div class="showcase-body" id="raider-showcase">
-                            <img src="showcases/raider/showcase1.mp4" alt="Discord Raider Preview" id="raider-img" style="width:100%;height:100%;max-height:400px;object-fit:contain;">
-                            <div class="showcase-nav prev" data-tool="raider"><i class="fas fa-chevron-left"></i></div>
-                            <div class="showcase-nav next" data-tool="raider"><i class="fas fa-chevron-right"></i></div>
-                            <div class="showcase-dots">
-                                <span class="showcase-dot active" data-index="0"></span>
-                                <span class="showcase-dot" data-index="1"></span>
-                                <span class="showcase-dot" data-index="2"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tool-info-area">
-                    <div class="tool-badge">
-                        <i class="fas fa-circle"></i> AVAILABLE NOW
-                    </div>
-                    <div class="tool-name">
-                        Discord Raider
-                        <span class="tool-version">v1.0</span>
-                    </div>
-                    <div class="tool-description">
-                        GUI based raider - instead of using a console you get a nice interface. Each token has its own session so headers and everything stay the same throughout the entire process, which also allows it to make requests faster since it doesn't need to build new headers each time. This tool will keep getting updates and suggestions from the Discord server will be added to the tool if they're good enough.
-                    </div>
-                    <div class="tool-features">
-                        <span class="feature-tag"><i class="fas fa-desktop"></i> GUI Interface</span>
-                        <span class="feature-tag"><i class="fas fa-id-card"></i> Persistent sessions</span>
-                        <span class="feature-tag"><i class="fas fa-tachometer-alt"></i> Faster requests</span>
-                        <span class="feature-tag"><i class="fas fa-sync-alt"></i> Constant updates</span>
-                    </div>
-                    <div class="tool-actions">
-                        <button class="btn-download" data-download="raider">
-                            <i class="fas fa-download"></i> Download .Exe
-                            <span style="opacity: 0.6; margin-left: 6px;">Free</span>
-                        </button>
-                        <button class="btn-purchase" data-purchase="source">
-                            <i class="fas fa-code"></i> Source Code
-                            <span class="price-tag">€7.99</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tool-divider"></div>
-
-            <div class="tool-row">
-                <div class="tool-showcase-area">
-                    <div class="showcase-frame">
-                        <div class="showcase-header">
-                            <div class="term-dot"></div>
-                            <div class="term-dot"></div>
-                            <div class="term-dot"></div>
-                            <span>gekke@tools:~/placeholder</span>
-                        </div>
-                        <div class="showcase-body">
-                            <div class="placeholder-content">
-                                <i class="fas fa-cube"></i>
-                                <span>placeholder</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tool-info-area">
-                    <div class="tool-badge">
-                        <i class="fas fa-clock"></i> PLACEHOLDER
-                    </div>
-                    <div class="tool-name">
-                        placeholder
-                    </div>
-                    <div class="tool-description">
-                        this tool will come soon
-                    </div>
-                    <div class="tool-actions">
-                        <button class="btn-download" disabled>
-                            <i class="fas fa-download"></i> Coming Soon
-                        </button>
-                        <button class="btn-purchase" disabled>
-                            <i class="fas fa-code"></i> Unavailable
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <button class="back-home" data-nav="home"><i class="fas fa-arrow-left"></i> back to home</button>
     </div>
@@ -2083,44 +1940,261 @@ body {
     (function() {
         "use strict";
         
-        function initJoinerShowcase() {
-            const showcaseBody = document.getElementById('joiner-showcase');
-            if (!showcaseBody) {
-                setTimeout(initJoinerShowcase, 50);
-                return;
+        const TOOLS_DATA = [
+            {
+                id: 'joiner',
+                name: 'Guild Joiner',
+                version: 'v1.0',
+                terminal: 'gekke@tools:~/guild-joiner',
+                badge: 'AVAILABLE NOW',
+                badgeIcon: 'fa-circle',
+                description: 'Makes Discord tokens join a guild. Comes with a token checker. Not flagged by Discord. Full proxy support and multi-threaded for maximum performance.',
+                features: [
+                    { icon: 'fa-bolt', text: 'Multi-threaded' },
+                    { icon: 'fa-globe', text: 'Proxy support' },
+                    { icon: 'fa-check-circle', text: 'Token checker' },
+                    { icon: 'fa-shield-alt', text: 'Not flagged' }
+                ],
+                media: [
+                    { type: 'image', src: 'showcases/joiner/showcase1.png' },
+                    { type: 'image', src: 'showcases/joiner/showcase2.png' },
+                    { type: 'video', src: 'showcases/joiner/showcase3.mp4' }
+                ],
+                download: 'joiner'
+            },
+            {
+                id: 'raider',
+                name: 'Discord Raider',
+                version: 'v1.0',
+                terminal: 'gekke@tools:~/discord-raider',
+                badge: 'AVAILABLE NOW',
+                badgeIcon: 'fa-circle',
+                description: 'GUI based raider - instead of using a console you get a nice interface. Each token has its own session so headers and everything stay the same throughout the entire process, which also allows it to make requests faster since it doesn\'t need to build new headers each time. This tool will keep getting updates and suggestions from the Discord server will be added to the tool if they\'re good enough.',
+                features: [
+                    { icon: 'fa-desktop', text: 'GUI Interface' },
+                    { icon: 'fa-id-card', text: 'Persistent sessions' },
+                    { icon: 'fa-tachometer-alt', text: 'Faster requests' },
+                    { icon: 'fa-sync-alt', text: 'Constant updates' }
+                ],
+                media: [
+                    { type: 'video', src: 'showcases/raider/showcase1.mp4' },
+                    { type: 'video', src: 'showcases/raider/showcase2.mp4' },
+                    { type: 'video', src: 'showcases/raider/showcase3.mp4' }
+                ],
+                download: 'raider'
+            },
+            {
+                id: 'placeholder',
+                name: 'placeholder',
+                version: null,
+                terminal: 'gekke@tools:~/placeholder',
+                badge: 'PLACEHOLDER',
+                badgeIcon: 'fa-clock',
+                description: 'this tool will come soon',
+                features: [],
+                media: null,
+                download: null,
+                isPlaceholder: true
+            }
+        ];
+
+        let activeLightboxToolId = null;
+        let activeLightboxIndex = 0;
+        const lightboxModal = document.getElementById('lightboxModal');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxVideo = document.getElementById('lightboxVideo');
+        const lightboxCounter = document.getElementById('lightboxCounter');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        function closeLightbox() {
+            lightboxModal.classList.remove('active');
+            lightboxVideo.pause();
+            lightboxVideo.src = '';
+            lightboxImage.src = '';
+            activeLightboxToolId = null;
+        }
+
+        function showLightboxMedia(toolId, index) {
+            const tool = TOOLS_DATA.find(t => t.id === toolId);
+            if (!tool || !tool.media) return;
+            const media = tool.media[index];
+            
+            lightboxImage.style.display = 'none';
+            lightboxVideo.style.display = 'none';
+            lightboxVideo.pause();
+            
+            if (media.type === 'image') {
+                lightboxImage.src = media.src;
+                lightboxImage.style.display = 'block';
+            } else {
+                lightboxVideo.src = media.src;
+                lightboxVideo.style.display = 'block';
+                lightboxVideo.play().catch(() => {});
             }
             
-            const joinerMedia = [
-                { type: 'image', src: 'showcases/joiner/showcase1.png' },
-                { type: 'image', src: 'showcases/joiner/showcase2.png' },
-                { type: 'video', src: 'showcases/joiner/showcase3.mp4' }
-            ];
+            lightboxCounter.textContent = `${index + 1} / ${tool.media.length}`;
+            activeLightboxToolId = toolId;
+            activeLightboxIndex = index;
+            lightboxModal.classList.add('active');
+        }
+
+        function navigateLightbox(direction) {
+            if (!activeLightboxToolId) return;
+            const tool = TOOLS_DATA.find(t => t.id === activeLightboxToolId);
+            if (!tool || !tool.media) return;
+            let newIndex = activeLightboxIndex + direction;
+            if (newIndex < 0) newIndex = tool.media.length - 1;
+            if (newIndex >= tool.media.length) newIndex = 0;
+            showLightboxMedia(activeLightboxToolId, newIndex);
+        }
+
+        function createToolRow(tool) {
+            const row = document.createElement('div');
+            row.className = 'tool-row';
+            
+            const showcaseArea = document.createElement('div');
+            showcaseArea.className = 'tool-showcase-area';
+            
+            const frame = document.createElement('div');
+            frame.className = 'showcase-frame';
+            
+            const header = document.createElement('div');
+            header.className = 'showcase-header';
+            header.innerHTML = `
+                <div class="term-dot"></div>
+                <div class="term-dot"></div>
+                <div class="term-dot"></div>
+                <span>${tool.terminal}</span>
+            `;
+            frame.appendChild(header);
+            
+            const body = document.createElement('div');
+            body.className = 'showcase-body';
+            body.id = `${tool.id}-showcase`;
+            
+            if (tool.isPlaceholder) {
+                body.classList.add('placeholder-content');
+                body.innerHTML = `<i class="fas fa-cube"></i><span>placeholder</span>`;
+            } else if (tool.media && tool.media.length > 0) {
+                const firstMedia = tool.media[0];
+                if (firstMedia.type === 'image') {
+                    const img = document.createElement('img');
+                    img.src = firstMedia.src;
+                    img.alt = `${tool.name} Preview`;
+                    img.id = `${tool.id}-img`;
+                    img.style.cssText = 'width:100%;height:100%;max-height:400px;object-fit:contain;';
+                    body.appendChild(img);
+                } else {
+                    const video = document.createElement('video');
+                    video.src = firstMedia.src;
+                    video.autoplay = true;
+                    video.loop = true;
+                    video.muted = true;
+                    video.playsInline = true;
+                    video.id = `${tool.id}-img`;
+                    video.style.cssText = 'width:100%;height:100%;max-height:400px;object-fit:contain;';
+                    body.appendChild(video);
+                }
+                
+                const prevNav = document.createElement('div');
+                prevNav.className = 'showcase-nav prev';
+                prevNav.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                body.appendChild(prevNav);
+                
+                const nextNav = document.createElement('div');
+                nextNav.className = 'showcase-nav next';
+                nextNav.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                body.appendChild(nextNav);
+                
+                const dots = document.createElement('div');
+                dots.className = 'showcase-dots';
+                tool.media.forEach((_, i) => {
+                    const dot = document.createElement('span');
+                    dot.className = `showcase-dot${i === 0 ? ' active' : ''}`;
+                    dot.dataset.index = i;
+                    dots.appendChild(dot);
+                });
+                body.appendChild(dots);
+            }
+            
+            frame.appendChild(body);
+            showcaseArea.appendChild(frame);
+            row.appendChild(showcaseArea);
+            
+            const infoArea = document.createElement('div');
+            infoArea.className = 'tool-info-area';
+            
+            infoArea.innerHTML = `
+                <div class="tool-badge">
+                    <i class="fas ${tool.badgeIcon}"></i> ${tool.badge}
+                </div>
+                <div class="tool-name">
+                    ${tool.name}
+                    ${tool.version ? `<span class="tool-version">${tool.version}</span>` : ''}
+                </div>
+                <div class="tool-description">${tool.description}</div>
+            `;
+            
+            if (tool.features.length > 0) {
+                const featuresDiv = document.createElement('div');
+                featuresDiv.className = 'tool-features';
+                tool.features.forEach(f => {
+                    featuresDiv.innerHTML += `<span class="feature-tag"><i class="fas ${f.icon}"></i> ${f.text}</span>`;
+                });
+                infoArea.appendChild(featuresDiv);
+            }
+            
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'tool-actions';
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'btn-download';
+            downloadBtn.innerHTML = tool.isPlaceholder ? 
+                '<i class="fas fa-download"></i> Coming Soon' :
+                '<i class="fas fa-download"></i> Download .Exe <span style="opacity: 0.6; margin-left: 6px;">Free</span>';
+            if (tool.isPlaceholder) downloadBtn.disabled = true;
+            else downloadBtn.dataset.download = tool.download;
+            actionsDiv.appendChild(downloadBtn);
+            
+            const purchaseBtn = document.createElement('button');
+            purchaseBtn.className = 'btn-purchase';
+            purchaseBtn.innerHTML = tool.isPlaceholder ? 
+                '<i class="fas fa-code"></i> Unavailable' :
+                '<i class="fas fa-code"></i> Source Code <span class="price-tag">€7.99</span>';
+            if (tool.isPlaceholder) purchaseBtn.disabled = true;
+            else purchaseBtn.dataset.purchase = 'source';
+            actionsDiv.appendChild(purchaseBtn);
+            
+            infoArea.appendChild(actionsDiv);
+            row.appendChild(infoArea);
+            
+            return row;
+        }
+
+        function initShowcase(tool) {
+            if (tool.isPlaceholder || !tool.media) return;
+            
+            const body = document.getElementById(`${tool.id}-showcase`);
+            if (!body) return;
             
             let currentIndex = 0;
-            let currentMedia = showcaseBody.querySelector('img, video');
+            let currentMedia = body.querySelector('img, video');
             
-            const dots = showcaseBody.querySelectorAll('.showcase-dot');
-            const prevBtn = showcaseBody.querySelector('.showcase-nav.prev');
-            const nextBtn = showcaseBody.querySelector('.showcase-nav.next');
-            
-            const lightboxModal = document.getElementById('lightboxModal');
-            const lightboxImage = document.getElementById('lightboxImage');
-            const lightboxVideo = document.getElementById('lightboxVideo');
-            const lightboxCounter = document.getElementById('lightboxCounter');
-            const lightboxClose = document.getElementById('lightboxClose');
-            const lightboxPrev = document.getElementById('lightboxPrev');
-            const lightboxNext = document.getElementById('lightboxNext');
-            
-            let lightboxCurrentIndex = 0;
+            const dots = body.querySelectorAll('.showcase-dot');
+            const prevBtn = body.querySelector('.showcase-nav.prev');
+            const nextBtn = body.querySelector('.showcase-nav.next');
             
             function updateShowcase(index) {
-                const media = joinerMedia[index];
+                if (index === currentIndex && currentMedia) return;
+                const media = tool.media[index];
                 
                 let newMedia;
                 if (media.type === 'image') {
                     newMedia = document.createElement('img');
                     newMedia.src = media.src;
-                    newMedia.alt = 'Guild Joiner Preview';
+                    newMedia.alt = `${tool.name} Preview`;
                 } else {
                     newMedia = document.createElement('video');
                     newMedia.src = media.src;
@@ -2129,11 +2203,8 @@ body {
                     newMedia.muted = true;
                     newMedia.playsInline = true;
                 }
-                newMedia.id = 'joiner-img';
-                newMedia.style.width = '100%';
-                newMedia.style.height = '100%';
-                newMedia.style.maxHeight = '400px';
-                newMedia.style.objectFit = 'contain';
+                newMedia.id = `${tool.id}-img`;
+                newMedia.style.cssText = 'width:100%;height:100%;max-height:400px;object-fit:contain;';
                 
                 if (currentMedia) {
                     if (currentMedia.tagName === 'VIDEO') currentMedia.pause();
@@ -2148,72 +2219,6 @@ body {
                 currentIndex = index;
             }
             
-            function openLightbox(index) {
-                lightboxCurrentIndex = index;
-                const media = joinerMedia[index];
-                
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'none';
-                lightboxVideo.pause();
-                
-                if (media.type === 'image') {
-                    lightboxImage.src = media.src;
-                    lightboxImage.style.display = 'block';
-                } else {
-                    lightboxVideo.src = media.src;
-                    lightboxVideo.style.display = 'block';
-                    lightboxVideo.play();
-                }
-                
-                lightboxCounter.textContent = `${index + 1} / ${joinerMedia.length}`;
-                lightboxModal.classList.add('active');
-            }
-            
-            function closeLightbox() {
-                lightboxModal.classList.remove('active');
-                lightboxVideo.pause();
-            }
-            
-            function lightboxNextMedia() {
-                lightboxCurrentIndex = (lightboxCurrentIndex + 1) % joinerMedia.length;
-                const media = joinerMedia[lightboxCurrentIndex];
-                
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'none';
-                lightboxVideo.pause();
-                
-                if (media.type === 'image') {
-                    lightboxImage.src = media.src;
-                    lightboxImage.style.display = 'block';
-                } else {
-                    lightboxVideo.src = media.src;
-                    lightboxVideo.style.display = 'block';
-                    lightboxVideo.play();
-                }
-                
-                lightboxCounter.textContent = `${lightboxCurrentIndex + 1} / ${joinerMedia.length}`;
-            }
-            
-            function lightboxPrevMedia() {
-                lightboxCurrentIndex = (lightboxCurrentIndex - 1 + joinerMedia.length) % joinerMedia.length;
-                const media = joinerMedia[lightboxCurrentIndex];
-                
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'none';
-                lightboxVideo.pause();
-                
-                if (media.type === 'image') {
-                    lightboxImage.src = media.src;
-                    lightboxImage.style.display = 'block';
-                } else {
-                    lightboxVideo.src = media.src;
-                    lightboxVideo.style.display = 'block';
-                    lightboxVideo.play();
-                }
-                
-                lightboxCounter.textContent = `${lightboxCurrentIndex + 1} / ${joinerMedia.length}`;
-            }
-            
             dots.forEach((dot, i) => {
                 dot.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -2224,236 +2229,85 @@ body {
             if (prevBtn) {
                 prevBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    updateShowcase((currentIndex - 1 + joinerMedia.length) % joinerMedia.length);
+                    updateShowcase((currentIndex - 1 + tool.media.length) % tool.media.length);
                 });
             }
             
             if (nextBtn) {
                 nextBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    updateShowcase((currentIndex + 1) % joinerMedia.length);
+                    updateShowcase((currentIndex + 1) % tool.media.length);
                 });
             }
             
-            showcaseBody.addEventListener('click', (e) => {
+            body.addEventListener('click', (e) => {
                 if (e.target.closest('.showcase-nav') || e.target.closest('.showcase-dot')) return;
-                openLightbox(currentIndex);
-            });
-            
-            if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-            if (lightboxNext) lightboxNext.addEventListener('click', lightboxNextMedia);
-            if (lightboxPrev) lightboxPrev.addEventListener('click', lightboxPrevMedia);
-            
-            if (lightboxModal) {
-                lightboxModal.addEventListener('click', (e) => {
-                    if (e.target === lightboxModal) closeLightbox();
-                });
-            }
-            
-            document.addEventListener('keydown', (e) => {
-                if (!lightboxModal || !lightboxModal.classList.contains('active')) return;
-                if (e.key === 'Escape') closeLightbox();
-                if (e.key === 'ArrowLeft') lightboxPrevMedia();
-                if (e.key === 'ArrowRight') lightboxNextMedia();
+                showLightboxMedia(tool.id, currentIndex);
             });
         }
-        
-        function initRaiderShowcase() {
-            const showcaseBody = document.getElementById('raider-showcase');
-            if (!showcaseBody) {
-                setTimeout(initRaiderShowcase, 50);
-                return;
-            }
+
+        function renderTools() {
+            const container = document.getElementById('toolsContainer');
+            if (!container) return;
+            container.innerHTML = '';
             
-            const raiderMedia = [
-                { type: 'image', src: 'showcases/raider/showcase1.mp4' },
-                { type: 'image', src: 'showcases/raider/showcase2.mp4' },
-                { type: 'video', src: 'showcases/raider/showcase3.mp4' }
-            ];
-            
-            let currentIndex = 0;
-            let currentMedia = showcaseBody.querySelector('img, video');
-            
-            const dots = showcaseBody.querySelectorAll('.showcase-dot');
-            const prevBtn = showcaseBody.querySelector('.showcase-nav.prev');
-            const nextBtn = showcaseBody.querySelector('.showcase-nav.next');
-            
-            const lightboxModal = document.getElementById('lightboxModal');
-            const lightboxImage = document.getElementById('lightboxImage');
-            const lightboxVideo = document.getElementById('lightboxVideo');
-            const lightboxCounter = document.getElementById('lightboxCounter');
-            const lightboxClose = document.getElementById('lightboxClose');
-            const lightboxPrev = document.getElementById('lightboxPrev');
-            const lightboxNext = document.getElementById('lightboxNext');
-            
-            let lightboxCurrentIndex = 0;
-            
-            function updateShowcase(index) {
-                const media = raiderMedia[index];
-                
-                let newMedia;
-                if (media.type === 'image') {
-                    newMedia = document.createElement('img');
-                    newMedia.src = media.src;
-                    newMedia.alt = 'Discord Raider Preview';
-                } else {
-                    newMedia = document.createElement('video');
-                    newMedia.src = media.src;
-                    newMedia.autoplay = true;
-                    newMedia.loop = true;
-                    newMedia.muted = true;
-                    newMedia.playsInline = true;
+            TOOLS_DATA.forEach((tool, index) => {
+                container.appendChild(createToolRow(tool));
+                if (index < TOOLS_DATA.length - 1) {
+                    const divider = document.createElement('div');
+                    divider.className = 'tool-divider';
+                    container.appendChild(divider);
                 }
-                newMedia.id = 'raider-img';
-                newMedia.style.width = '100%';
-                newMedia.style.height = '100%';
-                newMedia.style.maxHeight = '400px';
-                newMedia.style.objectFit = 'contain';
-                
-                if (currentMedia) {
-                    if (currentMedia.tagName === 'VIDEO') currentMedia.pause();
-                    currentMedia.replaceWith(newMedia);
-                }
-                currentMedia = newMedia;
-                
-                dots.forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
-                });
-                
-                currentIndex = index;
-            }
-            
-            function openLightbox(index) {
-                lightboxCurrentIndex = index;
-                const media = raiderMedia[index];
-                
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'none';
-                lightboxVideo.pause();
-                
-                if (media.type === 'image') {
-                    lightboxImage.src = media.src;
-                    lightboxImage.style.display = 'block';
-                } else {
-                    lightboxVideo.src = media.src;
-                    lightboxVideo.style.display = 'block';
-                    lightboxVideo.play();
-                }
-                
-                lightboxCounter.textContent = `${index + 1} / ${raiderMedia.length}`;
-                lightboxModal.classList.add('active');
-            }
-            
-            function closeLightbox() {
-                lightboxModal.classList.remove('active');
-                lightboxVideo.pause();
-            }
-            
-            function lightboxNextMedia() {
-                lightboxCurrentIndex = (lightboxCurrentIndex + 1) % raiderMedia.length;
-                const media = raiderMedia[lightboxCurrentIndex];
-                
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'none';
-                lightboxVideo.pause();
-                
-                if (media.type === 'image') {
-                    lightboxImage.src = media.src;
-                    lightboxImage.style.display = 'block';
-                } else {
-                    lightboxVideo.src = media.src;
-                    lightboxVideo.style.display = 'block';
-                    lightboxVideo.play();
-                }
-                
-                lightboxCounter.textContent = `${lightboxCurrentIndex + 1} / ${raiderMedia.length}`;
-            }
-            
-            function lightboxPrevMedia() {
-                lightboxCurrentIndex = (lightboxCurrentIndex - 1 + raiderMedia.length) % raiderMedia.length;
-                const media = raiderMedia[lightboxCurrentIndex];
-                
-                lightboxImage.style.display = 'none';
-                lightboxVideo.style.display = 'none';
-                lightboxVideo.pause();
-                
-                if (media.type === 'image') {
-                    lightboxImage.src = media.src;
-                    lightboxImage.style.display = 'block';
-                } else {
-                    lightboxVideo.src = media.src;
-                    lightboxVideo.style.display = 'block';
-                    lightboxVideo.play();
-                }
-                
-                lightboxCounter.textContent = `${lightboxCurrentIndex + 1} / ${raiderMedia.length}`;
-            }
-            
-            dots.forEach((dot, i) => {
-                dot.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    updateShowcase(i);
-                });
             });
             
-            if (prevBtn) {
-                prevBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    updateShowcase((currentIndex - 1 + raiderMedia.length) % raiderMedia.length);
-                });
-            }
-            
-            if (nextBtn) {
-                nextBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    updateShowcase((currentIndex + 1) % raiderMedia.length);
-                });
-            }
-            
-            showcaseBody.addEventListener('click', (e) => {
-                if (e.target.closest('.showcase-nav') || e.target.closest('.showcase-dot')) return;
-                openLightbox(currentIndex);
-            });
-            
-            if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-            if (lightboxNext) lightboxNext.addEventListener('click', lightboxNextMedia);
-            if (lightboxPrev) lightboxPrev.addEventListener('click', lightboxPrevMedia);
-            
-            if (lightboxModal) {
-                lightboxModal.addEventListener('click', (e) => {
-                    if (e.target === lightboxModal) closeLightbox();
-                });
-            }
-            
-            document.addEventListener('keydown', (e) => {
-                if (!lightboxModal || !lightboxModal.classList.contains('active')) return;
-                if (e.key === 'ArrowLeft') lightboxPrevMedia();
-                if (e.key === 'ArrowRight') lightboxNextMedia();
-                if (e.key === 'Escape') closeLightbox();
+            TOOLS_DATA.forEach(tool => {
+                if (!tool.isPlaceholder) initShowcase(tool);
             });
         }
-        
-        document.querySelectorAll('.btn-download').forEach(btn => {
-            btn.addEventListener('click', function(e) {
+
+        document.addEventListener('click', function(e) {
+            const downloadBtn = e.target.closest('.btn-download');
+            if (downloadBtn) {
                 e.preventDefault();
-                if (this.disabled) return;
-                const fileName = this.getAttribute('data-download');
+                if (downloadBtn.disabled) return;
+                const fileName = downloadBtn.dataset.download;
                 if (fileName) {
                     window.location.href = 'https://imgekkefries.pythonanywhere.com/download/' + fileName;
                 }
-            });
-        });
-        
-        document.querySelectorAll('.btn-purchase').forEach(btn => {
-            btn.addEventListener('click', function(e) {
+                return;
+            }
+            
+            const purchaseBtn = e.target.closest('.btn-purchase');
+            if (purchaseBtn) {
                 e.preventDefault();
-                if (this.disabled) return;
+                if (purchaseBtn.disabled) return;
                 window.open('https://discord.gg/2D5j6NsY6B', '_blank');
-            });
+                return;
+            }
         });
+
+        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+        if (lightboxNext) lightboxNext.addEventListener('click', () => navigateLightbox(1));
+        if (lightboxPrev) lightboxPrev.addEventListener('click', () => navigateLightbox(-1));
         
-        initJoinerShowcase();
-        initRaiderShowcase();
+        if (lightboxModal) {
+            lightboxModal.addEventListener('click', (e) => {
+                if (e.target === lightboxModal) closeLightbox();
+            });
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (!lightboxModal || !lightboxModal.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', renderTools);
+        } else {
+            renderTools();
+        }
     })();
 </script>
 <!-- ############################################ -->
