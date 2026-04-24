@@ -1494,22 +1494,44 @@ body {
     .tool-badge {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 40px;
-        padding: 0.25rem 0.9rem;
-        font-size: 0.65rem;
-        color: var(--text-muted);
+        gap: 5px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 30px;
+        padding: 0.25rem 0.8rem;
+        font-size: 0.68rem;
         width: fit-content;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
         font-family: var(--font-mono);
-        letter-spacing: 1px;
+        letter-spacing: 0.3px;
+        transition: all 0.2s ease;
+    }
+
+    .tool-badge.available {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.18);
+        color: #d0d5e0;
+    }
+
+    .tool-badge.available i {
+        color: #6ee7b7;
+    }
+
+    .tool-badge.placeholder {
+        background: rgba(255, 255, 255, 0.02);
+        border-color: rgba(255, 255, 255, 0.06);
+        color: var(--text-muted);
+    }
+
+    .tool-badge.placeholder i {
+        color: var(--text-muted);
+    }
+
+    .tool-badge:hover {
+        border-color: rgba(255, 255, 255, 0.2);
     }
 
     .tool-badge i {
         font-size: 0.6rem;
-        color: #27c93f;
     }
 
     .hcaptcha-tag {
@@ -1922,6 +1944,7 @@ body {
         .tool-name { font-size: 1.4rem; }
         .tool-description { font-size: 0.8rem; }
         .feature-tag { font-size: 0.6rem; padding: 0.2rem 0.6rem; }
+        .tool-badge { font-size: 0.6rem; padding: 0.2rem 0.6rem; }
         .hcaptcha-tag { font-size: 0.6rem; padding: 0.2rem 0.6rem; }
         .btn-download, .btn-purchase { min-width: 140px; padding: 0.6rem 1rem; font-size: 0.75rem; }
         .showcase-body { min-height: 200px; }
@@ -1990,8 +2013,7 @@ body {
                 name: 'Guild Joiner',
                 version: 'v1.0',
                 terminal: 'gekke@tools:~/guild-joiner',
-                badge: 'AVAILABLE NOW',
-                badgeIcon: 'fa-circle',
+                available: true,
                 hcaptchaSupported: true,
                 description: 'Makes Discord tokens join a guild. Comes with a token checker. Not flagged by Discord. Full proxy support and multi-threaded for maximum performance.',
                 features: [
@@ -2012,8 +2034,7 @@ body {
                 name: 'Discord Raider',
                 version: 'v1.0',
                 terminal: 'gekke@tools:~/discord-raider',
-                badge: 'AVAILABLE NOW',
-                badgeIcon: 'fa-circle',
+                available: true,
                 hcaptchaSupported: true,
                 description: 'GUI based raider - instead of using a console you get a nice interface. Each token has its own session so headers and everything stay the same throughout the entire process, which also allows it to make requests faster since it doesn\'t need to build new headers each time. This tool will keep getting updates and suggestions from the Discord server will be added to the tool if they\'re good enough.',
                 features: [
@@ -2034,8 +2055,7 @@ body {
                 name: 'placeholder',
                 version: null,
                 terminal: 'gekke@tools:~/placeholder',
-                badge: 'PLACEHOLDER',
-                badgeIcon: 'fa-clock',
+                available: false,
                 hcaptchaSupported: false,
                 description: 'this tool will come soon',
                 features: [],
@@ -2173,18 +2193,19 @@ body {
             const infoArea = document.createElement('div');
             infoArea.className = 'tool-info-area';
             
-            infoArea.innerHTML = `
-                <div class="tool-badge">
-                    <i class="fas ${tool.badgeIcon}"></i> ${tool.badge}
-                </div>
-            `;
+            const badge = document.createElement('div');
+            badge.className = `tool-badge ${tool.available ? 'available' : 'placeholder'}`;
+            badge.innerHTML = tool.available ? 
+                '<i class="fas fa-check-circle"></i> AVAILABLE' : 
+                '<i class="fas fa-clock"></i> COMING SOON';
+            infoArea.appendChild(badge);
             
             if (tool.hcaptchaSupported !== undefined) {
                 const hcaptchaTag = document.createElement('div');
                 hcaptchaTag.className = `hcaptcha-tag ${tool.hcaptchaSupported ? 'supported' : 'unsupported'}`;
                 hcaptchaTag.innerHTML = tool.hcaptchaSupported ? 
                     '<i class="fas fa-puzzle-piece"></i> Hcaptcha Solver' : 
-                    '<i class="fas fa-puzzle-piece"></i> Hcaptcha Solver';
+                    '<i class="fas fa-puzzle-piece"></i> No Hcaptcha Solver';
                 infoArea.appendChild(hcaptchaTag);
             }
             
