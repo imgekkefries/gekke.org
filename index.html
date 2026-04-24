@@ -2012,6 +2012,7 @@ body {
                 id: 'joiner',
                 name: 'Guild Joiner',
                 version: 'v1.0',
+                price: '€7.99',
                 terminal: 'gekke@tools:~/guild-joiner',
                 available: true,
                 hcaptchaSupported: true,
@@ -2033,6 +2034,7 @@ body {
                 id: 'raider',
                 name: 'Discord Raider',
                 version: 'v1.0',
+                price: '€79.99',
                 terminal: 'gekke@tools:~/discord-raider',
                 available: true,
                 hcaptchaSupported: true,
@@ -2247,7 +2249,7 @@ body {
             purchaseBtn.className = 'btn-purchase';
             purchaseBtn.innerHTML = tool.isPlaceholder ? 
                 '<i class="fas fa-code"></i> Unavailable' :
-                '<i class="fas fa-code"></i> Source Code <span class="price-tag">€7.99</span>';
+                `<i class="fas fa-code"></i> Source Code <span class="price-tag">${tool.price || '€7.99'}</span>`;
             if (tool.isPlaceholder) purchaseBtn.disabled = true;
             else purchaseBtn.dataset.purchase = 'source';
             actionsDiv.appendChild(purchaseBtn);
