@@ -1905,7 +1905,6 @@ body {
         .showcase-nav:active { transform: translateY(-50%) scale(0.95); }
     }
 </style>
-
 <section id="page-tools" class="page-section">
     <div class="page-inner">
         <div class="tools-header">
@@ -1978,12 +1977,16 @@ body {
                             <div class="term-dot"></div>
                             <div class="term-dot"></div>
                             <div class="term-dot"></div>
-                            <span>gekke@tools:~/placeholder</span>
+                            <span>gekke@tools:~/discord-raider</span>
                         </div>
-                        <div class="showcase-body">
-                            <div class="placeholder-content">
-                                <i class="fas fa-cube"></i>
-                                <span>placeholder</span>
+                        <div class="showcase-body" id="raider-showcase">
+                            <img src="showcases/raider/showcase1.png" alt="Discord Raider Preview" id="raider-img" style="width:100%;height:100%;max-height:400px;object-fit:contain;">
+                            <div class="showcase-nav prev" data-tool="raider"><i class="fas fa-chevron-left"></i></div>
+                            <div class="showcase-nav next" data-tool="raider"><i class="fas fa-chevron-right"></i></div>
+                            <div class="showcase-dots">
+                                <span class="showcase-dot active" data-index="0"></span>
+                                <span class="showcase-dot" data-index="1"></span>
+                                <span class="showcase-dot" data-index="2"></span>
                             </div>
                         </div>
                     </div>
@@ -1991,20 +1994,29 @@ body {
                 
                 <div class="tool-info-area">
                     <div class="tool-badge">
-                        <i class="fas fa-clock"></i> PLACEHOLDER
+                        <i class="fas fa-circle"></i> AVAILABLE NOW
                     </div>
                     <div class="tool-name">
-                        placeholder
+                        Discord Raider
+                        <span class="tool-version">v1.0</span>
                     </div>
                     <div class="tool-description">
-                        this tool will come soon
+                        GUI based raider - instead of using a console you get a nice interface. Each token has its own session so headers and everything stay the same throughout the entire process, which also allows it to make requests faster since it doesn't need to build new headers each time. This tool will keep getting updates and suggestions from the Discord server will be added to the tool if they're good enough.
+                    </div>
+                    <div class="tool-features">
+                        <span class="feature-tag"><i class="fas fa-desktop"></i> GUI Interface</span>
+                        <span class="feature-tag"><i class="fas fa-id-card"></i> Persistent sessions</span>
+                        <span class="feature-tag"><i class="fas fa-tachometer-alt"></i> Faster requests</span>
+                        <span class="feature-tag"><i class="fas fa-sync-alt"></i> Constant updates</span>
                     </div>
                     <div class="tool-actions">
-                        <button class="btn-download" disabled>
-                            <i class="fas fa-download"></i> Coming Soon
+                        <button class="btn-download" data-download="raider">
+                            <i class="fas fa-download"></i> Download .Exe
+                            <span style="opacity: 0.6; margin-left: 6px;">Free</span>
                         </button>
-                        <button class="btn-purchase" disabled>
-                            <i class="fas fa-code"></i> Unavailable
+                        <button class="btn-purchase" data-purchase="source">
+                            <i class="fas fa-code"></i> Source Code
+                            <span class="price-tag">€7.99</span>
                         </button>
                     </div>
                 </div>
@@ -2246,6 +2258,181 @@ body {
             });
         }
         
+        function initRaiderShowcase() {
+            const showcaseBody = document.getElementById('raider-showcase');
+            if (!showcaseBody) {
+                setTimeout(initRaiderShowcase, 50);
+                return;
+            }
+            
+            const raiderMedia = [
+                { type: 'image', src: 'showcases/raider/showcase1.png' },
+                { type: 'image', src: 'showcases/raider/showcase2.png' },
+                { type: 'video', src: 'showcases/raider/showcase3.mp4' }
+            ];
+            
+            let currentIndex = 0;
+            let currentMedia = showcaseBody.querySelector('img, video');
+            
+            const dots = showcaseBody.querySelectorAll('.showcase-dot');
+            const prevBtn = showcaseBody.querySelector('.showcase-nav.prev');
+            const nextBtn = showcaseBody.querySelector('.showcase-nav.next');
+            
+            const lightboxModal = document.getElementById('lightboxModal');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxVideo = document.getElementById('lightboxVideo');
+            const lightboxCounter = document.getElementById('lightboxCounter');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
+            
+            let lightboxCurrentIndex = 0;
+            
+            function updateShowcase(index) {
+                const media = raiderMedia[index];
+                
+                let newMedia;
+                if (media.type === 'image') {
+                    newMedia = document.createElement('img');
+                    newMedia.src = media.src;
+                    newMedia.alt = 'Discord Raider Preview';
+                } else {
+                    newMedia = document.createElement('video');
+                    newMedia.src = media.src;
+                    newMedia.autoplay = true;
+                    newMedia.loop = true;
+                    newMedia.muted = true;
+                    newMedia.playsInline = true;
+                }
+                newMedia.id = 'raider-img';
+                newMedia.style.width = '100%';
+                newMedia.style.height = '100%';
+                newMedia.style.maxHeight = '400px';
+                newMedia.style.objectFit = 'contain';
+                
+                if (currentMedia) {
+                    if (currentMedia.tagName === 'VIDEO') currentMedia.pause();
+                    currentMedia.replaceWith(newMedia);
+                }
+                currentMedia = newMedia;
+                
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+                
+                currentIndex = index;
+            }
+            
+            function openLightbox(index) {
+                lightboxCurrentIndex = index;
+                const media = raiderMedia[index];
+                
+                lightboxImage.style.display = 'none';
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.pause();
+                
+                if (media.type === 'image') {
+                    lightboxImage.src = media.src;
+                    lightboxImage.style.display = 'block';
+                } else {
+                    lightboxVideo.src = media.src;
+                    lightboxVideo.style.display = 'block';
+                    lightboxVideo.play();
+                }
+                
+                lightboxCounter.textContent = `${index + 1} / ${raiderMedia.length}`;
+                lightboxModal.classList.add('active');
+            }
+            
+            function closeLightbox() {
+                lightboxModal.classList.remove('active');
+                lightboxVideo.pause();
+            }
+            
+            function lightboxNextMedia() {
+                lightboxCurrentIndex = (lightboxCurrentIndex + 1) % raiderMedia.length;
+                const media = raiderMedia[lightboxCurrentIndex];
+                
+                lightboxImage.style.display = 'none';
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.pause();
+                
+                if (media.type === 'image') {
+                    lightboxImage.src = media.src;
+                    lightboxImage.style.display = 'block';
+                } else {
+                    lightboxVideo.src = media.src;
+                    lightboxVideo.style.display = 'block';
+                    lightboxVideo.play();
+                }
+                
+                lightboxCounter.textContent = `${lightboxCurrentIndex + 1} / ${raiderMedia.length}`;
+            }
+            
+            function lightboxPrevMedia() {
+                lightboxCurrentIndex = (lightboxCurrentIndex - 1 + raiderMedia.length) % raiderMedia.length;
+                const media = raiderMedia[lightboxCurrentIndex];
+                
+                lightboxImage.style.display = 'none';
+                lightboxVideo.style.display = 'none';
+                lightboxVideo.pause();
+                
+                if (media.type === 'image') {
+                    lightboxImage.src = media.src;
+                    lightboxImage.style.display = 'block';
+                } else {
+                    lightboxVideo.src = media.src;
+                    lightboxVideo.style.display = 'block';
+                    lightboxVideo.play();
+                }
+                
+                lightboxCounter.textContent = `${lightboxCurrentIndex + 1} / ${raiderMedia.length}`;
+            }
+            
+            dots.forEach((dot, i) => {
+                dot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    updateShowcase(i);
+                });
+            });
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    updateShowcase((currentIndex - 1 + raiderMedia.length) % raiderMedia.length);
+                });
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    updateShowcase((currentIndex + 1) % raiderMedia.length);
+                });
+            }
+            
+            showcaseBody.addEventListener('click', (e) => {
+                if (e.target.closest('.showcase-nav') || e.target.closest('.showcase-dot')) return;
+                openLightbox(currentIndex);
+            });
+            
+            if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+            if (lightboxNext) lightboxNext.addEventListener('click', lightboxNextMedia);
+            if (lightboxPrev) lightboxPrev.addEventListener('click', lightboxPrevMedia);
+            
+            if (lightboxModal) {
+                lightboxModal.addEventListener('click', (e) => {
+                    if (e.target === lightboxModal) closeLightbox();
+                });
+            }
+            
+            document.addEventListener('keydown', (e) => {
+                if (!lightboxModal || !lightboxModal.classList.contains('active')) return;
+                if (e.key === 'ArrowLeft') lightboxPrevMedia();
+                if (e.key === 'ArrowRight') lightboxNextMedia();
+                if (e.key === 'Escape') closeLightbox();
+            });
+        }
+        
         document.querySelectorAll('.btn-download').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -2266,6 +2453,7 @@ body {
         });
         
         initJoinerShowcase();
+        initRaiderShowcase();
     })();
 </script>
 <!-- ############################################ -->
