@@ -38,35 +38,11 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
-        .g {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 15px), linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 50px 50px, 40px 40px, 40px 40px;
-            pointer-events: none; z-index: 1;
-        }
-        .gl {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, var(--g1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, var(--g2) 0%, transparent 50%);
-            pointer-events: none; z-index: 1;
-        }
-        .dg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(45deg, rgba(255,255,255,0.003) 0px, rgba(255,255,255,0.003) 1px, transparent 1px, transparent 10px);
-            pointer-events: none; z-index: 1;
-        }
-        .tx {
-            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
-            pointer-events: none; z-index: 1;
-            display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(20, 1fr);
-            gap: 0.3rem; transform: rotate(-4deg); opacity: 0.4;
-            font-family: var(--mono); text-transform: uppercase;
-            font-size: clamp(0.6rem, 1.5vw, 0.95rem); font-weight: 400;
-            letter-spacing: 0.15em; color: rgba(255,255,255,0.12); padding: 1.5rem;
-        }
-        .tx div {
-            display: flex; align-items: center; justify-content: center;
-            white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.08);
-        }
+        .g { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 15px), linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 50px 50px, 40px 40px, 40px 40px; pointer-events: none; z-index: 1; }
+        .gl { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, var(--g1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, var(--g2) 0%, transparent 50%); pointer-events: none; z-index: 1; }
+        .dg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.003) 0px, rgba(255,255,255,0.003) 1px, transparent 1px, transparent 10px); pointer-events: none; z-index: 1; }
+        .tx { position: fixed; top: -5%; left: -5%; width: 110%; height: 110%; pointer-events: none; z-index: 1; display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(20, 1fr); gap: 0.3rem; transform: rotate(-4deg); opacity: 0.4; font-family: var(--mono); text-transform: uppercase; font-size: clamp(0.6rem, 1.5vw, 0.95rem); font-weight: 400; letter-spacing: 0.15em; color: rgba(255,255,255,0.12); padding: 1.5rem; }
+        .tx div { display: flex; align-items: center; justify-content: center; white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.08); }
         .tx div:nth-child(3n) { opacity: 0.7; }
         .tx div:nth-child(5n) { transform: rotate(1deg); }
         .tx div:nth-child(7n) { transform: rotate(-1deg); }
@@ -74,31 +50,17 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
-        .sb {
-            position: fixed; top: 0; left: 0; height: 2px;
-            background: var(--acc); z-index: 1000; transition: width 0.1s ease;
-        }
+        .sb { position: fixed; top: 0; left: 0; height: 2px; background: var(--acc); z-index: 1000; transition: width 0.1s ease; }
         .wrap { position: relative; z-index: 2; display: flex; justify-content: center; }
-        .main { max-width: 900px; margin: 0 auto; padding: 0 24px; width: 100%; }
-        .hero {
-            min-height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center; position: relative;
-        }
-        .wm {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 18vw; font-weight: 700; color: rgba(255, 255, 255, 0.012);
-            white-space: nowrap; pointer-events: none;
-            letter-spacing: -0.06em; z-index: -1; user-select: none;
-        }
+        .main { max-width: 1000px; margin: 0 auto; padding: 0 24px; width: 100%; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
+        .wm { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18vw; font-weight: 700; color: rgba(255, 255, 255, 0.012); white-space: nowrap; pointer-events: none; letter-spacing: -0.06em; z-index: -1; user-select: none; }
         .hero h1 { font-size: clamp(48px, 8vw, 96px); font-weight: 500; letter-spacing: -0.04em; line-height: 1; }
         .hero p { font-size: 16px; color: var(--t3); margin-top: 16px; letter-spacing: 0.4px; }
         .sh { position: absolute; bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .sh span { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); }
         .sh svg { width: 20px; height: 20px; stroke: var(--t3); animation: b 1.5s ease-in-out infinite; }
-        @keyframes b {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(8px); }
-        }
+        @keyframes b { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
         .sec { padding: 80px 0; border-top: 1px solid var(--bl); }
         .sec .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--t3); margin-bottom: 20px; }
         .sec h2 { font-size: clamp(24px, 3.5vw, 34px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 16px; }
@@ -106,12 +68,7 @@
         .lk { color: var(--t1); text-decoration: none; border-bottom: 1px solid var(--bm); transition: border-color 0.2s, color 0.2s; padding-bottom: 1px; }
         .lk:hover { border-color: var(--acc); color: #b8cef0; }
         .cg { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 32px; }
-        .cd {
-            background: var(--card); backdrop-filter: blur(14px);
-            border-radius: 20px; padding: 28px; border: 1px solid var(--bc);
-            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); position: relative; overflow: hidden;
-        }
+        .cd { background: var(--card); backdrop-filter: blur(14px); border-radius: 20px; padding: 28px; border: 1px solid var(--bc); transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
         .cd:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-3px); box-shadow: 0 28px 38px -14px #000000; background: var(--cardh); }
         .cd::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #b0ceff, #ffffff, #b0ceff); opacity: 0; transition: opacity 0.3s ease; }
         .cd:hover::before { opacity: 0.6; }
@@ -127,13 +84,7 @@
         .ti .td { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); margin-bottom: 6px; }
         .ti .tn { font-size: 18px; font-weight: 500; margin-bottom: 4px; letter-spacing: -0.01em; }
         .ti .tt { font-size: 14px; color: var(--t2); line-height: 1.6; }
-        .cc {
-            background: var(--card); backdrop-filter: blur(14px);
-            border-radius: 20px; border: 1px solid var(--bc);
-            box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5);
-            margin-top: 32px; max-width: 420px; padding: 28px;
-            transition: border-color 0.3s;
-        }
+        .cc { background: var(--card); backdrop-filter: blur(14px); border-radius: 20px; border: 1px solid var(--bc); box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); margin-top: 32px; max-width: 420px; padding: 28px; transition: border-color 0.3s; }
         .cc:hover { border-color: rgba(255,255,255,0.18); }
         .ct { display: flex; align-items: center; gap: 18px; }
         .aw { position: relative; flex-shrink: 0; }
@@ -146,17 +97,10 @@
         .ci { flex: 1; min-width: 0; }
         .ci .nm { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
         .ci .tg { font-size: 13px; color: var(--t3); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
-        .ci .tg button {
-            background: none; border: none; color: var(--t3); cursor: pointer;
-            font-family: var(--mono); font-size: 11px; padding: 2px 0;
-            transition: color 0.2s;
-        }
+        .ci .tg button { background: none; border: none; color: var(--t3); cursor: pointer; font-family: var(--mono); font-size: 11px; padding: 2px 0; transition: color 0.2s; }
         .ci .tg button:hover { color: var(--t1); }
         .ci .tg .cp { color: #27c93f; font-size: 10px; display: none; }
-        .cpf {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 12px; color: var(--t3); margin-top: 6px;
-        }
+        .cpf { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--t3); margin-top: 6px; }
         .cpf svg { width: 14px; height: 14px; opacity: 0.6; }
         .ft { padding: 40px 0 60px; border-top: 1px solid var(--bl); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--t3); letter-spacing: 0.3px; }
         .ft a { color: var(--t2); text-decoration: none; transition: color 0.2s; }
@@ -173,43 +117,34 @@
         @media (min-width: 1600px) {
             .tx { grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(24, 1fr); }
         }
-        .nav {
-            position: fixed; left: calc((100vw - 900px) / 2 - 50px);
-            top: 50%; transform: translateY(-50%); z-index: 100;
-            display: flex; flex-direction: column; align-items: flex-end;
-            gap: 5px; pointer-events: none; transition: left 0.3s ease;
-        }
-        .nav .ln { border-radius: 4px; transition: all 0.35s var(--ease); }
-        .nav .ln.mn { height: 4px; background: rgba(255, 255, 255, 0.16); margin-top: 4px; }
-        .nav .ln.mn:first-child { margin-top: 0; }
-        .nav .ln.mn:nth-child(1) { width: 26px; }
-        .nav .ln.mn:nth-child(5) { width: 38px; }
-        .nav .ln.mn:nth-child(9) { width: 32px; }
-        .nav .ln.mn:nth-child(13) { width: 46px; }
-        .nav .ln.mn:nth-child(17) { width: 36px; }
-        .nav .ln.mn:nth-child(21) { width: 42px; }
-        .nav .ln.mn:nth-child(25) { width: 40px; }
-        .nav .ln.mn:nth-child(29) { width: 30px; }
-        .nav .ln.sb { height: 3px; width: 26px; background: rgba(255, 255, 255, 0.12); }
-        .nav .ln.ac { background: rgba(255, 255, 255, 0.95) !important; box-shadow: 0 0 16px rgba(255, 255, 255, 0.5), 0 0 32px rgba(255, 255, 255, 0.2); }
-        .nav .ln.mn.ac { height: 6px; }
-        .nav .ln.sb.ac { height: 4.5px; }
-        .nav .ln.dn.mn { background: rgba(255, 255, 255, 0.45); }
-        .nav .ln.dn.sb { background: rgba(255, 255, 255, 0.33); }
+        .sections { position: fixed; left: calc((100vw - 1000px) / 2 - 50px); top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; pointer-events: none; transition: left 0.3s ease; }
+        .sections .line { border-radius: 4px; transition: all 0.35s var(--ease); }
+        .sections .line.main { height: 4px; background: rgba(255, 255, 255, 0.16); margin-top: 4px; }
+        .sections .line.main:first-child { margin-top: 0; }
+        .sections .line.main:nth-child(1) { width: 26px; }
+        .sections .line.main:nth-child(5) { width: 38px; }
+        .sections .line.main:nth-child(8) { width: 32px; }
+        .sections .line.main:nth-child(12) { width: 46px; }
+        .sections .line.main:nth-child(16) { width: 36px; }
+        .sections .line.main:nth-child(20) { width: 42px; }
+        .sections .line.sub { height: 3px; width: 26px; background: rgba(255, 255, 255, 0.12); }
+        .sections .line.active { background: rgba(255, 255, 255, 0.95) !important; box-shadow: 0 0 16px rgba(255, 255, 255, 0.5), 0 0 32px rgba(255, 255, 255, 0.2); }
+        .sections .line.main.active { height: 6px; }
+        .sections .line.sub.active { height: 4.5px; }
+        .sections .line.done.main { background: rgba(255, 255, 255, 0.45); }
+        .sections .line.done.sub { background: rgba(255, 255, 255, 0.33); }
         @media (max-width: 1100px) {
-            .nav { left: 12px; gap: 4px; }
-            .nav .ln.mn:nth-child(1) { width: 18px; }
-            .nav .ln.mn:nth-child(5) { width: 26px; }
-            .nav .ln.mn:nth-child(9) { width: 22px; }
-            .nav .ln.mn:nth-child(13) { width: 32px; }
-            .nav .ln.mn:nth-child(17) { width: 25px; }
-            .nav .ln.mn:nth-child(21) { width: 29px; }
-            .nav .ln.mn:nth-child(25) { width: 27px; }
-            .nav .ln.mn:nth-child(29) { width: 21px; }
-            .nav .ln.sb { height: 2px; width: 18px; }
-            .nav .ln.mn { margin-top: 3px; }
-            .nav .ln.mn.ac { height: 4.5px; }
-            .nav .ln.sb.ac { height: 3px; }
+            .sections { left: 12px; gap: 4px; }
+            .sections .line.main:nth-child(1) { width: 18px; }
+            .sections .line.main:nth-child(5) { width: 26px; }
+            .sections .line.main:nth-child(8) { width: 22px; }
+            .sections .line.main:nth-child(12) { width: 32px; }
+            .sections .line.main:nth-child(16) { width: 25px; }
+            .sections .line.main:nth-child(20) { width: 29px; }
+            .sections .line.sub { height: 2px; width: 18px; }
+            .sections .line.main { margin-top: 3px; }
+            .sections .line.main.active { height: 4.5px; }
+            .sections .line.sub.active { height: 3px; }
         }
     </style>
 </head>
@@ -219,15 +154,31 @@
     <div class="dg"></div>
     <div class="tx" id="bt"></div>
     <div class="sb" id="sb"></div>
-    <div class="nav" id="nv">
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
-        <div class="ln mn"></div><div class="ln sb"></div><div class="ln sb"></div><div class="ln sb"></div>
+    <div class="sections" id="sections">
+        <div class="line main"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line main"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line main"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line main"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line main"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line main"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
+        <div class="line sub"></div>
     </div>
     <div class="wrap">
         <div class="main">
@@ -294,25 +245,32 @@
     </div>
     <script>
     (function() {
-        var c = document.getElementById('nv');
-        var ls = c.querySelectorAll('.ln');
-        var t = ls.length;
-        function idx() {
-            var h = document.documentElement.scrollHeight - window.innerHeight;
-            if (h <= 0) return 0;
-            return Math.max(0, Math.min(Math.floor((window.scrollY / h) * t), t - 1));
+        var container = document.getElementById('sections');
+        var allLines = container.querySelectorAll('.line');
+        var totalLines = allLines.length;
+        function getActiveLineIndex() {
+            var scrollH = document.documentElement.scrollHeight - window.innerHeight;
+            if (scrollH <= 0) return 0;
+            var pct = window.scrollY / scrollH;
+            var lineIdx = Math.floor(pct * totalLines);
+            if (lineIdx >= totalLines) lineIdx = totalLines - 1;
+            if (lineIdx < 0) lineIdx = 0;
+            return lineIdx;
         }
-        function upd() {
-            var a = idx();
-            ls.forEach(function(l, i) {
-                l.classList.remove('ac', 'dn');
-                if (i === a) l.classList.add('ac');
-                else if (i < a) l.classList.add('dn');
+        function update() {
+            var activeIdx = getActiveLineIndex();
+            allLines.forEach(function(line, i) {
+                line.classList.remove('active', 'done');
+                if (i === activeIdx) line.classList.add('active');
+                else if (i < activeIdx) line.classList.add('done');
             });
         }
-        upd(); setTimeout(upd, 100); setTimeout(upd, 300); setTimeout(upd, 500);
-        window.addEventListener('scroll', upd);
-        window.addEventListener('resize', upd);
+        update();
+        setTimeout(update, 100);
+        setTimeout(update, 300);
+        setTimeout(update, 500);
+        window.addEventListener('scroll', update);
+        window.addEventListener('resize', update);
     })();
     </script>
     <script>
