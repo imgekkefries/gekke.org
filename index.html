@@ -834,7 +834,7 @@
   }, { passive: false });
   window.addEventListener('touchmove', function(e) {
     if (!down) return;
-    sc.scrollLeft = sl - (e.touches[0].pageX - sc.offsetLeft - sx) * 1.2;
+    sc.scrollLeft = sl - (e.touches[0].pageX - sc.offsetLeft - sx) * 2.8;
     e.preventDefault();
   }, { passive: false });
   window.addEventListener('touchend', function() { down = false; });
