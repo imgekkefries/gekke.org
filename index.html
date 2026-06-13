@@ -660,71 +660,68 @@
 function getUrl() {
   var loc = window.location;
   var base = loc.protocol + '//' + loc.host;
-  var parts = loc.pathname.split('/').filter(function(p) { return p.length > 0; });
-  if (parts.length > 0 && parts[parts.length - 1].endsWith('.html')) parts.pop();
-  if (parts.length > 0) base += '/' + parts.join('/');
+
+  var parts = loc.pathname.split('/').filter(function (p) {
+    return p.length > 0;
+  });
+
+  if (parts.length > 0 && /\.html?$/i.test(parts[parts.length - 1])) {
+    parts.pop();
+  }
+
+  if (
+    loc.protocol !== 'file:' &&
+    parts.length > 0 &&
+    parts[parts.length - 1].toLowerCase() === 'templates'
+  ) {
+    parts.pop();
+  }
+
+  if (parts.length) {
+    base += '/' + parts.join('/');
+  }
+
   return base.replace(/\/$/, '');
 }
+
 var siteUrl = getUrl();
 
-var isLocal = window.location.protocol === 'file:';
-
 var clickable = document.querySelectorAll('.frame-card[data-route]');
+
 for (var ci = 0; ci < clickable.length; ci++) {
-  (function(card) {
-    card.addEventListener('click', function(e) {
-      if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.minimap-dot') || e.target.closest('#zsc')) return;
+  (function (card) {
+    card.addEventListener('click', function (e) {
+      if (
+        e.target.closest('a') ||
+        e.target.closest('button') ||
+        e.target.closest('.minimap-dot') ||
+        e.target.closest('#zsc')
+      ) {
+        return;
+      }
+
       var route = card.getAttribute('data-route');
       if (!route) return;
-      var fr = route.charAt(0).toUpperCase() + route.slice(1);
 
-      var th, fh, tc, fc;
-      
-      if (isLocal) {
-        th = siteUrl + '/Templates/' + fr + '.html';
-        fh = siteUrl + '/Templates/PageCannotBeFound.html';
-        tc = siteUrl + '/Templates/' + fr;
-        fc = siteUrl + '/Templates/PageCannotBeFound';
-        
-        fetch(th, { method: 'HEAD' }).then(function(res) {
-          if (res.ok) {
-            window.open(th, '_blank');
-          } else {
-            fetch(tc, { method: 'HEAD' }).then(function(r2) {
-              window.open(r2.ok ? tc : fh, '_blank');
-            }).catch(function() {
-              window.open(fh, '_blank');
-            });
-          }
-        }).catch(function() {
-          window.open(th, '_blank');
-        });
-      } else {
-        th = siteUrl + '/' + fr;
-        fh = siteUrl + '/' + fr;  
-        tc = siteUrl + '/' + fr;
-        fc = siteUrl + '/PageCannotBeFound';
-        fetch(tc, { method: 'HEAD' }).then(function(res) {
-          if (res.ok) {
-            window.open(tc, '_blank');
-          } else {
-            var fallback = siteUrl + '/Templates/' + fr + '.html';
-            fetch(fallback, { method: 'HEAD' }).then(function(r2) {
-              window.open(r2.ok ? fallback : fc, '_blank');
-            }).catch(function() {
-              window.open(fc, '_blank');
-            });
-          }
-        }).catch(function() {
+      var page =
+        route.charAt(0).toUpperCase() +
+        route.slice(1);
 
-          var fallback = siteUrl + '/Templates/' + fr + '.html';
-          fetch(fallback, { method: 'HEAD' }).then(function(r2) {
-            window.open(r2.ok ? fallback : fc, '_blank');
-          }).catch(function() {
-            window.open(fc, '_blank');
-          });
-        });
+      if (window.location.protocol === 'file:') {
+        window.open(siteUrl + '/Templates/' + page + '.html', '_blank');
+        return;
       }
+
+      var target = siteUrl + '/' + page;
+      var fallback = siteUrl + '/PageCannotBeFound';
+
+      fetch(target, { method: 'HEAD' })
+        .then(function (res) {
+          window.open(res.ok ? target : fallback, '_blank');
+        })
+        .catch(function () {
+          window.open(fallback, '_blank');
+        });
     });
   })(clickable[ci]);
 }
