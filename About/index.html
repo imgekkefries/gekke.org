@@ -6,7 +6,12 @@
     <meta name="author" content="gekkefries">
     <title>gekkefries</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
         :root {
             --bg: #080a0e;
             --bg2: #0c0f15;
@@ -27,9 +32,13 @@
         @font-face {
             font-family: 'Terminal';
             src: url('https://imgekkefries.pythonanywhere.com/terminal.woff') format('woff');
-            font-weight: normal; font-style: normal; font-display: swap;
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             background: var(--bg);
             font-family: var(--mono);
@@ -38,113 +47,516 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
-        .g { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 15px), linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 50px 50px, 40px 40px, 40px 40px; pointer-events: none; z-index: 1; }
-        .gl { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 20% 30%, var(--g1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, var(--g2) 0%, transparent 50%); pointer-events: none; z-index: 1; }
-        .dg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, rgba(255,255,255,0.003) 0px, rgba(255,255,255,0.003) 1px, transparent 1px, transparent 10px); pointer-events: none; z-index: 1; }
-        .tx { position: fixed; top: -5%; left: -5%; width: 110%; height: 110%; pointer-events: none; z-index: 1; display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(20, 1fr); gap: 0.3rem; transform: rotate(-4deg); opacity: 0.4; font-family: var(--mono); text-transform: uppercase; font-size: clamp(0.6rem, 1.5vw, 0.95rem); font-weight: 400; letter-spacing: 0.15em; color: rgba(255,255,255,0.12); padding: 1.5rem; }
-        .tx div { display: flex; align-items: center; justify-content: center; white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.08); }
-        .tx div:nth-child(3n) { opacity: 0.7; }
-        .tx div:nth-child(5n) { transform: rotate(1deg); }
-        .tx div:nth-child(7n) { transform: rotate(-1deg); }
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
-        .sb { position: fixed; top: 0; left: 0; height: 2px; background: var(--acc); z-index: 1000; transition: width 0.1s ease; }
-        .wrap { position: relative; z-index: 2; display: flex; justify-content: center; }
-        .main { max-width: 1000px; margin: 0 auto; padding: 0 24px; width: 100%; }
-        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
-        .wm { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18vw; font-weight: 700; color: rgba(255, 255, 255, 0.012); white-space: nowrap; pointer-events: none; letter-spacing: -0.06em; z-index: -1; user-select: none; }
-        .hero h1 { font-size: clamp(48px, 8vw, 96px); font-weight: 500; letter-spacing: -0.04em; line-height: 1; }
-        .hero p { font-size: 16px; color: var(--t3); margin-top: 16px; letter-spacing: 0.4px; }
-        .sh { position: absolute; bottom: 40px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .sh span { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); }
-        .sh svg { width: 20px; height: 20px; stroke: var(--t3); animation: b 1.5s ease-in-out infinite; }
-        @keyframes b { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
-        .sec { padding: 80px 0; border-top: 1px solid var(--bl); }
-        .sec .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--t3); margin-bottom: 20px; }
-        .sec h2 { font-size: clamp(24px, 3.5vw, 34px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 16px; }
-        .sec .txt { font-size: 16px; color: var(--t2); line-height: 1.8; max-width: 560px; }
-        .lk { color: var(--t1); text-decoration: none; border-bottom: 1px solid var(--bm); transition: border-color 0.2s, color 0.2s; padding-bottom: 1px; }
-        .lk:hover { border-color: var(--acc); color: #b8cef0; }
-        .cg { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 32px; }
-        .cd { background: var(--card); backdrop-filter: blur(14px); border-radius: 20px; padding: 28px; border: 1px solid var(--bc); transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
-        .cd:hover { border-color: rgba(255,255,255,0.18); transform: translateY(-3px); box-shadow: 0 28px 38px -14px #000000; background: var(--cardh); }
-        .cd::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #b0ceff, #ffffff, #b0ceff); opacity: 0; transition: opacity 0.3s ease; }
-        .cd:hover::before { opacity: 0.6; }
-        .cd .ic { width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: #fff; transition: border-color 0.3s, box-shadow 0.3s; }
-        .cd:hover .ic { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(176,206,255,0.1); }
-        .cd h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; letter-spacing: -0.01em; }
-        .cd .desc { font-size: 0.85rem; color: var(--t2); line-height: 1.6; }
-        .tl { position: relative; padding-left: 28px; margin-top: 32px; }
-        .tl::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.04), rgba(255,255,255,0.04), rgba(255,255,255,0.15)); }
-        .ti { position: relative; padding-bottom: 36px; }
-        .ti:last-child { padding-bottom: 0; }
-        .ti::before { content: ''; position: absolute; left: -32px; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 2px solid rgba(255,255,255,0.3); transition: all 0.3s ease; z-index: 2; }
-        .ti .td { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); margin-bottom: 6px; }
-        .ti .tn { font-size: 18px; font-weight: 500; margin-bottom: 4px; letter-spacing: -0.01em; }
-        .ti .tt { font-size: 14px; color: var(--t2); line-height: 1.6; }
-        .cc { background: var(--card); backdrop-filter: blur(14px); border-radius: 20px; border: 1px solid var(--bc); box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); margin-top: 32px; max-width: 420px; padding: 28px; transition: border-color 0.3s; }
-        .cc:hover { border-color: rgba(255,255,255,0.18); }
-        .ct { display: flex; align-items: center; gap: 18px; }
-        .aw { position: relative; flex-shrink: 0; }
-        .av { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; background: #1a1d2e; }
-        .aw .sr { position: absolute; bottom: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--bg); }
-        .aw .sr.on { background: #27c93f; }
-        .aw .sr.id { background: #ffbd2e; }
-        .aw .sr.dn { background: #ff5f56; }
-        .aw .sr.of { background: #5a5e66; }
-        .ci { flex: 1; min-width: 0; }
-        .ci .nm { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
-        .ci .tg { font-size: 13px; color: var(--t3); display: flex; align-items: center; gap: 8px; margin-top: 2px; }
-        .ci .tg button { background: none; border: none; color: var(--t3); cursor: pointer; font-family: var(--mono); font-size: 11px; padding: 2px 0; transition: color 0.2s; }
-        .ci .tg button:hover { color: var(--t1); }
-        .ci .tg .cp { color: #27c93f; font-size: 10px; display: none; }
-        .cpf { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--t3); margin-top: 6px; }
-        .cpf svg { width: 14px; height: 14px; opacity: 0.6; }
-        .ft { padding: 40px 0 60px; border-top: 1px solid var(--bl); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--t3); letter-spacing: 0.3px; }
-        .ft a { color: var(--t2); text-decoration: none; transition: color 0.2s; }
-        .ft a:hover { color: var(--t1); }
+        .g {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.012) 0px, rgba(255, 255, 255, 0.012) 1px, transparent 1px, transparent 15px), linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px, 40px 40px, 40px 40px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .gl {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, var(--g1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, var(--g2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .dg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.003) 0px, rgba(255, 255, 255, 0.003) 1px, transparent 1px, transparent 10px);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .tx {
+            position: fixed;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            pointer-events: none;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            grid-template-rows: repeat(20, 1fr);
+            gap: 0.3rem;
+            transform: rotate(-4deg);
+            opacity: 0.4;
+            font-family: var(--mono);
+            text-transform: uppercase;
+            font-size: clamp(0.6rem, 1.5vw, 0.95rem);
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.12);
+            padding: 1.5rem;
+        }
+        .tx div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            text-shadow: 0 0 2px rgba(255, 255, 255, 0.08);
+        }
+        .tx div:nth-child(3n) {
+            opacity: 0.7;
+        }
+        .tx div:nth-child(5n) {
+            transform: rotate(1deg);
+        }
+        .tx div:nth-child(7n) {
+            transform: rotate(-1deg);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .sb {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--acc);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+        .wrap {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+        }
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+        .wm {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18vw;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.012);
+            white-space: nowrap;
+            pointer-events: none;
+            letter-spacing: -0.06em;
+            z-index: -1;
+            user-select: none;
+        }
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 500;
+            letter-spacing: -0.04em;
+            line-height: 1;
+        }
+        .hero p {
+            font-size: 16px;
+            color: var(--t3);
+            margin-top: 16px;
+            letter-spacing: 0.4px;
+        }
+        .sh {
+            position: absolute;
+            bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .sh span {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--t3);
+        }
+        .sh svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--t3);
+            animation: b 1.5s ease-in-out infinite;
+        }
+        @keyframes b {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(8px);
+            }
+        }
+        .sec {
+            padding: 80px 0;
+            border-top: 1px solid var(--bl);
+        }
+        .sec .lbl {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--t3);
+            margin-bottom: 20px;
+        }
+        .sec h2 {
+            font-size: clamp(24px, 3.5vw, 34px);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.25;
+            margin-bottom: 16px;
+        }
+        .sec .txt {
+            font-size: 16px;
+            color: var(--t2);
+            line-height: 1.8;
+            max-width: 560px;
+        }
+        .lk {
+            color: var(--t1);
+            text-decoration: none;
+            border-bottom: 1px solid var(--bm);
+            transition: border-color 0.2s, color 0.2s;
+            padding-bottom: 1px;
+        }
+        .lk:hover {
+            border-color: var(--acc);
+            color: #b8cef0;
+        }
+        .cg {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        .cd {
+            background: var(--card);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid var(--bc);
+            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        .cd:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-3px);
+            box-shadow: 0 28px 38px -14px #000000;
+            background: var(--cardh);
+        }
+        .cd::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #b0ceff, #ffffff, #b0ceff);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .cd:hover::before {
+            opacity: 0.6;
+        }
+        .cd .ic {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            color: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .cd:hover .ic {
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(176, 206, 255, 0.1);
+        }
+        .cd h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .cd .desc {
+            font-size: 0.85rem;
+            color: var(--t2);
+            line-height: 1.6;
+        }
+        .cc {
+            background: var(--card);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            border: 1px solid var(--bc);
+            box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.5);
+            margin-top: 32px;
+            max-width: 420px;
+            padding: 28px;
+            transition: border-color 0.3s;
+        }
+        .cc:hover {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+        .ct {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .aw {
+            position: relative;
+            flex-shrink: 0;
+        }
+        .av {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1a1d2e;
+        }
+        .aw .sr {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 3px solid var(--bg);
+        }
+        .aw .sr.on {
+            background: #27c93f;
+        }
+        .aw .sr.id {
+            background: #ffbd2e;
+        }
+        .aw .sr.dn {
+            background: #ff5f56;
+        }
+        .aw .sr.of {
+            background: #5a5e66;
+        }
+        .ci {
+            flex: 1;
+            min-width: 0;
+        }
+        .ci .nm {
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+        .ci .tg {
+            font-size: 13px;
+            color: var(--t3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+        .ci .tg button {
+            background: none;
+            border: none;
+            color: var(--t3);
+            cursor: pointer;
+            font-family: var(--mono);
+            font-size: 11px;
+            padding: 2px 0;
+            transition: color 0.2s;
+        }
+        .ci .tg button:hover {
+            color: var(--t1);
+        }
+        .ci .tg .cp {
+            color: #27c93f;
+            font-size: 10px;
+            display: none;
+        }
+        .cpf {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--t3);
+            margin-top: 6px;
+        }
+        .cpf svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.6;
+        }
+        .ft {
+            padding: 40px 0 60px;
+            border-top: 1px solid var(--bl);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--t3);
+            letter-spacing: 0.3px;
+        }
+        .ft a {
+            color: var(--t2);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .ft a:hover {
+            color: var(--t1);
+        }
         @media (max-width: 700px) {
-            .tx { grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(15, 1fr); }
-            .wm { font-size: 24vw; }
-            .sec { padding: 60px 0; }
-            .cg { grid-template-columns: 1fr; }
-            .tl { padding-left: 22px; }
-            .ti::before { left: -26px; width: 7px; height: 7px; }
-            .cc { max-width: 100%; }
+            .tx {
+                grid-template-columns: repeat(10, 1fr);
+                grid-template-rows: repeat(15, 1fr);
+            }
+            .wm {
+                font-size: 24vw;
+            }
+            .sec {
+                padding: 60px 0;
+            }
+            .cg {
+                grid-template-columns: 1fr;
+            }
+            .cc {
+                max-width: 100%;
+            }
         }
         @media (min-width: 1600px) {
-            .tx { grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(24, 1fr); }
+            .tx {
+                grid-template-columns: repeat(20, 1fr);
+                grid-template-rows: repeat(24, 1fr);
+            }
         }
-        .sections { position: fixed; left: calc((100vw - 1000px) / 2 - 50px); top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; pointer-events: none; transition: left 0.3s ease; }
-        .sections .line { border-radius: 4px; transition: all 0.35s var(--ease); }
-        .sections .line.main { height: 4px; background: rgba(255, 255, 255, 0.16); margin-top: 4px; }
-        .sections .line.main:first-child { margin-top: 0; }
-        .sections .line.main:nth-child(1) { width: 26px; }
-        .sections .line.main:nth-child(5) { width: 38px; }
-        .sections .line.main:nth-child(8) { width: 32px; }
-        .sections .line.main:nth-child(12) { width: 46px; }
-        .sections .line.main:nth-child(16) { width: 36px; }
-        .sections .line.main:nth-child(20) { width: 42px; }
-        .sections .line.sub { height: 3px; width: 26px; background: rgba(255, 255, 255, 0.12); }
-        .sections .line.active { background: rgba(255, 255, 255, 0.95) !important; box-shadow: 0 0 16px rgba(255, 255, 255, 0.5), 0 0 32px rgba(255, 255, 255, 0.2); }
-        .sections .line.main.active { height: 6px; }
-        .sections .line.sub.active { height: 4.5px; }
-        .sections .line.done.main { background: rgba(255, 255, 255, 0.45); }
-        .sections .line.done.sub { background: rgba(255, 255, 255, 0.33); }
+        .sections {
+            position: fixed;
+            left: calc((100vw - 1000px) / 2 - 50px);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            pointer-events: none;
+            transition: left 0.3s ease;
+        }
+        .sections .line {
+            border-radius: 4px;
+            transition: all 0.35s var(--ease);
+        }
+        .sections .line.main {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.16);
+            margin-top: 4px;
+        }
+        .sections .line.main:first-child {
+            margin-top: 0;
+        }
+        .sections .line.main:nth-child(1) {
+            width: 26px;
+        }
+        .sections .line.main:nth-child(5) {
+            width: 38px;
+        }
+        .sections .line.main:nth-child(8) {
+            width: 32px;
+        }
+        .sections .line.main:nth-child(12) {
+            width: 46px;
+        }
+        .sections .line.main:nth-child(16) {
+            width: 36px;
+        }
+        .sections .line.main:nth-child(20) {
+            width: 42px;
+        }
+        .sections .line.sub {
+            height: 3px;
+            width: 26px;
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .sections .line.active {
+            background: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 0 16px rgba(255, 255, 255, 0.5), 0 0 32px rgba(255, 255, 255, 0.2);
+        }
+        .sections .line.main.active {
+            height: 6px;
+        }
+        .sections .line.sub.active {
+            height: 4.5px;
+        }
+        .sections .line.done.main {
+            background: rgba(255, 255, 255, 0.45);
+        }
+        .sections .line.done.sub {
+            background: rgba(255, 255, 255, 0.33);
+        }
         @media (max-width: 1100px) {
-            .sections { left: 12px; gap: 4px; }
-            .sections .line.main:nth-child(1) { width: 18px; }
-            .sections .line.main:nth-child(5) { width: 26px; }
-            .sections .line.main:nth-child(8) { width: 22px; }
-            .sections .line.main:nth-child(12) { width: 32px; }
-            .sections .line.main:nth-child(16) { width: 25px; }
-            .sections .line.main:nth-child(20) { width: 29px; }
-            .sections .line.sub { height: 2px; width: 18px; }
-            .sections .line.main { margin-top: 3px; }
-            .sections .line.main.active { height: 4.5px; }
-            .sections .line.sub.active { height: 3px; }
+            .sections {
+                left: 12px;
+                gap: 4px;
+            }
+            .sections .line.main:nth-child(1) {
+                width: 18px;
+            }
+            .sections .line.main:nth-child(5) {
+                width: 26px;
+            }
+            .sections .line.main:nth-child(8) {
+                width: 22px;
+            }
+            .sections .line.main:nth-child(12) {
+                width: 32px;
+            }
+            .sections .line.main:nth-child(16) {
+                width: 25px;
+            }
+            .sections .line.main:nth-child(20) {
+                width: 29px;
+            }
+            .sections .line.sub {
+                height: 2px;
+                width: 18px;
+            }
+            .sections .line.main {
+                margin-top: 3px;
+            }
+            .sections .line.main.active {
+                height: 4.5px;
+            }
+            .sections .line.sub.active {
+                height: 3px;
+            }
         }
     </style>
 </head>
@@ -191,31 +603,37 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
                 </div>
             </section>
+
             <section class="sec">
                 <div class="lbl">About</div>
-                <h2>Making tools since 2022/2023</h2>
-                <p class="txt">I'm 17 and from The Netherlands. I make things that are simple, useful, and just simply work. Mostly Discord automation and other shit.</p>
+                <h2>Building things that work</h2>
+                <p class="txt">I'm 17 and from The Netherlands. I spend my time creating tools that are simple, useful, and reliable. My focus is on automation, bots, and small experimental projects that solve real problems without unnecessary complexity.</p>
                 <div class="cg">
-                    <div class="cd"><div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><h3>Fast tools</h3><div class="desc">Multi-threaded, proxy support, built for speed and reliability.</div></div>
-                    <div class="cd"><div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><h3>Not flagged</h3><div class="desc">Tools stay under the radar. Built carefully to avoid detection.</div></div>
-                    <div class="cd"><div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div><h3>Always updated</h3><div class="desc">Constant patches and improvements based on feedback.</div></div>
+                    <div class="cd">
+                        <div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+                        <h3>Automation Tools</h3>
+                        <div class="desc">Mainly discord related tools that interacts with discord endpoints using multiple accounts at a time.</div>
+                    </div>
+                    <div class="cd">
+                        <div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                        <h3>Discord Bots</h3>
+                        <div class="desc">Discord bots with different purposes.</div>
+                    </div>
+                    <div class="cd">
+                        <div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
+                        <h3>Small Experiments</h3>
+                        <div class="desc">Always coming up with idea's that I would like to execute, making them simple but effective.</div>
+                    </div>
                 </div>
             </section>
+
             <section class="sec">
-                <div class="lbl">Timeline</div>
-                <h2>The journey so far</h2>
-                <div class="tl">
-                    <div class="ti"><div class="td">27 September 2023</div><div class="tn">0x Raider</div><div class="tt">Second tool (before we had 0x Multitool basically same shit) was very shitty, most of the time the proxy handling was somehow very shitty...</div></div>
-                    <div class="ti"><div class="td">26 January 2024</div><div class="tn">Phantom</div><div class="tt">Got a proper Joiner finally and way more features and higher quality code compared to the previous tool.</div></div>
-                    <div class="ti"><div class="td">23 March 2025</div><div class="tn">GO6</div><div class="tt">less features but higher quality code, had both a CLI and GUI version.</div></div>
-                    <div class="ti"><div class="td">16 April 2026</div><div class="tn">gekke.org</div><div class="tt">My newest project, name itself is gekke.org because it's free. people might make fake video's on Youtube and put malware in the description. Just like what happened to another tool not gonna say who/what *Cugh cugh Vanish*</div></div>
-                </div>
+                <div class="lbl">What I do</div>
+                <h2>Automation, bots, experiments</h2>
+                <p class="txt">I build Discord automation tools that handle tasks quickly and reliably. I also develop custom Discord bots and enjoy working on smaller experimental projects. The goal is always the same: make things that are simple, effective, and don't break.</p>
+                <p class="txt" style="margin-top: 16px;">Everything I release is available on <a href="https://gekke.org" class="lk">gekke.org</a> | free executables and affordable source code for those who want to learn or build upon my work.</p>
             </section>
-            <section class="sec">
-                <div class="lbl">Projects</div>
-                <h2>Everything on gekke.org</h2>
-                <p class="txt">Free executables and affordable source code for all my tools. Check it out at <a href="https://gekke.org" class="lk">gekke.org</a></p>
-            </section>
+
             <section class="sec">
                 <div class="lbl">Connect</div>
                 <h2>Say hi on Discord</h2>
@@ -237,96 +655,115 @@
                     </div>
                 </div>
             </section>
+
             <footer class="ft">
                 <span>gekkefries</span>
                 <a href="https://gekke.org">gekke.org</a>
             </footer>
         </div>
     </div>
+
     <script>
-    (function() {
-        var container = document.getElementById('sections');
-        var allLines = container.querySelectorAll('.line');
-        var totalLines = allLines.length;
-        function getActiveLineIndex() {
-            var scrollH = document.documentElement.scrollHeight - window.innerHeight;
-            if (scrollH <= 0) return 0;
-            var pct = window.scrollY / scrollH;
-            var lineIdx = Math.floor(pct * totalLines);
-            if (lineIdx >= totalLines) lineIdx = totalLines - 1;
-            if (lineIdx < 0) lineIdx = 0;
-            return lineIdx;
-        }
-        function update() {
-            var activeIdx = getActiveLineIndex();
-            allLines.forEach(function(line, i) {
-                line.classList.remove('active', 'done');
-                if (i === activeIdx) line.classList.add('active');
-                else if (i < activeIdx) line.classList.add('done');
+        (function() {
+            var container = document.getElementById('sections');
+            var allLines = container.querySelectorAll('.line');
+            var totalLines = allLines.length;
+
+            function getActiveLineIndex() {
+                var scrollH = document.documentElement.scrollHeight - window.innerHeight;
+                if (scrollH <= 0) return 0;
+                var pct = window.scrollY / scrollH;
+                var lineIdx = Math.floor(pct * totalLines);
+                if (lineIdx >= totalLines) lineIdx = totalLines - 1;
+                if (lineIdx < 0) lineIdx = 0;
+                return lineIdx;
+            }
+
+            function update() {
+                var activeIdx = getActiveLineIndex();
+                allLines.forEach(function(line, i) {
+                    line.classList.remove('active', 'done');
+                    if (i === activeIdx) line.classList.add('active');
+                    else if (i < activeIdx) line.classList.add('done');
+                });
+            }
+            update();
+            setTimeout(update, 100);
+            setTimeout(update, 300);
+            setTimeout(update, 500);
+            window.addEventListener('scroll', update);
+            window.addEventListener('resize', update);
+        })();
+    </script>
+
+    <script>
+        var uid = '1147540007171670077';
+        var tag = '.gekkefries1';
+
+        function copyTag() {
+            navigator.clipboard.writeText(tag).then(function() {
+                var m = document.getElementById('cm');
+                m.style.display = 'inline';
+                setTimeout(function() { m.style.display = 'none'; }, 1500);
             });
         }
-        update();
-        setTimeout(update, 100);
-        setTimeout(update, 300);
-        setTimeout(update, 500);
-        window.addEventListener('scroll', update);
-        window.addEventListener('resize', update);
-    })();
-    </script>
-    <script>
-    var uid = '1147540007171670077';
-    var tag = '.gekkefries1';
-    function copyTag() {
-        navigator.clipboard.writeText(tag).then(function() {
-            var m = document.getElementById('cm');
-            m.style.display = 'inline';
-            setTimeout(function() { m.style.display = 'none'; }, 1500);
-        });
-    }
-    function uc(d) {
-        var u = d.discord_user;
-        var av = u.avatar ? 'https://cdn.discordapp.com/avatars/' + uid + '/' + u.avatar + '.png?size=256' : 'https://cdn.discordapp.com/embed/avatars/0.png';
-        document.getElementById('ca').src = av;
-        document.getElementById('cn').textContent = u.global_name || u.username;
-        document.getElementById('ctg').textContent = '@' + u.username;
-        tag = u.global_name ? u.username : '.' + u.username;
-        document.getElementById('cr').className = 'sr ' + (d.discord_status || 'of');
-        var p = document.getElementById('cp');
-        p.innerHTML = '';
-        if (d.active_on_discord_desktop) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Desktop';
-        else if (d.active_on_discord_mobile) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Mobile';
-        else if (d.active_on_discord_web) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Web';
-    }
-    async function fp() {
-        try {
-            var r = await fetch('https://api.lanyard.rest/v1/users/' + uid);
-            if (!r.ok) throw new Error('failed');
-            var d = await r.json();
-            if (d.success) uc(d.data);
-        } catch (e) {}
-    }
-    fp();
-    setInterval(fp, 30000);
-    </script>
-    <script>
-    (function() {
-        var c = document.getElementById('bt');
-        if (c) {
-            function gen() {
-                c.innerHTML = ''; var w = window.innerWidth, cols = 16, rows = 20;
-                if (w < 768) { cols = 10; rows = 15; } else if (w > 1600) { cols = 20; rows = 24; }
-                c.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-                c.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
-                for (var i = 0; i < cols * rows; i++) { var d = document.createElement('div'); d.textContent = 'gekke.org'; c.appendChild(d); }
-            }
-            gen(); window.addEventListener('resize', function() { setTimeout(gen, 100); });
+
+        function uc(d) {
+            var u = d.discord_user;
+            var av = u.avatar ? 'https://cdn.discordapp.com/avatars/' + uid + '/' + u.avatar + '.png?size=256' : 'https://cdn.discordapp.com/embed/avatars/0.png';
+            document.getElementById('ca').src = av;
+            document.getElementById('cn').textContent = u.global_name || u.username;
+            document.getElementById('ctg').textContent = '@' + u.username;
+            tag = u.global_name ? u.username : '.' + u.username;
+            document.getElementById('cr').className = 'sr ' + (d.discord_status || 'of');
+            var p = document.getElementById('cp');
+            p.innerHTML = '';
+            if (d.active_on_discord_desktop) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Desktop';
+            else if (d.active_on_discord_mobile) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Mobile';
+            else if (d.active_on_discord_web) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Web';
         }
-        var bar = document.getElementById('sb');
-        window.addEventListener('scroll', function() {
-            var h = document.documentElement.scrollHeight - window.innerHeight;
-            if (h > 0) bar.style.width = (window.scrollY / h) * 100 + '%';
-        });
-    })();
+
+        async function fp() {
+            try {
+                var r = await fetch('https://api.lanyard.rest/v1/users/' + uid);
+                if (!r.ok) throw new Error('failed');
+                var d = await r.json();
+                if (d.success) uc(d.data);
+            } catch (e) {}
+        }
+        fp();
+        setInterval(fp, 30000);
+    </script>
+
+    <script>
+        (function() {
+            var c = document.getElementById('bt');
+            if (c) {
+                function gen() {
+                    c.innerHTML = '';
+                    var w = window.innerWidth,
+                        cols = 16,
+                        rows = 20;
+                    if (w < 768) { cols = 10;
+                        rows = 15; } else if (w > 1600) { cols = 20;
+                        rows = 24; }
+                    c.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+                    c.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
+                    for (var i = 0; i < cols * rows; i++) {
+                        var d = document.createElement('div');
+                        d.textContent = 'gekke.org';
+                        c.appendChild(d);
+                    }
+                }
+                gen();
+                window.addEventListener('resize', function() { setTimeout(gen, 100); });
+            }
+            var bar = document.getElementById('sb');
+            window.addEventListener('scroll', function() {
+                var h = document.documentElement.scrollHeight - window.innerHeight;
+                if (h > 0) bar.style.width = (window.scrollY / h) * 100 + '%';
+            });
+        })();
     </script>
 </body>
 </html>
