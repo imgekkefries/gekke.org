@@ -437,6 +437,71 @@
     })();
     </script>
 
+
+
+
+
+
+
+
+
+
+    <style>
+      .card-guardian { background: var(--bg-card); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; contain: layout style paint; }
+      .guardian-content { display: flex; flex-direction: column; align-items: center; gap: calc(12 / var(--reference-height) * 100vh); z-index: 2; position: relative; }
+      .guardian-name { font-size: calc(90 / var(--reference-height) * 100vh); font-weight: 500; letter-spacing: -0.04em; color: var(--text-primary); line-height: 1; }
+      .guardian-sub { font-size: calc(15 / var(--reference-height) * 100vh); color: var(--text-muted); letter-spacing: 0.5px; }
+      .guardian-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: calc(300 / var(--reference-height) * 100vh); height: calc(300 / var(--reference-height) * 100vh); background: radial-gradient(circle, rgba(88, 101, 242, 0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+      .guardian-orb { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; }
+      .guardian-orb-1 { width: calc(80 / var(--reference-height) * 100vh); height: calc(80 / var(--reference-height) * 100vh); background: radial-gradient(circle, rgba(88, 101, 242, 0.06) 0%, transparent 70%); top: calc(40 / var(--reference-height) * 100vh); right: calc(-20 / var(--reference-height) * 100vh); }
+      .guardian-orb-2 { width: calc(50 / var(--reference-height) * 100vh); height: calc(50 / var(--reference-height) * 100vh); background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%); bottom: calc(30 / var(--reference-height) * 100vh); left: calc(-10 / var(--reference-height) * 100vh); }
+      .guardian-shield { opacity: 0.06; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 0; }
+      .guardian-shield svg { width: calc(200 / var(--reference-height) * 100vh); height: calc(200 / var(--reference-height) * 100vh); stroke: var(--text-primary); stroke-width: 1; fill: none; }
+      .guardian-line-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: calc(80 / var(--reference-height) * 100vh); height: calc(1 / var(--reference-height) * 100vh); background: linear-gradient(90deg, transparent, rgba(88, 101, 242, 0.25), transparent); pointer-events: none; z-index: 1; }
+
+      @media (max-width: 750px) {
+        .guardian-name { font-size: 42px; }
+        .guardian-sub { font-size: 13px; }
+        .guardian-content { gap: 8px; }
+        .guardian-shield svg { width: 100px; height: 100px; }
+        .guardian-glow { width: 180px; height: 180px; }
+        .guardian-orb-1 { width: 50px; height: 50px; top: 30px; right: -10px; }
+        .guardian-orb-2 { width: 30px; height: 30px; bottom: 20px; left: -5px; }
+        .guardian-line-top { width: 50px; }
+      }
+    </style>
+    <div class="frame-card card-guardian" data-index="3" data-route="GekkeGuardian" data-expand="false">
+      <div class="card-inner">
+        <div class="card-label">Discord Bot</div>
+        <div class="guardian-glow"></div>
+        <div class="guardian-orb guardian-orb-1"></div>
+        <div class="guardian-orb guardian-orb-2"></div>
+        <div class="guardian-shield">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div class="guardian-line-top"></div>
+        <div class="center-flex">
+          <div class="guardian-content">
+            <div class="guardian-name">GekkeGuardian</div>
+            <div class="guardian-sub">Discord Bot · NSFW Detection · AI-Powered</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-detail-expansion">
+        <div class="detail-title">GekkeGuardian</div>
+        <div class="detail-desc">AI-powered Discord bot for NSFW detection across images, GIFs, videos, and links. Customizable thresholds and multi-model analysis.</div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
     <style>
       .card-socials { background: var(--bg-card); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; contain: layout style paint; }
       .socials-content { display: flex; flex-direction: column; align-items: center; gap: calc(24 / var(--reference-height) * 100vh); z-index: 2; position: relative; padding: calc(40 / var(--reference-height) * 100vh); width: 100%; }
@@ -481,7 +546,7 @@
         .socials-accent-line { width: 80px; }
       }
     </style>
-    <div class="frame-card card-socials" data-index="2" data-expand="false">
+    <div class="frame-card card-socials" data-index="3" data-expand="false">
       <div class="card-inner">
         <div class="card-label">Socials</div>
         <div class="socials-bg-grid"></div>
@@ -567,6 +632,11 @@
       });
     })();
     </script>
+
+
+
+
+
 
   </div>
 </div>
