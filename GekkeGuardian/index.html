@@ -3,32 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="gekkefries">
     <title>Gekke Guardian ~ gekke.org</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">]
-
-<!-- ============================================ -->
-<meta name="theme-color" content="#0a0d12">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="Gekke Guardian | gekke.org">
-<meta property="og:description" content="AI-powered NSFW detection for Discord servers. Scan images, GIFs, videos, and links with configurable confidence thresholds.">
-<meta property="og:image" content="https://imgekkefries.pythonanywhere.com/logo.png">
-<meta property="og:url" content="https://gekke.org/GekkeGuardian/">
-<meta property="og:site_name" content="gekke.org">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gekke Guardian | gekke.org">
-<meta name="twitter:description" content="AI-powered NSFW detection for Discord servers. Scan images, GIFs, videos, and links with configurable confidence thresholds.">
-<meta name="twitter:image" content="https://imgekkefries.pythonanywhere.com/logo.png">
-
-<meta name="description" content="Gekke Guardian is an AI-powered moderation platform for Discord servers, providing advanced NSFW detection for images, GIFs, videos, and external links.">
-
-<meta name="keywords" content="gekke guardian, discord moderation, discord moderation bot, nsfw detection, ai moderation, discord ai, content moderation, image moderation, video moderation, gif moderation, link scanning, discord security, discord tools, gekke.org, gekkefries">
-
-<meta name="author" content="Gekkefries">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://gekke.org/GekkeGuardian/">
-<!-- ============================================ -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- ############################################ -->
     <!-- FRAGMENT: Global CSS                        -->
@@ -1504,7 +1481,6 @@
     </div>
     <div class="lists-grid" id="lists-grid"><div class="empty-state"><i class="fas fa-folder-open"></i><p>No lists yet. Create one!</p></div></div>
 </div>
-
 <!-- ############################################ -->
 <!-- FRAGMENT: Edit List page                    -->
 <!-- ############################################ -->
@@ -1618,8 +1594,8 @@
         <div class="section-separator"></div>
         <div class="threshold-row">
             <label>Threshold</label>
-            <input type="range" id="edit-nsfw-threshold" min="0" max="1" step="0.05" value="0.4" oninput="updateThresholdLabel()" onchange="autoSave()">
-            <span class="threshold-val" id="threshold-val-label">0.40</span>
+            <input type="range" id="edit-nsfw-threshold" min="0" max="1" step="0.05" value="0.4" oninput="updateNSFWThresholdLabel()" onchange="autoSave()">
+            <span class="threshold-val" id="nsfw-threshold-val-label">0.40</span>
         </div>
         <div class="section-separator"></div>
         <div class="toggle-row">
@@ -1633,6 +1609,21 @@
         <div class="toggle-row">
             <div class="toggle-info"><div class="toggle-label">WD-SwinV2</div><div class="toggle-desc">Drawn & animated NSFW detection — optimized for illustrations and anime</div></div>
             <label class="toggle-switch"><input type="checkbox" id="edit-detector-wdswinv2" onchange="autoSave()"><span class="toggle-slider"></span></label>
+        </div>
+    </div>
+
+    <div class="edit-section">
+        <h3>Anti MrBeast Scam</h3>
+        <p class="section-desc">Detect MrBeast scam images using AI similarity matching.</p>
+        <div class="toggle-row">
+            <div class="toggle-info"><div class="toggle-label">Scam Detection</div><div class="toggle-desc">Enable or disable MrBeast scam image detection</div></div>
+            <label class="toggle-switch"><input type="checkbox" id="edit-antimrbeast-active" onchange="autoSave()"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="section-separator"></div>
+        <div class="threshold-row">
+            <label>Threshold</label>
+            <input type="range" id="edit-antimrbeast-threshold" min="0" max="1" step="0.05" value="0.7" oninput="updateAntiMrBeastThresholdLabel()" onchange="autoSave()">
+            <span class="threshold-val" id="antimrbeast-threshold-val-label">0.70</span>
         </div>
     </div>
 
@@ -1668,9 +1659,14 @@
     var editingListId = null;
     var currentListData = null;
 
-    function updateThresholdLabel() {
+    function updateNSFWThresholdLabel() {
         var val = parseFloat(document.getElementById('edit-nsfw-threshold').value);
-        document.getElementById('threshold-val-label').textContent = val.toFixed(2);
+        document.getElementById('nsfw-threshold-val-label').textContent = val.toFixed(2);
+    }
+
+    function updateAntiMrBeastThresholdLabel() {
+        var val = parseFloat(document.getElementById('edit-antimrbeast-threshold').value);
+        document.getElementById('antimrbeast-threshold-val-label').textContent = val.toFixed(2);
     }
 
     function openEditPage(listId) {
@@ -1701,12 +1697,17 @@
         var nsfw = data.NSFWMedia || {};
         document.getElementById('edit-nsfw-active').checked = nsfw.active === true;
         document.getElementById('edit-nsfw-threshold').value = nsfw.threshold !== undefined ? nsfw.threshold : 0.4;
-        updateThresholdLabel();
+        updateNSFWThresholdLabel();
 
         var detectors = nsfw.Detectors || {};
         document.getElementById('edit-detector-falconsai').checked = detectors.Falconsai === true;
         document.getElementById('edit-detector-kanarikanaru').checked = detectors.KanariKanaru === true;
         document.getElementById('edit-detector-wdswinv2').checked = detectors['WD-SwinV2'] === true;
+
+        var antiMrBeast = data.AntiMrBeastScam || {};
+        document.getElementById('edit-antimrbeast-active').checked = antiMrBeast.active === true;
+        document.getElementById('edit-antimrbeast-threshold').value = antiMrBeast.threshold !== undefined ? antiMrBeast.threshold : 0.7;
+        updateAntiMrBeastThresholdLabel();
 
         var nsfwLinks = data.NSFWLinks || {};
         document.getElementById('edit-nsfw-links-active').checked = nsfwLinks.active === true;
@@ -1737,6 +1738,10 @@
                     'KanariKanaru': document.getElementById('edit-detector-kanarikanaru').checked,
                     'WD-SwinV2': document.getElementById('edit-detector-wdswinv2').checked
                 }
+            },
+            AntiMrBeastScam: {
+                active: document.getElementById('edit-antimrbeast-active').checked,
+                threshold: parseFloat(document.getElementById('edit-antimrbeast-threshold').value)
             },
             NSFWLinks: {
                 active: document.getElementById('edit-nsfw-links-active').checked
