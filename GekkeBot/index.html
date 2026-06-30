@@ -1360,7 +1360,6 @@
 </script>
 
 
-
 <!-- ############################################ -->
 <!-- FRAGMENT: Edit List page - Global CSS        -->
 <!-- ############################################ -->
@@ -1532,6 +1531,10 @@
     }
     .edit-input-row input::placeholder, .edit-input-row textarea::placeholder { color: rgba(255,255,255,0.2); }
 
+    .mobile-dropdown-overlay {
+        display: none;
+    }
+
     @media (max-width: 750px) {
         .edit-container { padding: 70px 12px 100px; }
         .edit-topbar { padding: 0 12px; }
@@ -1540,6 +1543,50 @@
         .big-toggle { padding: 20px; }
         .edit-topbar-inner { gap: 4px; }
         .list-id-nav-btn { padding: 0 10px; font-size: 10px; }
+    }
+    @media (max-width: 480px) {
+        .edit-topbar { height: 48px; padding: 0 8px; }
+        .edit-topbar-inner { gap: 2px; }
+        .edit-topbar-left { gap: 6px; }
+        .edit-topbar .back-btn { width: 30px; height: 30px; border-radius: 8px; }
+        .edit-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+        .edit-nav::-webkit-scrollbar { display: none; }
+        .edit-nav-item { padding: 0 12px; font-size: 11px; white-space: nowrap; flex-shrink: 0; }
+        .edit-nav-item.active::after { left: 12px; right: 12px; }
+        .edit-nav-dropdown-trigger { padding: 0 12px; font-size: 11px; white-space: nowrap; }
+        .edit-nav-dropdown-trigger.active::after { left: 12px; right: 12px; }
+        .list-id-nav-btn { padding: 0 8px; height: 28px; font-size: 10px; flex-shrink: 0; }
+        .edit-nav-dropdown-menu { left: 0; transform: none; min-width: 160px; }
+        .mobile-dropdown-overlay {
+            display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6); z-index: 200; opacity: 0; visibility: hidden;
+            pointer-events: none; transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .mobile-dropdown-overlay.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        .mobile-dropdown-sheet {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 201;
+            background: rgba(18, 22, 32, 0.98); backdrop-filter: blur(20px);
+            border-radius: 20px 20px 0 0; padding: 8px 8px 24px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 -16px 40px rgba(0,0,0,0.6);
+            transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+            max-height: 70vh; overflow-y: auto;
+        }
+        .mobile-dropdown-overlay.active .mobile-dropdown-sheet { transform: translateY(0); }
+        .mobile-dropdown-handle {
+            width: 36px; height: 4px; background: rgba(255,255,255,0.2);
+            border-radius: 2px; margin: 0 auto 16px;
+        }
+        .mobile-dropdown-item {
+            display: flex; align-items: center; gap: 14px; padding: 16px 20px;
+            border-radius: 14px; font-size: 15px; color: var(--t2);
+            cursor: pointer; transition: all 0.15s ease;
+        }
+        .mobile-dropdown-item:active { background: rgba(255,255,255,0.06); }
+        .mobile-dropdown-item.active {
+            background: rgba(88,101,242,0.12); color: var(--accent); font-weight: 600;
+        }
+        .mobile-dropdown-item i { font-size: 18px; width: 24px; text-align: center; }
     }
 </style>
 
@@ -1555,6 +1602,13 @@
 
         </div>
         <button class="list-id-nav-btn" onclick="openListIdModal(editingListId)" title="View List ID"><i class="fas fa-key"></i> List ID</button>
+    </div>
+</div>
+
+<div class="mobile-dropdown-overlay" id="mobileDropdownOverlay" onclick="closeMobileDropdown()">
+    <div class="mobile-dropdown-sheet" id="mobileDropdownSheet" onclick="event.stopPropagation()">
+        <div class="mobile-dropdown-handle"></div>
+        <div id="mobileDropdownContent"></div>
     </div>
 </div>
 
@@ -1580,6 +1634,7 @@
     var currentListData = null;
     var originalFormState = null;
     var currentEditSection = null;
+    var activeMobileDropdownParent = null;
 
     function getByPath(obj, path) {
         if (!obj) return undefined;
@@ -1621,7 +1676,10 @@
                 var trigger = document.createElement('div');
                 trigger.className = 'edit-nav-dropdown-trigger';
                 trigger.id = def.parent + '-trigger';
-                trigger.onclick = function(e) { toggleDropdown(e, def.parent); };
+                trigger.onclick = function(e) { 
+                    if (window.innerWidth <= 480) { openMobileDropdown(def.parent); }
+                    else { toggleDropdown(e, def.parent); }
+                };
                 trigger.innerHTML = '<i class="' + (def.parentIcon || 'fas fa-folder') + '"></i> ' +
                     (def.parentLabel || def.parent) + ' <i class="fas fa-chevron-down" style="font-size:10px;"></i>';
                 menu = document.createElement('div');
@@ -1652,6 +1710,35 @@
 
             nav.appendChild(btn);
         }
+    }
+
+    function openMobileDropdown(parentKey) {
+        activeMobileDropdownParent = parentKey;
+        var menu = document.getElementById(parentKey + '-dropdown-menu');
+        var content = document.getElementById('mobileDropdownContent');
+        if (!menu || !content) return;
+        content.innerHTML = '';
+        var items = menu.querySelectorAll('.dropdown-item');
+        items.forEach(function(item) {
+            var clone = document.createElement('div');
+            clone.className = 'mobile-dropdown-item';
+            clone.innerHTML = item.innerHTML;
+            clone.onclick = function() {
+                var subId = item.getAttribute('data-sub');
+                if (subId) switchSubSection(parentKey, subId);
+                closeMobileDropdown();
+            };
+            if (item.classList.contains('active')) clone.classList.add('active');
+            content.appendChild(clone);
+        });
+        document.getElementById('mobileDropdownOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileDropdown() {
+        document.getElementById('mobileDropdownOverlay').classList.remove('active');
+        document.body.style.overflow = '';
+        activeMobileDropdownParent = null;
     }
 
     function allTopLevelContentIds() {
@@ -1721,6 +1808,7 @@
             document.querySelectorAll('.edit-nav-dropdown[data-open="true"]').forEach(function(dd) {
                 dd.setAttribute('data-open', 'false');
             });
+            closeMobileDropdown();
         }
     });
 
@@ -1877,12 +1965,12 @@
         document.getElementById('top-bar').style.display = 'flex';
         editingListId = null; currentListData = null; originalFormState = null;
         document.getElementById('saveChangesBar').classList.remove('visible');
+        closeMobileDropdown();
         loadMyLists();
     }
 
     function escapeHtml(text) { var div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 </script>
-
 
 <!-- ############################################ -->
 <!-- FRAGMENT: Main                              -->
@@ -2087,7 +2175,6 @@
         ]
     });
 </script>
-
 <!-- ############################################ -->
 <!-- FRAGMENT: AI Moderator                      -->
 <!-- ############################################ -->
@@ -2104,15 +2191,27 @@
         font-size: 10px; color: var(--accent); font-family: var(--mono);
         min-width: 24px; flex-shrink: 0;
     }
-    .rule-item-row input.rule-text {
-        flex: 1; background: transparent; border: none; color: var(--t1);
-        font-family: var(--input-mono); font-size: 13px; outline: none; padding: 4px 0;
+    .rule-input-wrap {
+        flex: 1; position: relative; background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+        transition: border-color 0.2s, background 0.2s;
     }
-    .rule-item-row input.rule-text::placeholder { color: rgba(255,255,255,0.2); }
-    .rule-item-row .item-char-count {
-        font-size: 10px; color: var(--t3); font-family: var(--mono); min-width: 36px; text-align: right;
+    .rule-input-wrap:focus-within {
+        border-color: var(--accent); background: rgba(255,255,255,0.08);
     }
-    .rule-item-row .item-char-count.over { color: #ff5f56; }
+    .rule-input-wrap input.rule-text {
+        width: 100%; background: transparent; border: none; color: var(--t1);
+        font-family: var(--input-mono); font-size: 13px; outline: none;
+        padding: 10px 44px 10px 12px; box-sizing: border-box;
+        -webkit-appearance: none; appearance: none;
+    }
+    .rule-input-wrap input.rule-text::placeholder { color: rgba(255,255,255,0.2); }
+    .rule-input-wrap .item-char-count {
+        position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+        font-size: 10px; color: var(--t3); font-family: var(--mono);
+        pointer-events: none;
+    }
+    .rule-input-wrap .item-char-count.over { color: #ff5f56; }
     .rule-action-row { display: flex; align-items: center; gap: 10px; }
     .rule-action-row label {
         font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--t3);
@@ -2122,7 +2221,10 @@
         background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
         border-radius: 8px; padding: 8px 10px; color: var(--t1);
         font-family: var(--input-mono); font-size: 12px; outline: none;
-        cursor: pointer; min-width: 100px;
+        cursor: pointer; min-width: 100px; -webkit-appearance: none; appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff55' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat; background-position: right 8px center; background-size: 12px;
+        padding-right: 28px;
     }
     .rule-action-row select:focus { border-color: var(--accent); }
     .rule-action-row select option { background: #121620; color: var(--t1); }
@@ -2130,8 +2232,9 @@
         width: 80px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
         border-radius: 8px; padding: 8px 10px; color: var(--t1);
         font-family: var(--input-mono); font-size: 12px; outline: none; text-align: center;
+        -webkit-appearance: none; appearance: none;
     }
-    .rule-action-row input.action-value:focus { border-color: var(--accent); }
+    .rule-action-row input.action-value:focus { border-color: var(--accent); background: rgba(255,255,255,0.08); }
     .rule-action-row input.action-value:disabled { opacity: 0.3; cursor: not-allowed; }
     .rule-action-row select:disabled { opacity: 0.3; cursor: not-allowed; }
     .item-remove-btn {
@@ -2167,6 +2270,21 @@
     .simple-item-row input::placeholder { color: rgba(255,255,255,0.2); }
     @media (max-width: 750px) {
         .rule-action-row { flex-wrap: wrap; }
+    }
+    @media (max-width: 480px) {
+        .rule-item-wrap { padding: 12px; }
+        .rule-item-row { gap: 8px; flex-wrap: wrap; }
+        .rule-item-row .item-number { min-width: 20px; align-self: flex-start; padding-top: 12px; }
+        .rule-input-wrap { flex-basis: 100%; }
+        .rule-input-wrap input.rule-text { font-size: 16px; padding: 12px 48px 12px 12px; }
+        .rule-input-wrap .item-char-count { font-size: 11px; right: 12px; }
+        .rule-action-row { gap: 8px; }
+        .rule-action-row label { font-size: 9px; min-width: 100%; margin-bottom: 2px; }
+        .rule-action-row select { font-size: 16px; padding: 10px 28px 10px 10px; flex: 1; }
+        .rule-action-row input.action-value { font-size: 16px; padding: 10px 8px; width: 70px; }
+        .simple-item-row { padding: 10px 12px; gap: 6px; }
+        .simple-item-row input { font-size: 16px; }
+        .item-remove-btn { width: 32px; height: 32px; font-size: 12px; border-radius: 8px; }
     }
 </style>
 
@@ -2235,8 +2353,10 @@
             var overClass = len > MAX_RULE_LENGTH ? ' over' : '';
             return '<div class="rule-item-wrap"><div class="rule-item-row">' +
                 '<span class="item-number">#' + (i + 1) + '</span>' +
-                '<input type="text" class="rule-text" value="' + escapeHtml(ruleText) + '" placeholder="Enter rule..." maxlength="' + MAX_RULE_LENGTH + '" oninput="updateRuleField(' + i + ', \'Rule\', this.value); updateCharCount(this, ' + MAX_RULE_LENGTH + ');">' +
+                '<div class="rule-input-wrap">' +
+                '<input type="text" class="rule-text" value="' + escapeHtml(ruleText) + '" placeholder="Enter rule..." maxlength="' + MAX_RULE_LENGTH + '" oninput="updateRuleField(' + i + ', \'Rule\', this.value); updateCharCount(this, ' + MAX_RULE_LENGTH + ');" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
                 '<span class="item-char-count' + overClass + '">' + len + '/' + MAX_RULE_LENGTH + '</span>' +
+                '</div>' +
                 (rules.length > 1 ? '<button class="item-remove-btn" onclick="removeRule(' + i + ')"><i class="fas fa-times"></i></button>' : '<div style="width:26px;flex-shrink:0;"></div>') +
                 '</div><div class="rule-action-row"><label>Action:</label>' +
                 '<select onchange="updateRuleAction(' + i + ', this.value);" id="rule-action-type-' + i + '">' +
@@ -2246,7 +2366,7 @@
                 '<option value="hours"' + (!isNone && display.unit === 'hours' ? ' selected' : '') + '>Hours</option>' +
                 '<option value="days"' + (!isNone && display.unit === 'days' ? ' selected' : '') + '>Days</option>' +
                 '</select>' +
-                '<input type="number" class="action-value" value="' + (isNone ? '' : display.value) + '" placeholder="Value" min="0" oninput="updateRuleActionValue(' + i + ', this.value);" id="rule-action-value-' + i + '"' + (isNone ? ' disabled' : '') + '>' +
+                '<input type="number" class="action-value" value="' + (isNone ? '' : display.value) + '" placeholder="Value" min="0" oninput="updateRuleActionValue(' + i + ', this.value);" id="rule-action-value-' + i + '"' + (isNone ? ' disabled' : '') + ' inputmode="numeric" pattern="[0-9]*">' +
                 '</div></div>';
         }).join('');
         document.getElementById('rule-limit-text').textContent = rules.length + ' / ' + MAX_RULES + ' rules';
@@ -2295,7 +2415,8 @@
     }
 
     function updateCharCount(input, maxLen) {
-        var countEl = input.closest('.rule-item-row').querySelector('.item-char-count');
+        var wrap = input.closest('.rule-input-wrap');
+        var countEl = wrap.querySelector('.item-char-count');
         var len = input.value.length;
         countEl.textContent = len + '/' + maxLen;
         countEl.className = 'item-char-count' + (len > maxLen ? ' over' : '');
@@ -2412,7 +2533,6 @@
     });
 </script>
 
-
 <!-- ############################################ -->
 <!-- FRAGMENT: Tickets - General                 -->
 <!-- ############################################ -->
@@ -2425,6 +2545,10 @@
         background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.2);
         color: #b0ceff; padding: 4px 10px; border-radius: 6px;
         cursor: default; user-select: all;
+    }
+    @media (max-width: 480px) {
+        .placeholder-hint { gap: 6px; }
+        .placeholder-tag { font-size: 9px; padding: 6px 10px; width: 100%; text-align: center; }
     }
 </style>
 
@@ -2486,7 +2610,6 @@
         ]
     });
 </script>
-
 
 <!-- ############################################ -->
 <!-- FRAGMENT: Tickets - Permissions             -->
@@ -2598,7 +2721,6 @@
     });
 </script>
 
-
 <!-- ############################################ -->
 <!-- FRAGMENT: Tickets - Embed                   -->
 <!-- ############################################ -->
@@ -2678,8 +2800,8 @@
     }
     .embed-resize-handle {
         display: flex; align-items: center; justify-content: center; gap: 8px;
-        height: 28px; cursor: ns-resize; user-select: none;
-        margin-top: 4px;
+        height: 36px; cursor: ns-resize; user-select: none;
+        margin-top: 4px; touch-action: none;
     }
     .embed-resize-handle .resize-line {
         width: 40px; height: 2px; border-radius: 1px;
@@ -2696,6 +2818,12 @@
     }
     .embed-resize-handle:hover .resize-label {
         color: rgba(255,255,255,0.45);
+    }
+    .embed-resize-handle:active .resize-line {
+        background: var(--accent);
+    }
+    .embed-resize-handle:active .resize-label {
+        color: var(--accent);
     }
 </style>
 
@@ -2769,29 +2897,57 @@
         var isResizing = false;
         var startY, startHeight;
 
-        handle.addEventListener('mousedown', function(e) {
+        function onStart(y) {
+            if (!embedEditor) return;
             isResizing = true;
-            startY = e.clientY;
+            startY = y;
             startHeight = embedEditor.getWrapperElement().offsetHeight;
             document.body.style.cursor = 'ns-resize';
             document.body.style.userSelect = 'none';
-            e.preventDefault();
-        });
+            handle.classList.add('active');
+        }
 
-        document.addEventListener('mousemove', function(e) {
+        function onMove(y) {
             if (!isResizing || !embedEditor) return;
-            var delta = e.clientY - startY;
+            var delta = y - startY;
             var newHeight = Math.max(200, startHeight + delta);
             embedEditor.setSize(null, newHeight);
-        });
+        }
 
-        document.addEventListener('mouseup', function() {
+        function onEnd() {
             if (isResizing) {
                 isResizing = false;
                 document.body.style.cursor = '';
                 document.body.style.userSelect = '';
+                handle.classList.remove('active');
             }
+        }
+
+        handle.addEventListener('mousedown', function(e) {
+            onStart(e.clientY);
+            e.preventDefault();
         });
+
+        handle.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1) {
+                onStart(e.touches[0].clientY);
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('mousemove', function(e) {
+            onMove(e.clientY);
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 1) {
+                onMove(e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+        document.addEventListener('touchcancel', onEnd);
     })();
 
     function getEmbedEditorValue() {
@@ -3017,6 +3173,29 @@
         .ticket-log-header { flex-direction: column; }
         .ticket-controls { flex-direction: column; }
         .ticket-search-wrap { width: 100%; }
+    }
+    @media (max-width: 480px) {
+        .ticket-logs-inner { padding: 0; }
+        .ticket-controls { gap: 8px; margin-bottom: 16px; }
+        .ticket-search-wrap input { font-size: 16px; padding: 12px 10px; border-radius: 10px 0 0 10px; }
+        .ticket-search-dropdown-trigger { padding: 12px 10px; font-size: 12px; }
+        .ticket-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .ticket-table th, .ticket-table td { font-size: 11px; padding: 10px 8px; white-space: nowrap; }
+        .ticket-table th { font-size: 9px; letter-spacing: 1px; }
+        .ticket-actions { flex-direction: column; gap: 4px; }
+        .open-ticket-btn, .download-ticket-btn { width: 100%; justify-content: center; padding: 10px; font-size: 12px; }
+        .ticket-log-viewer { padding: 16px; border-radius: 14px; }
+        .ticket-log-header { gap: 12px; }
+        .ticket-log-header img { width: 36px; height: 36px; }
+        .ticket-log-header-info .reason-title { font-size: 14px; }
+        .ticket-log-header-info .ticket-meta { gap: 4px; }
+        .ticket-log-header-info .ticket-meta span { font-size: 9px; padding: 2px 6px; }
+        .ticket-message { gap: 10px; padding: 12px 0; }
+        .ticket-message img.msg-pfp { width: 32px; height: 32px; }
+        .ticket-message .msg-text { font-size: 14px; }
+        .ticket-message .msg-attachments img, .ticket-message .msg-embed-media img,
+        .ticket-message .msg-embed-media video { max-width: 100%; max-height: 240px; }
+        .ticket-log-back { font-size: 14px; margin-bottom: 12px; }
     }
 </style>
 
