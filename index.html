@@ -439,63 +439,191 @@
 
 
 
+<div class="frame-card card-bot-refined" data-index="2" data-route="GekkeBot" data-expand="true">
+  <div class="card-inner">
+    <div class="card-label">GekkeBot</div>
 
+    <div class="refined-glow"></div>
 
+    <div class="refined-corner corner-tl"></div>
+    <div class="refined-corner corner-br"></div>
 
+    <div class="refined-accent-left"></div>
 
+    <div class="refined-accent-right"></div>
 
+    <div class="refined-accent-top"></div>
 
+    <div class="refined-dots"></div>
 
-    <style>
-      .card-guardian { background: var(--bg-card); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; contain: layout style paint; }
-      .guardian-content { display: flex; flex-direction: column; align-items: center; gap: calc(12 / var(--reference-height) * 100vh); z-index: 2; position: relative; }
-      .guardian-name { font-size: calc(90 / var(--reference-height) * 100vh); font-weight: 500; letter-spacing: -0.04em; color: var(--text-primary); line-height: 1; }
-      .guardian-sub { font-size: calc(15 / var(--reference-height) * 100vh); color: var(--text-muted); letter-spacing: 0.5px; }
-      .guardian-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: calc(300 / var(--reference-height) * 100vh); height: calc(300 / var(--reference-height) * 100vh); background: radial-gradient(circle, rgba(88, 101, 242, 0.08) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-      .guardian-orb { position: absolute; border-radius: 50%; pointer-events: none; z-index: 0; }
-      .guardian-orb-1 { width: calc(80 / var(--reference-height) * 100vh); height: calc(80 / var(--reference-height) * 100vh); background: radial-gradient(circle, rgba(88, 101, 242, 0.06) 0%, transparent 70%); top: calc(40 / var(--reference-height) * 100vh); right: calc(-20 / var(--reference-height) * 100vh); }
-      .guardian-orb-2 { width: calc(50 / var(--reference-height) * 100vh); height: calc(50 / var(--reference-height) * 100vh); background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%); bottom: calc(30 / var(--reference-height) * 100vh); left: calc(-10 / var(--reference-height) * 100vh); }
-      .guardian-shield { opacity: 0.06; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 0; }
-      .guardian-shield svg { width: calc(200 / var(--reference-height) * 100vh); height: calc(200 / var(--reference-height) * 100vh); stroke: var(--text-primary); stroke-width: 1; fill: none; }
-      .guardian-line-top { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: calc(80 / var(--reference-height) * 100vh); height: calc(1 / var(--reference-height) * 100vh); background: linear-gradient(90deg, transparent, rgba(88, 101, 242, 0.25), transparent); pointer-events: none; z-index: 1; }
-
-      @media (max-width: 750px) {
-        .guardian-name { font-size: 42px; }
-        .guardian-sub { font-size: 13px; }
-        .guardian-content { gap: 8px; }
-        .guardian-shield svg { width: 100px; height: 100px; }
-        .guardian-glow { width: 180px; height: 180px; }
-        .guardian-orb-1 { width: 50px; height: 50px; top: 30px; right: -10px; }
-        .guardian-orb-2 { width: 30px; height: 30px; bottom: 20px; left: -5px; }
-        .guardian-line-top { width: 50px; }
-      }
-    </style>
-    <div class="frame-card card-guardian" data-index="3" data-route="GekkeGuardian" data-expand="false">
-      <div class="card-inner">
-        <div class="card-label">Discord Bot</div>
-        <div class="guardian-glow"></div>
-        <div class="guardian-orb guardian-orb-1"></div>
-        <div class="guardian-orb guardian-orb-2"></div>
-        <div class="guardian-shield">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
+    <div class="center-flex">
+      <div class="refined-content">
+        <div class="refined-name">GekkeBot</div>
+        <div class="refined-divider">
+          <span class="divider-dot"></span>
         </div>
-        <div class="guardian-line-top"></div>
-        <div class="center-flex">
-          <div class="guardian-content">
-            <div class="guardian-name">GekkeGuardian</div>
-            <div class="guardian-sub">Discord Bot · NSFW Detection · AI-Powered</div>
-          </div>
-        </div>
-      </div>
-      <div class="card-detail-expansion">
-        <div class="detail-title">GekkeGuardian</div>
-        <div class="detail-desc">AI-powered Discord bot for NSFW detection across images, GIFs, videos, and links. Customizable thresholds and multi-model analysis.</div>
+        <div class="refined-sub">Tickets · AI Mod · Anti‑NSFW · Anti‑Scam · Fun · QoL</div>
       </div>
     </div>
+  </div>
 
+  <div class="card-detail-expansion">
+    <div class="detail-title">GekkeBot</div>
+    <div class="detail-desc">Full ticket system with custom embeds, auto-resend & JSON export. Mistral AI moderator. NSFW link detection. DINOv2 scam prevention. Fun commands. Smart moderation tools.</div>
+  </div>
+</div>
 
+<style>
+  .card-bot-refined {
+    background: #161b24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    contain: layout style paint;
+  }
+
+  .refined-glow {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: 
+      radial-gradient(ellipse at 25% 30%, rgba(88, 101, 242, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 75% 70%, rgba(180, 189, 206, 0.03) 0%, transparent 50%);
+  }
+
+  .refined-dots {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: calc(28 / var(--reference-height) * 100vh) calc(28 / var(--reference-height) * 100vh);
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 60%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 60%);
+  }
+
+  .refined-corner {
+    position: absolute; z-index: 0; pointer-events: none;
+    width: calc(36 / var(--reference-height) * 100vh);
+    height: calc(36 / var(--reference-height) * 100vh);
+    opacity: 0.35;
+  }
+  .corner-tl {
+    top: calc(24 / var(--reference-height) * 100vh);
+    left: calc(24 / var(--reference-height) * 100vh);
+    border-top: 1px solid rgba(88, 101, 242, 0.5);
+    border-left: 1px solid rgba(88, 101, 242, 0.5);
+  }
+  .corner-br {
+    bottom: calc(24 / var(--reference-height) * 100vh);
+    right: calc(24 / var(--reference-height) * 100vh);
+    border-bottom: 1px solid rgba(88, 101, 242, 0.5);
+    border-right: 1px solid rgba(88, 101, 242, 0.5);
+  }
+
+  .refined-accent-left {
+    position: absolute;
+    left: calc(28 / var(--reference-height) * 100vh);
+    top: 12%;
+    bottom: 12%;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(88, 101, 242, 0.25) 20%,
+      rgba(88, 101, 242, 0.25) 80%,
+      transparent
+    );
+    z-index: 0; pointer-events: none;
+  }
+
+  .refined-accent-right {
+    position: absolute;
+    right: calc(28 / var(--reference-height) * 100vh);
+    top: 20%;
+    bottom: 20%;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(88, 101, 242, 0.15) 20%,
+      rgba(88, 101, 242, 0.15) 80%,
+      transparent
+    );
+    z-index: 0; pointer-events: none;
+  }
+
+  .refined-accent-top {
+    position: absolute;
+    top: calc(24 / var(--reference-height) * 100vh);
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(88, 101, 242, 0.15) 30%,
+      rgba(88, 101, 242, 0.15) 70%,
+      transparent
+    );
+    z-index: 0; pointer-events: none;
+  }
+
+  .refined-content {
+    display: flex; flex-direction: column; align-items: center;
+    gap: calc(20 / var(--reference-height) * 100vh);
+    z-index: 2; position: relative;
+  }
+
+  .refined-name {
+    font-size: calc(120 / var(--reference-height) * 100vh);
+    font-weight: 300; letter-spacing: -0.06em;
+    color: #eef1f7; line-height: 1;
+    background: linear-gradient(160deg, #eef1f7 0%, #c8d0dc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .refined-divider {
+    display: flex; align-items: center; justify-content: center;
+    width: calc(100 / var(--reference-height) * 100vh);
+    position: relative;
+  }
+  .refined-divider::before,
+  .refined-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(88, 101, 242, 0.3));
+  }
+  .refined-divider::after {
+    background: linear-gradient(to left, transparent, rgba(88, 101, 242, 0.3));
+  }
+  .divider-dot {
+    width: calc(4 / var(--reference-height) * 100vh);
+    height: calc(4 / var(--reference-height) * 100vh);
+    border-radius: 50%;
+    background: rgba(88, 101, 242, 0.5);
+    margin: 0 calc(12 / var(--reference-height) * 100vh);
+    flex-shrink: 0;
+  }
+
+  .refined-sub {
+    font-size: calc(14 / var(--reference-height) * 100vh);
+    color: rgba(180, 189, 206, 0.5);
+    letter-spacing: 0.6px;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  @media (max-width: 750px) {
+    .refined-name { font-size: 38px; }
+    .refined-sub { font-size: 11px; }
+    .refined-content { gap: 16px; }
+    .refined-corner { width: 24px; height: 24px; }
+    .refined-accent-left { left: 18px; }
+    .refined-accent-right { right: 18px; }
+    .refined-divider { width: 70px; }
+  }
+</style>
 
 
 
