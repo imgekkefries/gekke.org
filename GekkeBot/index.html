@@ -2185,11 +2185,11 @@
         border-radius: 12px; padding: 14px; margin-bottom: 10px;
     }
     .rule-item-row {
-        display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+        display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px;
     }
     .rule-item-row .item-number {
         font-size: 10px; color: var(--accent); font-family: var(--mono);
-        min-width: 24px; flex-shrink: 0;
+        min-width: 24px; flex-shrink: 0; padding-top: 12px;
     }
     .rule-input-wrap {
         flex: 1; position: relative; background: rgba(255,255,255,0.05);
@@ -2199,15 +2199,16 @@
     .rule-input-wrap:focus-within {
         border-color: var(--accent); background: rgba(255,255,255,0.08);
     }
-    .rule-input-wrap input.rule-text {
+    .rule-input-wrap textarea.rule-text {
         width: 100%; background: transparent; border: none; color: var(--t1);
         font-family: var(--input-mono); font-size: 13px; outline: none;
         padding: 10px 44px 10px 12px; box-sizing: border-box;
         -webkit-appearance: none; appearance: none;
+        resize: none; overflow: hidden; min-height: 40px; line-height: 1.5;
     }
-    .rule-input-wrap input.rule-text::placeholder { color: rgba(255,255,255,0.2); }
+    .rule-input-wrap textarea.rule-text::placeholder { color: rgba(255,255,255,0.2); }
     .rule-input-wrap .item-char-count {
-        position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+        position: absolute; right: 10px; top: 10px;
         font-size: 10px; color: var(--t3); font-family: var(--mono);
         pointer-events: none;
     }
@@ -2242,6 +2243,7 @@
         background: rgba(255,95,86,0.1); border: 1px solid rgba(255,95,86,0.2);
         color: #ff5f56; cursor: pointer; display: flex; align-items: center;
         justify-content: center; transition: all 0.2s; font-size: 10px;
+        align-self: flex-start; margin-top: 8px;
     }
     .item-remove-btn:hover { background: rgba(255,95,86,0.2); }
     .add-item-btn {
@@ -2276,7 +2278,7 @@
         .rule-item-row { gap: 8px; flex-wrap: wrap; }
         .rule-item-row .item-number { min-width: 20px; align-self: flex-start; padding-top: 12px; }
         .rule-input-wrap { flex-basis: 100%; }
-        .rule-input-wrap input.rule-text { font-size: 16px; padding: 12px 48px 12px 12px; }
+        .rule-input-wrap textarea.rule-text { font-size: 16px; padding: 12px 48px 12px 12px; }
         .rule-input-wrap .item-char-count { font-size: 11px; right: 12px; }
         .rule-action-row { gap: 8px; }
         .rule-action-row label { font-size: 9px; min-width: 100%; margin-bottom: 2px; }
@@ -2324,6 +2326,12 @@
     var MAX_RULES = 20;
     var MAX_RULE_LENGTH = 450;
 
+    // Auto-resize a textarea to fit its content
+    function autoResizeTextarea(el) {
+        el.style.height = 'auto';
+        el.style.height = (el.scrollHeight) + 'px';
+    }
+
     function secondsToDisplay(totalSeconds) {
         if (totalSeconds === null || totalSeconds === undefined) return { value: '', unit: 'seconds' };
         if (totalSeconds >= 86400 && totalSeconds % 86400 === 0) return { value: totalSeconds / 86400, unit: 'days' };
@@ -2336,6 +2344,11 @@
         var num = parseInt(value) || 0;
         if (num <= 0) return null;
         switch (unit) { case 'seconds': return num; case 'minutes': return num * 60; case 'hours': return num * 3600; case 'days': return num * 86400; default: return null; }
+    }
+
+    // Escape special characters for safe HTML attribute values, including double quotes
+    function escapeAttr(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     function renderRules() {
@@ -2354,7 +2367,7 @@
             return '<div class="rule-item-wrap"><div class="rule-item-row">' +
                 '<span class="item-number">#' + (i + 1) + '</span>' +
                 '<div class="rule-input-wrap">' +
-                '<input type="text" class="rule-text" value="' + escapeHtml(ruleText) + '" placeholder="Enter rule..." maxlength="' + MAX_RULE_LENGTH + '" oninput="updateRuleField(' + i + ', \'Rule\', this.value); updateCharCount(this, ' + MAX_RULE_LENGTH + ');" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' +
+                '<textarea class="rule-text" placeholder="Enter rule..." maxlength="' + MAX_RULE_LENGTH + '" oninput="updateRuleField(' + i + ', \'Rule\', this.value); updateCharCount(this, ' + MAX_RULE_LENGTH + '); autoResizeTextarea(this);" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">' + escapeAttr(ruleText) + '</textarea>' +
                 '<span class="item-char-count' + overClass + '">' + len + '/' + MAX_RULE_LENGTH + '</span>' +
                 '</div>' +
                 (rules.length > 1 ? '<button class="item-remove-btn" onclick="removeRule(' + i + ')"><i class="fas fa-times"></i></button>' : '<div style="width:26px;flex-shrink:0;"></div>') +
@@ -2372,6 +2385,13 @@
         document.getElementById('rule-limit-text').textContent = rules.length + ' / ' + MAX_RULES + ' rules';
         var addBtn = document.getElementById('add-rule-btn');
         if (addBtn) addBtn.disabled = rules.length >= MAX_RULES;
+        // Auto-resize all textareas after render
+        requestAnimationFrame(function() {
+            var textareas = container.querySelectorAll('textarea.rule-text');
+            for (var t = 0; t < textareas.length; t++) {
+                autoResizeTextarea(textareas[t]);
+            }
+        });
     }
 
     function updateRuleField(index, field, value) {
@@ -2445,7 +2465,7 @@
         if (!items.length) items = [''];
         container.innerHTML = items.map(function(item, i) {
             return '<div class="simple-item-row"><span class="item-number">#' + (i + 1) + '</span>' +
-                '<input type="text" value="' + escapeHtml(item || '') + '" placeholder="Enter role ID..." oninput="updateExcludedRole(' + i + ', this.value);">' +
+                '<input type="text" value="' + escapeAttr(item || '') + '" placeholder="Enter role ID..." oninput="updateExcludedRole(' + i + ', this.value);">' +
                 (items.length > 1 ? '<button class="item-remove-btn" onclick="removeExcludedRole(' + i + ')"><i class="fas fa-times"></i></button>' : '<div style="width:26px;flex-shrink:0;"></div>') +
                 '</div>';
         }).join('');
@@ -2458,7 +2478,7 @@
         if (!items.length) items = [''];
         container.innerHTML = items.map(function(item, i) {
             return '<div class="simple-item-row"><span class="item-number">#' + (i + 1) + '</span>' +
-                '<input type="text" value="' + escapeHtml(item || '') + '" placeholder="Enter channel ID..." oninput="updateExcludedChannel(' + i + ', this.value);">' +
+                '<input type="text" value="' + escapeAttr(item || '') + '" placeholder="Enter channel ID..." oninput="updateExcludedChannel(' + i + ', this.value);">' +
                 (items.length > 1 ? '<button class="item-remove-btn" onclick="removeExcludedChannel(' + i + ')"><i class="fas fa-times"></i></button>' : '<div style="width:26px;flex-shrink:0;"></div>') +
                 '</div>';
         }).join('');
