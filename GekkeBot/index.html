@@ -255,14 +255,6 @@
 
 
 
-
-
-<!-- editeddddd                      -->
-
-<!-- ############################################ -->
-<!-- FRAGMENT: Entrance page                      -->
-<!-- ############################################ -->
-
 <!-- ############################################ -->
 <!-- FRAGMENT: Entrance page                      -->
 <!-- ############################################ -->
@@ -583,34 +575,6 @@
 
 
 
-
-
-<script>
-(function() {
-    const revealElements = document.querySelectorAll('.reveal-section');
-    
-    const hero = document.getElementById('hero-section');
-    if (hero) {
-        hero.classList.add('revealed');
-    }
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-            }
-        });
-    }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -40px 0px'
-    });
-    
-    revealElements.forEach(el => {
-        if (el.id === 'hero-section') return;
-        observer.observe(el);
-    });
-})();
-</script>
 
 <!-- ############################################ -->
 <!-- FRAGMENT: Login/Register forms              -->
