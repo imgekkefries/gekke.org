@@ -1,737 +1,824 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="author" content="gekkefries">
-    <title>Discord Raider ~ gekkefries</title>
-
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        :root {
-            --bg: #080a0e;
-            --bg2: #0c0f15;
-            --card: rgba(16, 20, 28, 0.75);
-            --cardh: rgba(20, 25, 35, 0.85);
-            --t1: #f0f3f8;
-            --t2: #b9c2d4;
-            --t3: #7e8a98;
-            --bl: rgba(255, 255, 255, 0.08);
-            --bm: rgba(255, 255, 255, 0.15);
-            --bc: rgba(255, 255, 255, 0.1);
-            --accent: #5865F2;
-            --ease: cubic-bezier(0.23, 1, 0.32, 1);
-            --mono: 'Terminal', 'SF Mono', 'Fira Code', 'Courier New', monospace;
-            --g1: rgba(210, 230, 255, 0.04);
-            --g2: rgba(255, 245, 240, 0.025);
-        }
-
-        @font-face {
-            font-family: 'Terminal';
-            src: url('https://imgekkefries.pythonanywhere.com/terminal.woff') format('woff');
-            font-weight: normal; font-style: normal; font-display: swap;
-        }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            background: var(--bg);
-            font-family: var(--mono);
-            color: var(--t1);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        .bg-grid {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 15px), linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 50px 50px, 40px 40px, 40px 40px;
-            pointer-events: none; z-index: 1;
-        }
-
-        .bg-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, var(--g1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, var(--g2) 0%, transparent 50%);
-            pointer-events: none; z-index: 1;
-        }
-
-        .bg-diag {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(45deg, rgba(255,255,255,0.003) 0px, rgba(255,255,255,0.003) 1px, transparent 1px, transparent 10px);
-            pointer-events: none; z-index: 1;
-        }
-
-        .bg-text {
-            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
-            pointer-events: none; z-index: 1;
-            display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(20, 1fr);
-            gap: 0.3rem; transform: rotate(-4deg); opacity: 0.4;
-            font-family: var(--mono); text-transform: uppercase;
-            font-size: clamp(0.6rem, 1.5vw, 0.95rem); font-weight: 400;
-            letter-spacing: 0.15em; color: rgba(255,255,255,0.12); padding: 1.5rem;
-        }
-
-        .bg-text div {
-            display: flex; align-items: center; justify-content: center;
-            white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.08);
-        }
-        .bg-text div:nth-child(3n) { opacity: 0.7; }
-        .bg-text div:nth-child(5n) { transform: rotate(1deg); }
-        .bg-text div:nth-child(7n) { transform: rotate(-1deg); }
-
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
-
-        .scroll-bar {
-            position: fixed; top: 0; left: 0; height: 2px;
-            background: var(--accent); z-index: 1000; transition: width 0.1s ease;
-        }
-
-        .main-wrap {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            justify-content: center;
-        }
-
-        .main { max-width: 1000px; margin: 0 auto; padding: 0 24px; width: 100%; }
-        .header { padding: 100px 0 40px; text-align: center; }
-        .header h1 { font-size: clamp(36px, 5vw, 56px); font-weight: 500; letter-spacing: -0.04em; margin-bottom: 8px; }
-        .header .ver { font-size: 14px; color: var(--t3); display: inline-block; margin-bottom: 16px; background: rgba(255,255,255,0.08); padding: 4px 14px; border-radius: 30px; }
-
-        .showcase { background: #0f131a; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 40px -15px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12); margin-bottom: 48px; }
-        .showcase-top { background: #151b24; padding: 14px 24px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #2a3340; }
-        .showcase-top .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .showcase-top .dot:nth-child(1) { background: #ff5f56; }
-        .showcase-top .dot:nth-child(2) { background: #ffbd2e; }
-        .showcase-top .dot:nth-child(3) { background: #27c93f; }
-        .showcase-top span { margin-left: 8px; font-size: 13px; color: #9aa7bc; font-family: var(--mono); }
-        .showcase-body { padding: 0; background: #0e1219; line-height: 0; position: relative; cursor: pointer; min-height: 400px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .showcase-body img { display: block; max-width: 100%; max-height: 500px; object-fit: contain; }
-
-        .sc-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px; cursor: pointer; transition: all 0.2s ease; z-index: 10; user-select: none; }
-        .sc-nav:hover { background: rgba(0,0,0,0.9); border-color: rgba(255,255,255,0.4); transform: translateY(-50%) scale(1.1); }
-        .sc-nav.prev { left: 16px; } .sc-nav.next { right: 16px; }
-
-        .sc-dots { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 5; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); padding: 6px 12px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.1); }
-        .sc-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: all 0.2s ease; }
-        .sc-dot.active { background: white; transform: scale(1.3); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 60px; }
-        .info h3 { font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 16px; }
-        .info p { font-size: 15px; color: var(--t2); line-height: 1.8; margin-bottom: 24px; }
-        .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 8px 16px; font-size: 12px; color: var(--t2); display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
-        .tag:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); }
-
-        .card { background: var(--card); backdrop-filter: blur(14px); border-radius: 20px; padding: 28px; border: 1px solid var(--bc); box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); }
-        .card h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
-        .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 14px; }
-        .row:last-child { border-bottom: none; }
-        .row .lbl { color: var(--t3); } .row .val { color: var(--t1); }
-
-        .ver-sel { background: var(--card); backdrop-filter: blur(14px); border-radius: 20px; padding: 28px; border: 1px solid var(--bc); box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); margin-bottom: 48px; }
-        .ver-sel h4 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
-        .ver-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-        .ver-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 12px 16px; color: var(--t2); font-family: var(--mono); font-size: 14px; cursor: pointer; transition: all 0.2s ease; text-align: center; position: relative; }
-        .ver-btn:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.1); color: var(--t1); }
-        .ver-btn.active { border-color: rgba(176,206,255,0.5); background: rgba(176,206,255,0.15); color: #b0ceff; }
-        .ver-btn .badge { position: absolute; top: -6px; right: -6px; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
-        .ver-btn .badge.latest { background: rgba(176,206,255,0.25); color: #b0ceff; }
-
-        .feat { margin-bottom: 60px; }
-        .feat h3 { font-size: 22px; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 24px; text-align: center; }
-        .feat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-        .feat-cat { background: var(--card); backdrop-filter: blur(14px); border-radius: 16px; padding: 20px; border: 1px solid var(--bc); box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); }
-        .feat-cat h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.35); margin-bottom: 12px; font-weight: 600; }
-        .feat-item { font-size: 13px; color: var(--t2); padding: 6px 0; padding-left: 12px; border-left: 2px solid rgba(255,255,255,0.08); margin-bottom: 4px; line-height: 1.5; }
-        .feat-item:last-child { margin-bottom: 0; }
-
-        .sep { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.18), rgba(255,255,255,0.1), transparent); margin: 60px 0; }
-
-        .dl { text-align: center; margin-bottom: 60px; }
-        .dl h2 { font-size: 28px; font-weight: 500; letter-spacing: -0.03em; margin-bottom: 12px; }
-        .dl > p { font-size: 15px; color: var(--t2); margin-bottom: 40px; }
-        .dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; max-width: 900px; margin: 0 auto; }
-        .dl-card { background: var(--card); backdrop-filter: blur(14px); border-radius: 20px; padding: 32px 24px; border: 1px solid var(--bc); box-shadow: 0 18px 30px -12px rgba(0,0,0,0.5); text-align: center; transition: border-color 0.3s, box-shadow 0.3s, background 0.3s; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
-        .dl-card:hover { border-color: rgba(255,255,255,0.18); background: var(--cardh); box-shadow: 0 28px 38px -14px #000000; }
-        .dl-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, #b0ceff, #ffffff, #b0ceff); opacity: 0; transition: opacity 0.3s ease; }
-        .dl-card:hover::before { opacity: 0.6; }
-        .dl-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: #fff; transition: border-color 0.3s, box-shadow 0.3s; flex-shrink: 0; }
-        .dl-card:hover .dl-icon { border-color: rgba(255,255,255,0.2); box-shadow: 0 0 20px rgba(176,206,255,0.1); }
-        .dl-card h3 { font-size: 18px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.01em; }
-        .dl-card .dl-desc { font-size: 13px; color: var(--t3); margin-bottom: 16px; line-height: 1.5; flex: 1; }
-        .dl-card .dl-tag { display: inline-block; font-size: 12px; color: #6ee7b7; background: rgba(39,201,63,0.15); padding: 4px 12px; border-radius: 30px; margin-bottom: 16px; }
-        .dl-card .dl-tag.paid { color: #f0c060; background: rgba(240,192,96,0.15); }
-        .dl-card .dl-tag.boot { color: #b0ceff; background: rgba(176,206,255,0.15); }
-
-        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 32px; border-radius: 50px; font-family: var(--mono); font-weight: 500; font-size: 15px; transition: all 0.3s ease; cursor: pointer; white-space: nowrap; text-decoration: none; border: none; margin-top: auto; }
-        .btn-p { background: linear-gradient(135deg, #ffffff 0%, #e8eeff 100%); color: #080a0e; position: relative; overflow: hidden; }
-        .btn-p::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s ease; }
-        .btn-p:hover { box-shadow: 0 0 25px rgba(255,255,255,0.2); }
-        .btn-p:hover::before { left: 100%; }
-        .btn-o { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: var(--t1); }
-        .btn-o:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); box-shadow: 0 0 20px rgba(255,255,255,0.08); }
-
-        .footer { padding: 40px 0 60px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--t3); letter-spacing: 0.3px; }
-        .footer a { color: var(--t2); text-decoration: none; transition: color 0.2s; }
-        .footer a:hover { color: var(--t1); }
-
-        .lb { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px); z-index: 10000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
-        .lb.active { opacity: 1; visibility: visible; }
-        .lb-inner { position: relative; max-width: 90vw; max-height: 90vh; display: flex; align-items: center; justify-content: center; }
-        .lb-inner img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 12px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); display: block; }
-        .lb-close { position: absolute; top: -50px; right: -50px; width: 45px; height: 45px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; cursor: pointer; transition: all 0.2s ease; z-index: 10; }
-        .lb-close:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
-        .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; cursor: pointer; transition: all 0.2s ease; z-index: 10; }
-        .lb-nav:hover { background: rgba(255,255,255,0.2); transform: translateY(-50%) scale(1.1); }
-        .lb-nav.prev { left: -70px; } .lb-nav.next { right: -70px; }
-        .lb-count { position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.7); font-family: var(--mono); font-size: 14px; background: rgba(0,0,0,0.3); padding: 4px 16px; border-radius: 30px; backdrop-filter: blur(4px); }
-
-        .loading { text-align: center; padding: 2rem; color: var(--t3); font-size: 14px; }
-
-        @media (max-width: 700px) {
-            .bg-text { grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(15, 1fr); }
-            .grid-2 { grid-template-columns: 1fr; gap: 32px; }
-            .dl-grid { grid-template-columns: 1fr; max-width: 400px; }
-            .feat-grid { grid-template-columns: 1fr; }
-            .ver-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
-            .header { padding: 80px 0 30px; }
-            .showcase-body { min-height: 250px; }
-            .lb-nav.prev { left: -30px; width: 40px; height: 40px; font-size: 18px; }
-            .lb-nav.next { right: -30px; width: 40px; height: 40px; font-size: 18px; }
-            .lb-close { top: -40px; right: 0; width: 38px; height: 38px; font-size: 16px; }
-        }
-    </style>
-
-    <style>
-        .sections {
-            position: fixed;
-            left: calc((100vw - 1000px) / 2 - 50px);
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px;
-            pointer-events: none;
-            transition: left 0.3s ease;
-        }
-
-        .sections .line {
-            border-radius: 4px;
-            transition: all 0.35s var(--ease);
-        }
-        .sections .line.main {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.16);
-            margin-top: 4px;
-        }
-        .sections .line.main:first-child { margin-top: 0; }
-        .sections .line.main:nth-child(1) { width: 26px; }
-        .sections .line.main:nth-child(5) { width: 38px; }
-        .sections .line.main:nth-child(8) { width: 32px; }
-        .sections .line.main:nth-child(12) { width: 46px; }
-        .sections .line.main:nth-child(16) { width: 36px; }
-        .sections .line.main:nth-child(20) { width: 42px; }
-        .sections .line.sub {
-            height: 3px;
-            width: 26px;
-            background: rgba(255, 255, 255, 0.12);
-        }
-        .sections .line.active {
-            background: rgba(255, 255, 255, 0.95) !important;
-            box-shadow: 0 0 16px rgba(255, 255, 255, 0.5), 0 0 32px rgba(255, 255, 255, 0.2);
-        }
-        .sections .line.main.active { height: 6px; }
-        .sections .line.sub.active { height: 4.5px; }
-
-        .sections .line.done.main { background: rgba(255, 255, 255, 0.45); }
-        .sections .line.done.sub { background: rgba(255, 255, 255, 0.33); }
-
-        @media (max-width: 1100px) {
-            .sections { left: 12px; gap: 4px; }
-            .sections .line.main:nth-child(1) { width: 18px; }
-            .sections .line.main:nth-child(5) { width: 26px; }
-            .sections .line.main:nth-child(8) { width: 22px; }
-            .sections .line.main:nth-child(12) { width: 32px; }
-            .sections .line.main:nth-child(16) { width: 25px; }
-            .sections .line.main:nth-child(20) { width: 29px; }
-            .sections .line.sub {
-                height: 2px;
-                width: 18px;
-            }
-            .sections .line.main { margin-top: 3px; }
-            .sections .line.main.active { height: 4.5px; }
-            .sections .line.sub.active { height: 3px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Gekke.org — Discord Raider</title>
+  <style>
+    @font-face {
+      font-family: 'Terminal';
+      src: url('https://imgekkefries.pythonanywhere.com/terminal.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+      --fs: clamp(1.8rem, 5.5vw, 5rem);
+      --cw: clamp(300px, 88vw, 950px);
+      --ch: clamp(65px, 9vw, 150px);
+      --cd: clamp(32px, 4.5vw, 75px);
+      --p: clamp(450px, 58vw, 950px);
+      --sb: clamp(35px, 5.5vw, 90px);
+      --sa: -22vh;
+      --bg: #0b0b0f;
+    }
+    body {
+      background-color: var(--bg);
+      font-family: 'Terminal', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 4px 0;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.18);
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.08) transparent;
+    }
+    .bg-grid {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 18px), linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      background-size: 55px 55px, 42px 42px, 42px 42px;
+      pointer-events: none; z-index: 0;
+    }
+    .bg-glow {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 18% 25%, rgba(200,220,255,0.045) 0%, transparent 55%), radial-gradient(circle at 82% 72%, rgba(255,240,230,0.03) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+    .bg-diag {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,0.0025) 0px, rgba(255,255,255,0.0025) 1px, transparent 1px, transparent 12px);
+      pointer-events: none; z-index: 0;
+    }
+    .bg-text {
+      position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
+      pointer-events: none; z-index: 0;
+      display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(20, 1fr);
+      gap: 0.3rem; transform: rotate(-4deg); opacity: 0.35;
+      font-family: 'Terminal', monospace; text-transform: uppercase;
+      font-size: clamp(0.6rem, 1.5vw, 0.95rem); font-weight: 400;
+      letter-spacing: 0.15em; color: rgba(255,255,255,0.10); padding: 1.5rem;
+    }
+    .bg-text div {
+      display: flex; align-items: center; justify-content: center;
+      white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.06);
+    }
+    .bg-text div:nth-child(3n) { opacity: 0.65; }
+    .bg-text div:nth-child(5n) { transform: rotate(1deg); }
+    .bg-text div:nth-child(7n) { transform: rotate(-1deg); }
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: clamp(54px, 7.5vh, 74px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 48px);
+      z-index: 100;
+      background: rgba(11,11,15,0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.23,1,0.32,1);
+      pointer-events: all;
+    }
+    .topbar.hidden-initially {
+      opacity: 0;
+      transform: translateY(-100%);
+      pointer-events: none;
+    }
+    .topbar.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 1.8vw, 18px);
+    }
+    .topbar-logo {
+      height: clamp(34px, 4.8vw, 46px);
+      width: auto;
+      display: block;
+      border-radius: 6px;
+      image-rendering: auto;
+      filter: none;
+      backdrop-filter: none;
+    }
+    .topbar-brand {
+      font-size: clamp(14px, 1.6vw, 17px);
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.5px;
+      font-weight: 400;
+      font-family: 'Terminal', monospace;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 4vw, 42px);
+    }
+    .topbar-link {
+      font-size: clamp(12px, 1.3vw, 14px);
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      letter-spacing: 0.6px;
+      transition: color 0.25s ease;
+      cursor: pointer;
+      position: relative;
+      padding: 4px 0;
+      font-family: 'Terminal', monospace;
+    }
+    .topbar-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: rgba(255,255,255,0.5);
+      transition: width 0.25s ease;
+    }
+    .topbar-link:hover {
+      color: rgba(255,255,255,0.85);
+    }
+    .topbar-link:hover::after {
+      width: 100%;
+    }
+    .topbar-link.hv {
+      display: inline;
+    }
+    .page {
+      display: none;
+      width: 100%;
+    }
+    .page.active {
+      display: block;
+    }
+    .animation-stage {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      z-index: 5;
+    }
+    .scene {
+      perspective: var(--p);
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 10;
+      padding: 0 clamp(1rem, 4vw, 3rem);
+      overflow: visible;
+    }
+    .cube {
+      position: relative;
+      width: var(--cw);
+      height: var(--ch);
+      transform-style: preserve-3d;
+    }
+    .cube.animate {
+      animation: rollBack 0.5s cubic-bezier(0.25,0.1,0.25,1) forwards;
+      animation-delay: 1.8s;
+    }
+    .face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+    }
+    .front {
+      transform: translateZ(var(--cd));
+    }
+    .bottom {
+      transform: rotateX(-90deg) translateZ(var(--cd));
+    }
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: transform 0.75s cubic-bezier(0.23,1,0.32,1);
+      width: 100%;
+    }
+    .content-wrapper.shifted {
+      transform: translateY(var(--sa));
+    }
+    h1 {
+      font-size: var(--fs);
+      font-weight: 400;
+      white-space: nowrap;
+      color: #fff;
+      line-height: 1.1;
+      text-align: center;
+      opacity: 1;
+      text-rendering: optimizeLegibility;
+      position: relative;
+      max-width: 90vw;
+      letter-spacing: -0.02em;
+      font-family: 'Terminal', monospace;
+    }
+    .front h1 {
+      animation: fadeInTitle 1.3s ease forwards;
+    }
+    h1 span {
+      color: #fff;
+      background: none;
+      -webkit-background-clip: unset;
+      -webkit-text-fill-color: unset;
+      filter: none;
+      text-shadow: 0 0 2px rgba(255,255,255,0.15);
+    }
+    .underline {
+      display: block;
+      height: 1.5px;
+      background: rgba(255,255,255,0.25);
+      border-radius: 1px;
+      margin-top: 0.4em;
+      width: 0;
+    }
+    .underline.draw {
+      animation: drawLine 0.65s cubic-bezier(0.25,0.1,0.25,1) forwards;
+    }
+    .image-section {
+      position: absolute;
+      top: calc(100% + clamp(28px, 4vh, 56px));
+      left: 50%;
+      transform: translateX(-50%) translateY(25px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+      pointer-events: none;
+      z-index: 15;
+      width: 100%;
+    }
+    .image-section.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: all;
+    }
+    .showcase-panel {
+      position: relative;
+      background: transparent;
+      border: none;
+      overflow: visible;
+      box-shadow: none;
+      width: 100%;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+    .showcase-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: #14171c;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+      height: 28px;
+    }
+    .showcase-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .showcase-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .showcase-dot:nth-child(1) { background: #ff5f57; }
+    .showcase-dot:nth-child(2) { background: #febc2e; }
+    .showcase-dot:nth-child(3) { background: #28c840; }
+    .showcase-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 0 0 10px 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: none;
+      image-rendering: auto;
+      filter: none !important;
+      box-shadow: none;
+      background: #0d1117;
+      transform: none;
+    }
+    .separator {
+      width: clamp(50px, 10vw, 140px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), rgba(255,255,255,0.28), rgba(255,255,255,0.18), transparent);
+      margin: clamp(18px, 2.8vh, 36px) auto;
+      pointer-events: none;
+    }
+    .buttons {
+      display: flex;
+      gap: clamp(12px, 2.2vw, 22px);
+      pointer-events: all;
+      margin-top: clamp(14px, 2vh, 28px);
+      justify-content: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: clamp(11px, 1.6vw, 15px) clamp(22px, 3.2vw, 34px);
+      border-radius: 6px;
+      font-family: 'Terminal', monospace;
+      font-weight: 500;
+      font-size: clamp(13px, 1.5vw, 16px);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      border: none;
+      letter-spacing: 0.4px;
+      filter: none !important;
+      text-rendering: optimizeLegibility;
+      transform: none;
+    }
+    .btn-dl {
+      background: #fff;
+      color: #0b0b0f;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .btn-dl:hover {
+      background: #f0f0f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    .btn-discord {
+      background: #1a1d23;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #e8ecf2;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .btn-discord:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: #22262e;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    }
+    .btn svg {
+      flex-shrink: 0;
+      filter: none !important;
+      shape-rendering: geometricPrecision;
+    }
+    .versions-page {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 24px 80px;
+      z-index: 5;
+      position: relative;
+    }
+    .vp-title {
+      font-size: clamp(28px, 4vw, 42px);
+      color: #fff;
+      margin-bottom: 8px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+    .vp-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 40px;
+      letter-spacing: 0.3px;
+    }
+    .v-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .v-item {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: vAppear 0.5s cubic-bezier(0.23,1,0.32,1) forwards;
+    }
+    .v-header {
+      display: grid;
+      grid-template-columns: 25% 30% 30% 15%;
+      padding: 16px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      align-items: center;
+    }
+    .v-header:hover {
+      background: rgba(255,255,255,0.02);
+    }
+    .v-item.expanded .v-header {
+      background: rgba(255,255,255,0.03);
+    }
+    .v-chevron {
+      display: inline-block;
+      transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
+      font-size: 12px;
+      margin-right: 8px;
+      color: rgba(255,255,255,0.4);
+    }
+    .v-item.expanded .v-chevron {
+      transform: rotate(90deg);
+    }
+    .v-name {
+      font-size: 14px;
+      color: #c8ccd4;
+      letter-spacing: 0.2px;
+    }
+    .v-date {
+      font-size: 14px;
+      color: #c8ccd4;
+      letter-spacing: 0.2px;
+    }
+    .v-status {
+      font-size: 14px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.2px;
+    }
+    .v-dl {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #c8ccd4;
+      border-radius: 5px;
+      font-size: 12px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      font-family: 'Terminal', monospace;
+      letter-spacing: 0.3px;
+      text-align: center;
+      width: fit-content;
+    }
+    .v-dl:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+    .v-expand {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.5s cubic-bezier(0.23,1,0.32,1), opacity 0.4s ease;
+    }
+    .v-item.expanded .v-expand {
+      max-height: 2000px;
+      opacity: 1;
+    }
+    .v-expand-inner {
+      padding: 0 16px 24px;
+    }
+    .v-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding-top: 8px;
+    }
+    .detail-panel {
+      background: rgba(20,23,28,0.6);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      animation: fadeInUp 0.4s ease forwards;
+    }
+    .dp-title {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 16px;
+      font-weight: 400;
+    }
+    .changelog-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .changelog-list li {
+      font-size: 13px;
+      color: #a8adb5;
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.5;
+      letter-spacing: 0.2px;
+    }
+    .changelog-list li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: rgba(94,106,210,0.6);
+      font-size: 16px;
+      line-height: 1.3;
+    }
+    .f-cat {
+      margin-bottom: 16px;
+    }
+    .f-cat:last-child {
+      margin-bottom: 0;
+    }
+    .f-cat-name {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .f-item {
+      font-size: 13px;
+      color: #a8adb5;
+      padding: 3px 0;
+      padding-left: 12px;
+      letter-spacing: 0.2px;
+      line-height: 1.4;
+    }
+    .v-th {
+      display: grid;
+      grid-template-columns: 25% 30% 30% 15%;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 400;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 0;
+    }
+    @keyframes fadeInTitle {
+      0% { opacity: 0; transform: translateY(clamp(8px,1.2vw,14px)); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes rollBack {
+      0% { transform: rotateX(0deg); }
+      100% { transform: rotateX(90deg); }
+    }
+    @keyframes drawLine {
+      0% { width: 0; }
+      100% { width: 100%; }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes vAppear {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 700px) {
+      .bg-text { grid-template-columns: repeat(10,1fr); grid-template-rows: repeat(15,1fr); }
+      .buttons { flex-direction: column; align-items: center; }
+      .topbar-right { gap: 16px; }
+      .topbar-brand { display: none; }
+      .v-th { display: none; }
+      .v-grid { grid-template-columns: 1fr; }
+      .v-header { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .v-header > *:nth-child(3), .v-header > *:nth-child(4) { display: none; }
+    }
+  </style>
 </head>
 <body>
-
-    <div class="bg-grid"></div>
-    <div class="bg-glow"></div>
-    <div class="bg-diag"></div>
-    <div class="bg-text" id="bgtext"></div>
-    <div class="scroll-bar" id="scrollbar"></div>
-
-    <div class="sections" id="sections">
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="bg-diag"></div>
+  <div class="bg-text" id="bgtext"></div>
+  <div class="topbar hidden-initially" id="topbar">
+    <div class="topbar-left">
+      <img class="topbar-logo" id="logo" src="" alt="Logo" />
+      <span class="topbar-brand">gekke.org</span>
     </div>
-
-    <div class="main-wrap">
-        <div class="main">
-
-            <header class="header">
-                <h1 id="name">Loading...</h1>
-                <div class="ver" id="ver">v---</div>
-            </header>
-
-            <div class="ver-sel">
-                <h4>Select Version</h4>
-                <div class="ver-grid" id="ver-grid">
-                    <div class="loading">Loading versions...</div>
+    <div class="topbar-right">
+      <a class="topbar-link hv" href="#versions" id="vlink">Versions</a>
+      <a class="topbar-link hv" href="#">Download</a>
+      <a class="topbar-link" href="https://discord.gg/72dP7pPdR2" target="_blank" rel="noopener noreferrer">Discord</a>
+    </div>
+  </div>
+  <div class="page active" id="home">
+    <div class="animation-stage">
+      <div class="scene">
+        <div class="cube animate" id="cube">
+          <div class="face front"><h1><span>Gekke.org Discord Raider</span></h1></div>
+          <div class="face bottom">
+            <div class="content-wrapper" id="cw">
+              <h1><span>Simple, Just Works</span><span class="underline" id="ul"></span></h1>
+              <div class="image-section" id="is">
+                <div class="showcase-panel">
+                  <div class="showcase-header">
+                    <div class="showcase-dots"><div class="showcase-dot"></div><div class="showcase-dot"></div><div class="showcase-dot"></div></div>
+                  </div>
+                  <img class="showcase-image" id="img" src="" alt="Discord Raider Interface" />
                 </div>
+                <div class="separator"></div>
+                <div class="buttons">
+                  <a href="#" class="btn btn-dl" id="dl">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download
+                  </a>
+                  <a href="https://discord.gg/72dP7pPdR2" class="btn btn-discord" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                    Discord
+                  </a>
+                </div>
+              </div>
             </div>
-
-            <div class="showcase" id="sc">
-                <div class="showcase-top">
-                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-                    <span>gekke@tools:~/discord-raider</span>
-                </div>
-                <div class="showcase-body" id="sc-body">
-                    <img src="" alt="Showcase" id="sc-media" style="display: block;">
-                    <div class="sc-nav prev" id="prev"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
-                    <div class="sc-nav next" id="next"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
-                    <div class="sc-dots" id="dots"></div>
-                </div>
-            </div>
-
-            <div class="grid-2">
-                <div class="info">
-                    <h3>About this tool</h3>
-                    <p id="desc">Loading description...</p>
-                    <div class="tags" id="tags"></div>
-                </div>
-                <div>
-                    <div class="card">
-                        <h4>Details</h4>
-                        <div class="row"><span class="lbl">Version</span><span class="val" id="dv">v---</span></div>
-                        <div class="row"><span class="lbl">Status</span><span class="val" style="color:#6ee7b7;" id="ds">Available</span></div>
-                        <div class="row"><span class="lbl">Full Name</span><span class="val" id="dfn">---</span></div>
-                        <div class="row"><span class="lbl">Interface</span><span class="val" id="di">GUI</span></div>
-                        <div class="row"><span class="lbl">Updates</span><span class="val" id="du">Active</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="feat">
-                <h3>Features</h3>
-                <div class="feat-grid" id="feat-grid">
-                    <div class="loading">Loading features...</div>
-                </div>
-            </div>
-
-            <div class="sep"></div>
-
-            <section class="dl">
-                <h2>Download</h2>
-                <p>Choose your version below. Currently selected: <strong id="selver">v---</strong></p>
-                <div class="dl-grid" id="dl-grid">
-                    <div class="loading">Loading download options...</div>
-                </div>
-            </section>
-
-            <footer class="footer">
-                <span>gekkefries</span>
-                <a href="https://gekke.org">gekke.org</a>
-            </footer>
+          </div>
         </div>
+      </div>
     </div>
-
-    <div class="lb" id="lb"><div class="lb-inner" id="lb-inner"></div></div>
-
-    <script>
-    (function() {
-        var container = document.getElementById('sections');
-        var allLines = container.querySelectorAll('.line');
-        var totalLines = allLines.length;
-        
-        function getActiveLineIndex() {
-            var scrollH = document.documentElement.scrollHeight - window.innerHeight;
-            if (scrollH <= 0) return 0;
-            
-            var pct = window.scrollY / scrollH;
-            var lineIdx = Math.floor(pct * totalLines);
-            if (lineIdx >= totalLines) lineIdx = totalLines - 1;
-            if (lineIdx < 0) lineIdx = 0;
-            
-            return lineIdx;
+  </div>
+  <div class="page" id="vp">
+    <div class="versions-page">
+      <h2 class="vp-title">Versions</h2>
+      <p class="vp-sub">All releases of Discord Raider</p>
+      <div class="v-th"><div>Version</div><div>Release Date</div><div>Status</div><div></div></div>
+      <div class="v-list" id="vlist"><div style="text-align:center;color:rgba(255,255,255,0.3);padding:32px;">Loading versions...</div></div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      const r = document.documentElement;
+      const cube = document.getElementById('cube');
+      const ul = document.getElementById('ul');
+      const cw = document.getElementById('cw');
+      const is = document.getElementById('is');
+      const img = document.getElementById('img');
+      const dl = document.getElementById('dl');
+      const tb = document.getElementById('topbar');
+      const logo = document.getElementById('logo');
+      const home = document.getElementById('home');
+      const vp = document.getElementById('vp');
+      const vlist = document.getElementById('vlist');
+      const hv = document.querySelectorAll('.hv');
+      const vps = 'https://imgekkefries.pythonanywhere.com';
+      let api = null;
+      let test = false;
+      let imgOk = false;
+      let logoOk = false;
+      let latest = null;
+      let data = [];
+      let vOk = false;
+      const uSA = () => {
+        const h = window.innerHeight;
+        r.style.setProperty('--sa', '-' + Math.max(80, h * 0.24) + 'px');
+      };
+      const dUL = () => ul.classList.add('draw');
+      const shift = () => {
+        cw.classList.add('shifted');
+        if (imgOk) setTimeout(() => is.classList.add('visible'), 350);
+      };
+      const sTB = () => setTimeout(() => { tb.classList.remove('hidden-initially'); tb.classList.add('visible'); }, 500);
+      const nav = (p) => {
+        if (p === 'versions') {
+          home.classList.remove('active');
+          vp.classList.add('active');
+          tb.classList.remove('hidden-initially');
+          tb.classList.add('visible');
+          hv.forEach(l => l.style.display = 'none');
+          if (!vOk) loadV();
+        } else {
+          vp.classList.remove('active');
+          home.classList.add('active');
+          hv.forEach(l => l.style.display = '');
         }
-        
-        function update() {
-            var activeIdx = getActiveLineIndex();
-            
-            allLines.forEach(function(line, i) {
-                line.classList.remove('active', 'done');
-                
-                if (i === activeIdx) {
-                    line.classList.add('active');
-                } else if (i < activeIdx) {
-                    line.classList.add('done');
+      };
+      const chk = () => { const h = location.hash; nav(h === '#versions' ? 'versions' : 'home'); };
+      const loadV = async () => {
+        try {
+          if (!api) await fApi();
+          const res = await aFetch('/raider/versions');
+          const j = await res.json();
+          data = j.versions || [];
+          const latestV = j.latest || data[0];
+          vlist.innerHTML = '';
+          let d = 0;
+          for (const v of data) {
+            const isL = v === latestV;
+            let date = '', ch = [], ft = {};
+            try { const cr = await aFetch('/raider/changelog/' + v); const cj = await cr.json(); date = cj.date || ''; ch = cj.changes || []; } catch(e) {}
+            try { const ir = await aFetch('/raider/info/' + v); const ij = await ir.json(); ft = ij.features || {}; } catch(e) {}
+            const base = test ? vps : (api || vps);
+            const item = document.createElement('div');
+            item.className = 'v-item';
+            item.style.animationDelay = d + 's';
+            d += 0.08;
+            let cHTML = ch.length ? '<ul class="changelog-list">' + ch.map(c => `<li>${c}</li>`).join('') + '</ul>' : '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No changelog available.</p>';
+            let fHTML = '';
+            if (Object.keys(ft).length) {
+              for (const [cat, items] of Object.entries(ft)) {
+                if (typeof items === 'object' && items) {
+                  fHTML += `<div class="f-cat"><div class="f-cat-name">${cat.replace(/_/g,' ')}</div>`;
+                  for (const [k, val] of Object.entries(items)) {
+                    if (typeof val === 'string') fHTML += `<div class="f-item">${k.replace(/_/g,' ')}: ${val}</div>`;
+                    else if (typeof val === 'object' && val) { fHTML += `<div class="f-item">${k.replace(/_/g,' ')}:</div>`; for (const [sk, sv] of Object.entries(val)) fHTML += `<div class="f-item" style="padding-left:24px;">${sk.replace(/_/g,' ')}: ${sv}</div>`; }
+                  }
+                  fHTML += '</div>';
                 }
-            });
-        }
-        
-        update();
-        
-        setTimeout(update, 100);
-        setTimeout(update, 300);
-        setTimeout(update, 500);
-        
-        window.addEventListener('scroll', update);
-        window.addEventListener('resize', update);
+              }
+            } else fHTML = '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No feature details available.</p>';
+            item.innerHTML = `<div class="v-header"><div class="v-name"><span class="v-chevron">›</span>${v}</div><div class="v-date">${date||'—'}</div><div class="v-status">${isL?'Active':'Archived'}</div><div><a href="${base}/raider/download/${v}/file" class="v-dl" download>Download</a></div></div><div class="v-expand"><div class="v-expand-inner"><div class="v-grid"><div class="detail-panel"><div class="dp-title">Changelog</div>${cHTML}</div><div class="detail-panel"><div class="dp-title">Features</div>${fHTML}</div></div></div></div>`;
+            item.querySelector('.v-header').addEventListener('click', function(e) { if (!e.target.closest('.v-dl')) item.classList.toggle('expanded'); });
+            vlist.appendChild(item);
+          }
+          vOk = true;
+        } catch(e) { vlist.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:32px;">Failed to load versions.</div>'; }
+      };
+      window.addEventListener('hashchange', chk);
+      const pLogo = () => {
+        logo.src = vps + '/logo.png';
+        logo.onload = () => { logoOk = true; logo.style.filter = 'none'; logo.style.backdropFilter = 'none'; };
+        logo.onerror = () => logo.style.display = 'none';
+        if (logo.complete && logo.naturalWidth > 0) { logoOk = true; logo.style.filter = 'none'; logo.style.backdropFilter = 'none'; }
+      };
+      const fApi = async () => {
+        try {
+          const r = await fetch(vps + '/vps');
+          if (r.status === 200) { const u = (await r.text()).trim(); if (u.startsWith('https://') && u.includes('trycloudflare.com')) { api = u; return api; } }
+          throw new Error('bad');
+        } catch(e) { test = true; api = vps; return api; }
+      };
+      const aFetch = async (ep) => { if (!api) throw new Error('no api'); const u = test ? vps + ep : api + ep; const r = await fetch(u); if (!r.ok) throw new Error('fetch fail'); return r; };
+      const pImg = async () => {
+        try {
+          await fApi();
+          const vr = await aFetch('/raider/versions');
+          const vd = await vr.json();
+          latest = vd.latest || vd.versions[0];
+          if (!latest) throw new Error('no version');
+          const ir = await aFetch('/raider/info/' + latest);
+          const id = await ir.json();
+          const fi = id.front_image;
+          if (fi) {
+            const im = new Image();
+            im.onload = () => { img.src = fi; imgOk = true; img.style.filter = 'none'; img.style.backdropFilter = 'none'; img.style.webkitBackdropFilter = 'none'; };
+            im.onerror = () => is.style.display = 'none';
+            im.src = fi;
+          } else is.style.display = 'none';
+          const base = test ? vps : (api || vps);
+          dl.href = base + '/raider/download/' + latest + '/file';
+          dl.setAttribute('download', '');
+        } catch(e) { console.warn('img fail'); is.style.display = 'none'; }
+      };
+      uSA(); pImg(); pLogo(); chk();
+      cube.addEventListener('animationend', function h(e) { if (e.animationName === 'rollBack') { cube.removeEventListener('animationend', h); setTimeout(dUL, 200); } });
+      ul.addEventListener('animationend', function h(e) { if (e.animationName === 'drawLine') { ul.removeEventListener('animationend', h); uSA(); setTimeout(shift, 400); sTB(); } });
+      let rt;
+      window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(uSA, 100); });
+      (function() {
+        const c = document.getElementById('bgtext');
+        if (!c) return;
+        const g = () => {
+          c.innerHTML = '';
+          let w = window.innerWidth, cols = 16, rows = 20;
+          if (w < 768) { cols = 10; rows = 15; } else if (w > 1600) { cols = 20; rows = 24; }
+          c.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+          c.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
+          for (let i = 0; i < cols * rows; i++) { const d = document.createElement('div'); d.textContent = 'gekke.org'; c.appendChild(d); }
+        };
+        g();
+        window.addEventListener('resize', () => setTimeout(g, 100));
+      })();
     })();
-    </script>
-
-    <script>
-    (function() {
-        var VPS_URL = 'https://imgekkefries.pythonanywhere.com';
-        var api = null;
-        var tool = 'raider';
-        
-        var images = [];
-        var idx = 0;
-        var curver = null;
-        var vers = [];
-        var infos = {};
-        var isTesting = false;
-        
-        var media = document.getElementById('sc-media');
-        var dots = document.getElementById('dots');
-        var lb = document.getElementById('lb');
-        var lbInner = document.getElementById('lb-inner');
-
-        function trimAndScale(src, maxWidth, maxHeight, callback) {
-            var img = new Image();
-            img.crossOrigin = 'Anonymous';
-            img.onload = function() {
-                var canvas = document.createElement('canvas');
-                var ctx = canvas.getContext('2d');
-                var w = img.naturalWidth;
-                var h = img.naturalHeight;
-                canvas.width = w;
-                canvas.height = h;
-                ctx.drawImage(img, 0, 0);
-                var data = ctx.getImageData(0, 0, w, h).data;
-                
-                var top = h, bottom = 0, left = w, right = 0;
-                for (var y = 0; y < h; y++) {
-                    for (var x = 0; x < w; x++) {
-                        var alpha = data[(y * w + x) * 4 + 3];
-                        if (alpha > 0) {
-                            if (y < top) top = y;
-                            if (y > bottom) bottom = y;
-                            if (x < left) left = x;
-                            if (x > right) right = x;
-                        }
-                    }
-                }
-                
-                if (top > bottom || left > right) {
-                    callback(src);
-                    return;
-                }
-                
-                var cropW = right - left + 1;
-                var cropH = bottom - top + 1;
-                
-                var scaleW = maxWidth ? maxWidth / cropW : 1;
-                var scaleH = maxHeight ? maxHeight / cropH : 1;
-                var scale = Math.min(scaleW || scaleH, scaleH || scaleW, 1);
-                
-                var finalW = Math.round(cropW * scale);
-                var finalH = Math.round(cropH * scale);
-                
-                var outCanvas = document.createElement('canvas');
-                outCanvas.width = finalW;
-                outCanvas.height = finalH;
-                var outCtx = outCanvas.getContext('2d');
-                outCtx.drawImage(img, left, top, cropW, cropH, 0, 0, finalW, finalH);
-                callback(outCanvas.toDataURL('image/png'));
-            };
-            img.onerror = function() { callback(src); };
-            img.src = src;
-        }
-
-        function fetchApiUrl() {
-            return fetch(VPS_URL + '/vps')
-                .then(function(res) {
-                    if (res.status === 200) return res.text();
-                    throw new Error('Failed to fetch VPS URL');
-                })
-                .then(function(url) {
-                    url = url.trim();
-                    if (url.startsWith('https://') && url.includes('trycloudflare.com')) {
-                        api = url;
-                        return api;
-                    }
-                    throw new Error('Invalid VPS URL: ' + url);
-                })
-                .catch(function(err) {
-                    isTesting = true;
-                    api = VPS_URL;
-                    return api;
-                });
-        }
-
-        function apiFetch(endpoint, options) {
-            if (!api) {
-                return Promise.reject(new Error('API URL not set'));
-            }
-            var url = api + endpoint;
-            if (isTesting) {
-                url = VPS_URL + endpoint;
-            }
-            return fetch(url, options);
-        }
-
-        async function load() {
-            try {
-                await fetchApiUrl();
-                
-                var r = await apiFetch('/' + tool + '/versions');
-                if (!r.ok) throw new Error('versions failed');
-                var d = await r.json();
-                vers = d.versions || [];
-                curver = d.latest || vers[0];
-                
-                for (var i = 0; i < vers.length; i++) {
-                    try {
-                        var ri = await apiFetch('/' + tool + '/info/' + vers[i]);
-                        if (ri.ok) infos[vers[i]] = await ri.json();
-                    } catch (e) {}
-                }
-                
-                buildVers();
-                showVer(curver);
-            } catch (e) {
-                document.getElementById('name').textContent = 'Discord Raider';
-                document.getElementById('ver').textContent = 'v1.0';
-                document.getElementById('desc').textContent = 'GUI based raider. Super user friendly, easy to use and reliable.';
-                buildDl('1.0');
-            }
-        }
-
-        function buildVers() {
-            var g = document.getElementById('ver-grid');
-            if (vers.length === 0) { g.innerHTML = '<div class="loading">No versions available</div>'; return; }
-            g.innerHTML = vers.map(function(v) {
-                var latest = v === vers[0];
-                var active = v === curver;
-                return '<button class="ver-btn' + (active ? ' active' : '') + '" onclick="switchVer(\'' + v + '\')">v' + v + (latest ? '<span class="badge latest">Latest</span>' : '') + '</button>';
-            }).join('');
-        }
-
-        function switchVer(v) {
-            curver = v;
-            buildVers();
-            showVer(v);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showVer(v) {
-            var info = infos[v];
-            if (!info) {
-                apiFetch('/' + tool + '/info/' + v).then(function(r) { return r.json(); }).then(function(d) {
-                    infos[v] = d;
-                    updatePage(v, d);
-                }).catch(function() {
-                    document.getElementById('name').textContent = 'Discord Raider';
-                    document.getElementById('ver').textContent = 'v' + v;
-                    document.getElementById('desc').textContent = 'Loading info failed...';
-                });
-                return;
-            }
-            updatePage(v, info);
-        }
-
-        function updatePage(v, info) {
-            document.getElementById('name').textContent = info.full_name || 'Discord Raider';
-            document.getElementById('ver').textContent = 'v' + v;
-            document.getElementById('selver').textContent = 'v' + v;
-            document.getElementById('desc').textContent = info.description || 'No description available.';
-            document.getElementById('dv').textContent = 'v' + v;
-            document.getElementById('dfn').textContent = info.full_name || 'Discord Raider';
-            buildFeat(info.features || {});
-            buildTags(info.features || {});
-            buildImages(info);
-            buildDl(v);
-        }
-
-        function buildFeat(f) {
-            var g = document.getElementById('feat-grid');
-            if (Object.keys(f).length === 0) { g.innerHTML = '<div class="loading">No features listed</div>'; return; }
-            g.innerHTML = Object.entries(f).map(function(e) {
-                var cat = e[0], items = e[1], html = '';
-                if (typeof items === 'object' && !Array.isArray(items)) {
-                    html = Object.entries(items).map(function(e2) {
-                        var k = e2[0], val = e2[1], dv = val;
-                        if (Array.isArray(val)) dv = val.join(', ');
-                        else if (typeof val === 'boolean') dv = val ? 'Yes' : 'No';
-                        return '<div class="feat-item">' + k.replace(/_/g, ' ') + ': ' + dv + '</div>';
-                    }).join('');
-                } else {
-                    html = '<div class="feat-item">' + items + '</div>';
-                }
-                return '<div class="feat-cat"><h4>' + cat.replace(/_/g, ' ') + '</h4>' + html + '</div>';
-            }).join('');
-        }
-
-        function buildTags(f) {
-            var c = document.getElementById('tags'); c.innerHTML = '';
-            if (f.highlights) {
-                Object.entries(f.highlights).forEach(function(e) {
-                    if (typeof e[1] === 'string') {
-                        var t = document.createElement('span'); t.className = 'tag';
-                        t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> ' + e[1];
-                        c.appendChild(t);
-                    }
-                });
-            }
-            var n = Object.keys(f).length;
-            if (n > 0) {
-                var t = document.createElement('span'); t.className = 'tag';
-                t.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg> ' + n + ' categor' + (n !== 1 ? 'ies' : 'y');
-                c.appendChild(t);
-            }
-        }
-
-        function buildImages(info) {
-            images = [];
-            if (info.front_image) images.push({ src: info.front_image });
-            if (info.side_images && Array.isArray(info.side_images)) {
-                info.side_images.forEach(function(img) { images.push({ src: img }); });
-            }
-            if (images.length === 0) images.push({ src: '' });
-            
-            var h = '';
-            for (var i = 0; i < images.length; i++) h += '<span class="sc-dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '"></span>';
-            dots.innerHTML = h;
-            
-            document.querySelectorAll('.sc-dot').forEach(function(d) {
-                d.addEventListener('click', function(e) { e.stopPropagation(); setImg(parseInt(d.dataset.index)); });
-            });
-            setImg(0);
-        }
-
-        function setImg(i) {
-            idx = i;
-            var src = images[i] && images[i].src ? images[i].src : '';
-            if (!src) { media.src = ''; return; }
-            var body = document.getElementById('sc-body');
-            var maxW = body.clientWidth;
-            var maxH = 500;
-            trimAndScale(src, maxW, maxH, function(result) {
-                if (idx === i) { media.src = result; media.style.display = 'block'; }
-            });
-            document.querySelectorAll('.sc-dot').forEach(function(d, j) { d.classList.toggle('active', j === i); });
-        }
-
-        function getDownloadBase() {
-            if (isTesting) {
-                return VPS_URL;
-            }
-            return api || VPS_URL;
-        }
-
-        function buildDl(v) {
-            var base = getDownloadBase();
-            var g = document.getElementById('dl-grid');
-            g.innerHTML = '<div class="dl-card"><div class="dl-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><h3>Download Raider</h3><p class="dl-desc">Compiled executable v' + v + '. Ready to run, no Python or dependencies needed.</p><span class="dl-tag">Free</span><a href="' + base + '/' + tool + '/download/' + v + '/file" class="btn btn-p" download><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download v' + v + '</a></div>' +
-            '<div class="dl-card"><div class="dl-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg></div><h3>Download Bootstrapper</h3><p class="dl-desc">Auto-updater tool. Keeps your tools always up to date automatically.</p><span class="dl-tag boot">Bootstrapper</span><a href="' + base + '/bootstrapper/download" class="btn btn-p" download><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Download</a></div>' +
-            '<div class="dl-card"><div class="dl-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div><h3>Source Code</h3><p class="dl-desc">Full Python source code. Requires Python 3.9+ and dependencies.</p><span class="dl-tag paid">19.99</span><a href="https://discord.gg/72dP7pPdR2" class="btn btn-o" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg> Purchase Source</a></div>';
-        }
-
-        function openLb(i) {
-            var item = images[i];
-            var src = item && item.src ? item.src : '';
-            if (!src) { lb.classList.add('active'); return; }
-            
-            var maxW = Math.round(window.innerWidth * 0.9);
-            var maxH = Math.round(window.innerHeight * 0.85);
-            trimAndScale(src, maxW, maxH, function(trimmed) {
-                lbInner.innerHTML = '<div class="lb-close" id="lbclose"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div><div class="lb-nav prev" id="lbprev"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></div><div class="lb-nav next" id="lbnext"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></div><img src="' + trimmed + '" style="max-width:90vw;max-height:85vh;object-fit:contain;border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,0.5);"><div class="lb-count">' + (i + 1) + ' / ' + images.length + '</div>';
-                lb.classList.add('active');
-                document.getElementById('lbclose').addEventListener('click', function() { lb.classList.remove('active'); });
-                document.getElementById('lbprev').addEventListener('click', function() { openLb((i - 1 + images.length) % images.length); });
-                document.getElementById('lbnext').addEventListener('click', function() { openLb((i + 1) % images.length); });
-            });
-        }
-
-        window.switchVer = switchVer;
-
-        document.getElementById('prev').addEventListener('click', function(e) { e.stopPropagation(); setImg((idx - 1 + images.length) % images.length); });
-        document.getElementById('next').addEventListener('click', function(e) { e.stopPropagation(); setImg((idx + 1) % images.length); });
-        document.getElementById('sc-body').addEventListener('click', function(e) {
-            if (e.target.closest('.sc-nav') || e.target.closest('.sc-dot')) return;
-            openLb(idx);
-        });
-        lb.addEventListener('click', function(e) { if (e.target === lb) lb.classList.remove('active'); });
-        document.addEventListener('keydown', function(e) { if (lb.classList.contains('active') && e.key === 'Escape') lb.classList.remove('active'); });
-
-        (function() {
-            var c = document.getElementById('bgtext');
-            if (!c) return;
-            function gen() {
-                c.innerHTML = ''; var w = window.innerWidth, cols = 16, rows = 20;
-                if (w < 768) { cols = 10; rows = 15; } else if (w > 1600) { cols = 20; rows = 24; }
-                c.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-                c.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
-                for (var i = 0; i < cols * rows; i++) { var d = document.createElement('div'); d.textContent = 'gekke.org'; c.appendChild(d); }
-            }
-            gen(); window.addEventListener('resize', function() { setTimeout(gen, 100); });
-        })();
-
-        (function() {
-            var bar = document.getElementById('scrollbar');
-            window.addEventListener('scroll', function() {
-                var h = document.documentElement.scrollHeight - window.innerHeight;
-                if (h > 0) bar.style.width = (window.scrollY / h) * 100 + '%';
-            });
-        })();
-
-        load();
-    })();
-    </script>
-
+  </script>
 </body>
 </html>
