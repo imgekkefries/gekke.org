@@ -630,7 +630,7 @@
     </div>
     <div class="topbar-right">
       <a class="topbar-link hv" href="#versions" id="vlink">Versions</a>
-      <a class="topbar-link hv" href="#">Download</a>
+      <a class="topbar-link hv" href="#" id="tbd">Download</a>
       <a class="topbar-link" href="https://discord.gg/72dP7pPdR2" target="_blank" rel="noopener noreferrer">Discord</a>
     </div>
   </div>
@@ -684,6 +684,7 @@
       const is = document.getElementById('is');
       const img = document.getElementById('img');
       const dl = document.getElementById('dl');
+      const tbd = document.getElementById('tbd');
       const tb = document.getElementById('topbar');
       const logo = document.getElementById('logo');
       const home = document.getElementById('home');
@@ -708,6 +709,14 @@
         if (imgOk) setTimeout(() => is.classList.add('visible'), 350);
       };
       const sTB = () => setTimeout(() => { tb.classList.remove('hidden-initially'); tb.classList.add('visible'); }, 500);
+      const setDl = (v) => {
+        const base = test ? vps : (api || vps);
+        const url = base + '/raider/download/' + v + '/file';
+        dl.href = url;
+        dl.setAttribute('download', '');
+        tbd.href = url;
+        tbd.setAttribute('download', '');
+      };
       const nav = (p) => {
         if (p === 'versions') {
           home.classList.remove('active');
@@ -794,9 +803,7 @@
             im.onerror = () => is.style.display = 'none';
             im.src = fi;
           } else is.style.display = 'none';
-          const base = test ? vps : (api || vps);
-          dl.href = base + '/raider/download/' + latest + '/file';
-          dl.setAttribute('download', '');
+          setDl(latest);
         } catch(e) { console.warn('img fail'); is.style.display = 'none'; }
       };
       uSA(); pImg(); pLogo(); chk();
