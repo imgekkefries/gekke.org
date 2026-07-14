@@ -615,6 +615,9 @@
       .v-grid { grid-template-columns: 1fr; }
       .v-header { grid-template-columns: 1fr 1fr; gap: 8px; }
       .v-header > *:nth-child(3), .v-header > *:nth-child(4) { display: none; }
+      .front h1 span {
+        font-size: clamp(1.2rem, 7vw, 2rem) !important;
+      }
     }
   </style>
 </head>
@@ -629,7 +632,7 @@
       <span class="topbar-brand">gekke.org</span>
     </div>
     <div class="topbar-right">
-      <a class="topbar-link hv" href="#versions" id="vlink">Versions</a>
+      <a class="topbar-link hv" id="vlink">Versions</a>
       <a class="topbar-link hv" href="#" id="tbd">Download</a>
       <a class="topbar-link" href="https://discord.gg/72dP7pPdR2" target="_blank" rel="noopener noreferrer">Discord</a>
     </div>
@@ -690,6 +693,7 @@
       const home = document.getElementById('home');
       const vp = document.getElementById('vp');
       const vlist = document.getElementById('vlist');
+      const vlink = document.getElementById('vlink');
       const hv = document.querySelectorAll('.hv');
       const vps = 'https://imgekkefries.pythonanywhere.com';
       let api = null;
@@ -772,6 +776,11 @@
           vOk = true;
         } catch(e) { vlist.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:32px;">Failed to load versions.</div>'; }
       };
+      vlink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = window.location.href.split('#')[0] + '#versions';
+        window.open(url, '_blank');
+      });
       window.addEventListener('hashchange', chk);
       const pLogo = () => {
         logo.src = vps + '/logo.png';
