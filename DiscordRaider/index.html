@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Gekke.org ~ Discord Raider</title>
+  <meta name="description" content="GUI based Discord raider. Simple, just works.">
+  <meta property="og:title" content="Gekke.org ~ Discord Raider">
+  <meta property="og:description" content="GUI based Discord raider. Simple, just works.">
+  <meta property="og:image" content="https://imgekkefries.pythonanywhere.com/images/raider.png">
+  <meta property="og:url" content="https://gekke.org">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gekke.org ~ Discord Raider">
+  <meta name="twitter:description" content="GUI based Discord raider. Simple, just works.">
+  <meta name="twitter:image" content="https://imgekkefries.pythonanywhere.com/images/raider.png">
   <style>
     @font-face {
       font-family: 'Terminal';
@@ -11,23 +21,22 @@
       font-weight: normal;
       font-style: normal;
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      --fs: clamp(1.8rem, 5.5vw, 5rem);
-      --cw: clamp(300px, 88vw, 950px);
-      --ch: clamp(65px, 9vw, 150px);
-      --cd: clamp(32px, 4.5vw, 75px);
-      --p: clamp(450px, 58vw, 950px);
-      --sb: clamp(35px, 5.5vw, 90px);
-      --sa: -22vh;
-      --bg: #0b0b0f;
+      --font-size: clamp(1.8rem, 5.5vw, 5rem);
+      --cube-width: clamp(300px, 88vw, 950px);
+      --cube-height: clamp(65px, 9vw, 150px);
+      --cube-depth: clamp(32px, 4.5vw, 75px);
+      --perspective: clamp(450px, 58vw, 950px);
+      --shadow-blur: clamp(35px, 5.5vw, 90px);
+      --shift-amount: -22vh;
+      --color-bg-primary: #0b0b0f;
     }
+
     body {
-      background-color: var(--bg);
+      background-color: var(--color-bg-primary);
       font-family: 'Terminal', monospace;
       display: flex;
       flex-direction: column;
@@ -38,29 +47,16 @@
       overflow-x: hidden;
       position: relative;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    ::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-      margin: 4px 0;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.08);
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.18);
-    }
-    ::-webkit-scrollbar-corner {
-      background: transparent;
-    }
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.08) transparent;
-    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; margin: 4px 0; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.18); }
+    ::-webkit-scrollbar-corner { background: transparent; }
+    * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.08) transparent; }
+
     .bg-grid {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 18px), linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
@@ -78,546 +74,220 @@
       pointer-events: none; z-index: 0;
     }
     .bg-text {
-      position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
-      pointer-events: none; z-index: 0;
+      position: fixed; top: -5%; left: -5%; width: 110%; height: 110%; pointer-events: none; z-index: 0;
       display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(20, 1fr);
       gap: 0.3rem; transform: rotate(-4deg); opacity: 0.35;
       font-family: 'Terminal', monospace; text-transform: uppercase;
       font-size: clamp(0.6rem, 1.5vw, 0.95rem); font-weight: 400;
       letter-spacing: 0.15em; color: rgba(255,255,255,0.10); padding: 1.5rem;
     }
-    .bg-text div {
-      display: flex; align-items: center; justify-content: center;
-      white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.06);
-    }
+    .bg-text div { display: flex; align-items: center; justify-content: center; white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.06); }
     .bg-text div:nth-child(3n) { opacity: 0.65; }
     .bg-text div:nth-child(5n) { transform: rotate(1deg); }
     .bg-text div:nth-child(7n) { transform: rotate(-1deg); }
+
     .topbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: clamp(54px, 7.5vh, 74px);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 clamp(20px, 4vw, 48px);
-      z-index: 100;
-      background: rgba(11,11,15,0.75);
-      backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; width: 100%; height: clamp(54px, 7.5vh, 74px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 48px); z-index: 100;
+      background: rgba(11, 11, 15, 0.75); backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255,255,255,0.06);
-      opacity: 1;
-      transform: translateY(0);
-      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.23,1,0.32,1);
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
       pointer-events: all;
     }
-    .topbar.hidden-initially {
-      opacity: 0;
-      transform: translateY(-100%);
-      pointer-events: none;
-    }
-    .topbar.visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: all;
-    }
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: clamp(12px, 1.8vw, 18px);
-    }
-    .topbar-logo {
-      height: clamp(34px, 4.8vw, 46px);
-      width: auto;
-      display: block;
-      border-radius: 6px;
-      image-rendering: auto;
-      filter: none;
-      backdrop-filter: none;
-    }
-    .topbar-brand {
-      font-size: clamp(14px, 1.6vw, 17px);
-      color: rgba(255,255,255,0.7);
-      letter-spacing: 0.5px;
-      font-weight: 400;
-      font-family: 'Terminal', monospace;
-    }
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: clamp(24px, 4vw, 42px);
-    }
-    .topbar-link {
-      font-size: clamp(12px, 1.3vw, 14px);
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      letter-spacing: 0.6px;
-      transition: color 0.25s ease;
-      cursor: pointer;
-      position: relative;
-      padding: 4px 0;
-      font-family: 'Terminal', monospace;
-    }
-    .topbar-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: rgba(255,255,255,0.5);
-      transition: width 0.25s ease;
-    }
-    .topbar-link:hover {
-      color: rgba(255,255,255,0.85);
-    }
-    .topbar-link:hover::after {
-      width: 100%;
-    }
-    .topbar-link.hv {
-      display: inline;
-    }
-    .page {
-      display: none;
-      width: 100%;
-    }
-    .page.active {
-      display: block;
-    }
+    .topbar.hidden-initially { opacity: 0; transform: translateY(-100%); pointer-events: none; }
+    .topbar.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .topbar-left { display: flex; align-items: center; gap: clamp(12px, 1.8vw, 18px); }
+    .topbar-logo { height: clamp(34px, 4.8vw, 46px); width: auto; display: block; border-radius: 6px; image-rendering: auto; filter: none; backdrop-filter: none; }
+    .topbar-brand { font-size: clamp(14px, 1.6vw, 17px); color: rgba(255,255,255,0.7); letter-spacing: 0.5px; font-weight: 400; font-family: 'Terminal', monospace; }
+    .topbar-right { display: flex; align-items: center; gap: clamp(24px, 4vw, 42px); }
+    .topbar-link { font-size: clamp(12px, 1.3vw, 14px); color: rgba(255,255,255,0.5); text-decoration: none; letter-spacing: 0.6px; transition: color 0.25s ease; cursor: pointer; position: relative; padding: 4px 0; font-family: 'Terminal', monospace; }
+    .topbar-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: rgba(255,255,255,0.5); transition: width 0.25s ease; }
+    .topbar-link:hover { color: rgba(255,255,255,0.85); }
+    .topbar-link:hover::after { width: 100%; }
+    .topbar-link.hidden-on-versions { display: inline; }
+
+    .page { display: none; width: 100%; }
+    .page.active { display: block; }
+
     .animation-stage {
-      position: relative;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      min-height: 100dvh;
-      z-index: 5;
+      position: relative; width: 100%; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; min-height: 100vh; min-height: 100dvh; z-index: 5;
     }
-    .scene {
-      perspective: var(--p);
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      z-index: 10;
-      padding: 0 clamp(1rem, 4vw, 3rem);
-      overflow: visible;
-    }
-    .cube {
-      position: relative;
-      width: var(--cw);
-      height: var(--ch);
-      transform-style: preserve-3d;
-    }
-    .cube.animate {
-      animation: rollBack 0.5s cubic-bezier(0.25,0.1,0.25,1) forwards;
-      animation-delay: 1.8s;
-    }
-    .face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      backface-visibility: hidden;
-    }
-    .front {
-      transform: translateZ(var(--cd));
-    }
-    .bottom {
-      transform: rotateX(-90deg) translateZ(var(--cd));
-    }
-    .content-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      transition: transform 0.75s cubic-bezier(0.23,1,0.32,1);
-      width: 100%;
-    }
-    .content-wrapper.shifted {
-      transform: translateY(var(--sa));
-    }
+    .scene { perspective: var(--perspective); width: 100%; display: flex; justify-content: center; z-index: 10; padding: 0 clamp(1rem, 4vw, 3rem); overflow: visible; }
+    .cube { position: relative; width: var(--cube-width); height: var(--cube-height); transform-style: preserve-3d; }
+    .cube.animate { animation: rollBack 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; animation-delay: 1.8s; }
+    .face { position: absolute; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; backface-visibility: hidden; }
+    .front { transform: translateZ(var(--cube-depth)); }
+    .bottom { transform: rotateX(-90deg) translateZ(var(--cube-depth)); }
+    .content-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; transition: transform 0.75s cubic-bezier(0.23, 1, 0.32, 1); width: 100%; }
+    .content-wrapper.shifted { transform: translateY(var(--shift-amount)); }
+
     h1 {
-      font-size: var(--fs);
-      font-weight: 400;
-      white-space: nowrap;
-      color: #fff;
-      line-height: 1.1;
-      text-align: center;
-      opacity: 1;
-      text-rendering: optimizeLegibility;
-      position: relative;
-      max-width: 90vw;
-      letter-spacing: -0.02em;
-      font-family: 'Terminal', monospace;
+      font-size: var(--font-size); font-weight: 400; white-space: nowrap; color: #ffffff;
+      line-height: 1.1; text-align: center; opacity: 1;
+      text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale; position: relative; max-width: 90vw;
+      letter-spacing: -0.02em; font-family: 'Terminal', monospace;
     }
-    .front h1 {
-      animation: fadeInTitle 1.3s ease forwards;
-    }
-    h1 span {
-      color: #fff;
-      background: none;
-      -webkit-background-clip: unset;
-      -webkit-text-fill-color: unset;
-      filter: none;
-      text-shadow: 0 0 2px rgba(255,255,255,0.15);
-    }
-    .underline {
-      display: block;
-      height: 1.5px;
-      background: rgba(255,255,255,0.25);
-      border-radius: 1px;
-      margin-top: 0.4em;
-      width: 0;
-    }
-    .underline.draw {
-      animation: drawLine 0.65s cubic-bezier(0.25,0.1,0.25,1) forwards;
-    }
+    .front h1 { animation: fadeInTitle 1.3s ease forwards; }
+    h1 span { color: #ffffff; background: none; -webkit-background-clip: unset; -webkit-text-fill-color: unset; background-clip: unset; filter: none; text-shadow: 0 0 2px rgba(255,255,255,0.15); }
+    .underline { display: block; height: 1.5px; background: rgba(255,255,255,0.25); border-radius: 1px; margin-top: 0.4em; width: 0; }
+    .underline.draw { animation: drawLine 0.65s cubic-bezier(0.25, 0.1, 0.25, 1) forwards; }
+
     .image-section {
-      position: absolute;
-      top: calc(100% + clamp(28px, 4vh, 56px));
-      left: 50%;
-      transform: translateX(-50%) translateY(25px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
-      pointer-events: none;
-      z-index: 15;
-      width: 100%;
+      position: absolute; top: calc(100% + clamp(28px, 4vh, 56px)); left: 50%;
+      transform: translateX(-50%) translateY(25px); display: flex; flex-direction: column;
+      align-items: center; opacity: 0;
+      transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+      pointer-events: none; z-index: 15; width: 100%;
     }
-    .image-section.visible {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-      pointer-events: all;
-    }
+    .image-section.visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
+
     .showcase-panel {
-      position: relative;
-      background: transparent;
-      border: none;
-      overflow: visible;
-      box-shadow: none;
-      width: 100%;
-      max-width: 950px;
-      margin: 0 auto;
+      position: relative; background: transparent; backdrop-filter: none; border: none;
+      border-radius: 0; overflow: visible; box-shadow: none; width: 100%; max-width: 950px; margin: 0 auto;
     }
     .showcase-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      background: #14171c;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-bottom: none;
-      border-radius: 10px 10px 0 0;
-      height: 28px;
+      display: flex; align-items: center; gap: 8px; padding: 6px 16px;
+      background: #14171c; border: 1px solid rgba(255,255,255,0.08); border-bottom: none;
+      border-radius: 10px 10px 0 0; backdrop-filter: none; height: 28px;
     }
-    .showcase-dots {
-      display: flex;
-      gap: 6px;
-    }
-    .showcase-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
+    .showcase-dots { display: flex; gap: 6px; }
+    .showcase-dot { width: 10px; height: 10px; border-radius: 50%; }
     .showcase-dot:nth-child(1) { background: #ff5f57; }
     .showcase-dot:nth-child(2) { background: #febc2e; }
     .showcase-dot:nth-child(3) { background: #28c840; }
     .showcase-image {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 0 0 10px 10px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-top: none;
-      image-rendering: auto;
-      filter: none !important;
-      box-shadow: none;
-      background: #0d1117;
-      transform: none;
+      display: block; width: 100%; height: auto; border-radius: 0 0 10px 10px;
+      border: 1px solid rgba(255,255,255,0.08); border-top: none;
+      image-rendering: auto; filter: none !important; backdrop-filter: none !important;
+      box-shadow: none; background: #0d1117; transform: none;
     }
+
     .separator {
-      width: clamp(50px, 10vw, 140px);
-      height: 1px;
+      width: clamp(50px, 10vw, 140px); height: 1px;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), rgba(255,255,255,0.28), rgba(255,255,255,0.18), transparent);
-      margin: clamp(18px, 2.8vh, 36px) auto;
-      pointer-events: none;
+      margin: clamp(18px, 2.8vh, 36px) auto; pointer-events: none;
     }
     .buttons {
-      display: flex;
-      gap: clamp(12px, 2.2vw, 22px);
-      pointer-events: all;
-      margin-top: clamp(14px, 2vh, 28px);
-      justify-content: center;
+      display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 1.5vw, 16px);
+      pointer-events: all; margin-top: clamp(14px, 2vh, 28px); justify-content: center;
     }
+    .buttons-row { display: flex; gap: clamp(12px, 2.2vw, 22px); justify-content: center; }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
       padding: clamp(11px, 1.6vw, 15px) clamp(22px, 3.2vw, 34px);
-      border-radius: 6px;
-      font-family: 'Terminal', monospace;
-      font-weight: 500;
-      font-size: clamp(13px, 1.5vw, 16px);
-      transition: all 0.2s ease;
-      cursor: pointer;
-      white-space: nowrap;
-      text-decoration: none;
-      border: none;
-      letter-spacing: 0.4px;
-      filter: none !important;
-      text-rendering: optimizeLegibility;
-      transform: none;
+      border-radius: 6px; font-family: 'Terminal', monospace; font-weight: 500;
+      font-size: clamp(13px, 1.5vw, 16px); transition: all 0.2s ease;
+      cursor: pointer; white-space: nowrap; text-decoration: none; border: none;
+      letter-spacing: 0.4px; backdrop-filter: none !important; filter: none !important;
+      text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased;
     }
-    .btn-dl {
-      background: #fff;
-      color: #0b0b0f;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.1);
+    .btn-dl { background: #ffffff; color: #0b0b0f; box-shadow: 0 1px 4px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); }
+    .btn-dl:hover { background: #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+    .btn-discord { background: #1a1d23; border: 1px solid rgba(255,255,255,0.18); color: #e8ecf2; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+    .btn-discord:hover { border-color: rgba(255,255,255,0.35); background: #22262e; box-shadow: 0 2px 10px rgba(0,0,0,0.35); }
+    .btn svg { flex-shrink: 0; filter: none !important; shape-rendering: geometricPrecision; }
+
+    .details-toggle {
+      font-size: clamp(11px, 1.1vw, 13px); color: rgba(255,255,255,0.35);
+      cursor: pointer; transition: color 0.25s ease; letter-spacing: 0.4px;
+      font-family: 'Terminal', monospace; text-decoration: none; padding: 4px 0;
     }
-    .btn-dl:hover {
-      background: #f0f0f0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    .details-toggle:hover { color: rgba(255,255,255,0.65); }
+
+    /* Modal */
+    .details-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 200; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
     }
-    .btn-discord {
-      background: #1a1d23;
-      border: 1px solid rgba(255,255,255,0.18);
-      color: #e8ecf2;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    .details-overlay.show { display: flex; }
+    .details-modal {
+      background: #12161c; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);
+      width: 90%; max-width: 900px; max-height: 80vh; overflow: hidden;
+      display: flex; flex-direction: column; animation: modalIn 0.3s ease;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
     }
-    .btn-discord:hover {
-      border-color: rgba(255,255,255,0.35);
-      background: #22262e;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .details-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .btn svg {
-      flex-shrink: 0;
-      filter: none !important;
-      shape-rendering: geometricPrecision;
+    .details-modal-header h3 { font-size: 16px; color: white; font-weight: 400; letter-spacing: 0.3px; }
+    .details-modal-close {
+      width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; background: transparent; border: 1px solid rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.35); cursor: pointer; transition: all 0.2s ease; font-size: 14px;
     }
-    .versions-page {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 120px 24px 80px;
-      z-index: 5;
-      position: relative;
+    .details-modal-close:hover { border-color: rgba(255,95,86,0.25); color: #ff5f56; background: rgba(255,95,86,0.04); }
+    .details-modal-body {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0; flex: 1; overflow: hidden;
     }
-    .vp-title {
-      font-size: clamp(28px, 4vw, 42px);
-      color: #fff;
-      margin-bottom: 8px;
-      font-weight: 400;
-      letter-spacing: 0.5px;
+    .details-panel {
+      padding: 24px; overflow-y: auto; max-height: calc(80vh - 68px);
     }
-    .vp-sub {
-      font-size: 14px;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 40px;
-      letter-spacing: 0.3px;
+    .details-panel:first-child { border-right: 1px solid rgba(255,255,255,0.06); }
+    .details-panel-title {
+      font-size: 12px; color: rgba(255,255,255,0.35); text-transform: uppercase;
+      letter-spacing: 0.8px; margin-bottom: 18px; font-weight: 400;
     }
-    .v-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      animation: fadeInUp 0.6s ease forwards;
-    }
-    .v-item {
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      opacity: 0;
-      transform: translateY(16px);
-      animation: vAppear 0.5s cubic-bezier(0.23,1,0.32,1) forwards;
-    }
-    .v-header {
-      display: grid;
-      grid-template-columns: 25% 30% 30% 15%;
-      padding: 16px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      align-items: center;
-    }
-    .v-header:hover {
-      background: rgba(255,255,255,0.02);
-    }
-    .v-item.expanded .v-header {
-      background: rgba(255,255,255,0.03);
-    }
-    .v-chevron {
-      display: inline-block;
-      transition: transform 0.35s cubic-bezier(0.23,1,0.32,1);
-      font-size: 12px;
-      margin-right: 8px;
-      color: rgba(255,255,255,0.4);
-    }
-    .v-item.expanded .v-chevron {
-      transform: rotate(90deg);
-    }
-    .v-name {
-      font-size: 14px;
-      color: #c8ccd4;
-      letter-spacing: 0.2px;
-    }
-    .v-date {
-      font-size: 14px;
-      color: #c8ccd4;
-      letter-spacing: 0.2px;
-    }
-    .v-status {
-      font-size: 14px;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 0.2px;
-    }
-    .v-dl {
-      display: inline-block;
-      padding: 6px 16px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #c8ccd4;
-      border-radius: 5px;
-      font-size: 12px;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      font-family: 'Terminal', monospace;
-      letter-spacing: 0.3px;
-      text-align: center;
-      width: fit-content;
-    }
-    .v-dl:hover {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.25);
-      color: #fff;
-    }
-    .v-expand {
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 0.5s cubic-bezier(0.23,1,0.32,1), opacity 0.4s ease;
-    }
-    .v-item.expanded .v-expand {
-      max-height: 2000px;
-      opacity: 1;
-    }
-    .v-expand-inner {
-      padding: 0 16px 24px;
-    }
-    .v-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      padding-top: 8px;
-    }
-    .detail-panel {
-      background: rgba(20,23,28,0.6);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 10px;
-      padding: 20px;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      animation: fadeInUp 0.4s ease forwards;
-    }
-    .dp-title {
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 16px;
-      font-weight: 400;
-    }
-    .changelog-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .changelog-list li {
-      font-size: 13px;
-      color: #a8adb5;
-      padding-left: 16px;
-      position: relative;
-      line-height: 1.5;
-      letter-spacing: 0.2px;
-    }
-    .changelog-list li::before {
-      content: '›';
-      position: absolute;
-      left: 0;
-      color: rgba(94,106,210,0.6);
-      font-size: 16px;
-      line-height: 1.3;
-    }
-    .f-cat {
-      margin-bottom: 16px;
-    }
-    .f-cat:last-child {
-      margin-bottom: 0;
-    }
-    .f-cat-name {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-    }
-    .f-item {
-      font-size: 13px;
-      color: #a8adb5;
-      padding: 3px 0;
-      padding-left: 12px;
-      letter-spacing: 0.2px;
-      line-height: 1.4;
-    }
-    .v-th {
-      display: grid;
-      grid-template-columns: 25% 30% 30% 15%;
-      padding: 12px 16px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-weight: 400;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 0;
-    }
-    @keyframes fadeInTitle {
-      0% { opacity: 0; transform: translateY(clamp(8px,1.2vw,14px)); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes rollBack {
-      0% { transform: rotateX(0deg); }
-      100% { transform: rotateX(90deg); }
-    }
-    @keyframes drawLine {
-      0% { width: 0; }
-      100% { width: 100%; }
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes vAppear {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .changelog-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .changelog-list li { font-size: 13px; color: #a8adb5; padding-left: 16px; position: relative; line-height: 1.5; letter-spacing: 0.2px; }
+    .changelog-list li::before { content: '›'; position: absolute; left: 0; color: rgba(94,106,210,0.6); font-size: 16px; line-height: 1.3; }
+    .feature-category { margin-bottom: 14px; }
+    .feature-category:last-child { margin-bottom: 0; }
+    .feature-category-name { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .feature-item { font-size: 13px; color: #a8adb5; padding: 2px 0; padding-left: 12px; letter-spacing: 0.2px; line-height: 1.4; }
+
     @media (max-width: 700px) {
-      .bg-text { grid-template-columns: repeat(10,1fr); grid-template-rows: repeat(15,1fr); }
+      .details-modal-body { grid-template-columns: 1fr; }
+      .details-panel:first-child { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .details-panel { max-height: none; }
+      .details-modal { max-height: 90vh; }
+    }
+
+    /* Versions Page */
+    .versions-page { width: 100%; max-width: 1000px; margin: 0 auto; padding: 120px 24px 80px; z-index: 5; position: relative; }
+    .versions-page-title { font-size: clamp(28px, 4vw, 42px); color: #ffffff; margin-bottom: 8px; font-weight: 400; letter-spacing: 0.5px; }
+    .versions-page-subtitle { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 40px; letter-spacing: 0.3px; }
+    .versions-list { display: flex; flex-direction: column; gap: 0; animation: fadeInUp 0.6s ease forwards; }
+    .version-item { border-bottom: 1px solid rgba(255,255,255,0.04); opacity: 0; transform: translateY(16px); animation: versionAppear 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+    .version-header { display: grid; grid-template-columns: 25% 30% 30% 15%; padding: 16px; cursor: pointer; transition: background 0.2s ease; align-items: center; }
+    .version-header:hover { background: rgba(255,255,255,0.02); }
+    .version-item.expanded .version-header { background: rgba(255,255,255,0.03); }
+    .version-chevron { display: inline-block; transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1); font-size: 12px; margin-right: 8px; color: rgba(255,255,255,0.4); }
+    .version-item.expanded .version-chevron { transform: rotate(90deg); }
+    .version-name { font-size: 14px; color: #c8ccd4; letter-spacing: 0.2px; }
+    .version-date { font-size: 14px; color: #c8ccd4; letter-spacing: 0.2px; }
+    .version-status { font-size: 14px; color: rgba(255,255,255,0.4); letter-spacing: 0.2px; }
+    .version-dl-btn { display: inline-block; padding: 6px 16px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #c8ccd4; border-radius: 5px; font-size: 12px; text-decoration: none; transition: all 0.2s ease; font-family: 'Terminal', monospace; letter-spacing: 0.3px; text-align: center; width: fit-content; }
+    .version-dl-btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); color: #fff; }
+    .version-expanded-content { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.5s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease; }
+    .version-item.expanded .version-expanded-content { max-height: 2000px; opacity: 1; }
+    .version-expanded-inner { padding: 0 16px 24px; }
+    .version-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 8px; }
+    .detail-panel { background: rgba(20, 23, 28, 0.6); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 20px; backdrop-filter: blur(8px); animation: fadeInUp 0.4s ease forwards; }
+    .detail-panel-title { font-size: 14px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 16px; font-weight: 400; }
+    .versions-table-header { display: grid; grid-template-columns: 25% 30% 30% 15%; padding: 12px 16px; font-size: 12px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 400; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 0; }
+
+    @keyframes fadeInTitle { 0% { opacity: 0; transform: translateY(clamp(8px, 1.2vw, 14px)); } 100% { opacity: 1; transform: translateY(0); } }
+    @keyframes rollBack { 0% { transform: rotateX(0deg); } 100% { transform: rotateX(90deg); } }
+    @keyframes drawLine { 0% { width: 0; } 100% { width: 100%; } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes versionAppear { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 700px) {
+      .bg-text { grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(15, 1fr); }
       .buttons { flex-direction: column; align-items: center; }
       .topbar-right { gap: 16px; }
       .topbar-brand { display: none; }
-      .v-th { display: none; }
-      .v-grid { grid-template-columns: 1fr; }
-      .v-header { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .v-header > *:nth-child(3), .v-header > *:nth-child(4) { display: none; }
-      .front h1 span {
-        font-size: clamp(1.2rem, 7vw, 2rem) !important;
-      }
+      .versions-table-header { display: none; }
+      .version-header { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .version-header > *:nth-child(3), .version-header > *:nth-child(4) { display: none; }
+      .version-details-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -626,42 +296,54 @@
   <div class="bg-glow"></div>
   <div class="bg-diag"></div>
   <div class="bg-text" id="bgtext"></div>
+
   <div class="topbar hidden-initially" id="topbar">
     <div class="topbar-left">
-      <img class="topbar-logo" id="logo" src="" alt="Logo" />
+      <img class="topbar-logo" id="topbarLogo" src="" alt="Logo" />
       <span class="topbar-brand">gekke.org</span>
     </div>
     <div class="topbar-right">
-      <a class="topbar-link hv" id="vlink">Versions</a>
-      <a class="topbar-link hv" href="#" id="tbd">Download</a>
+      <a class="topbar-link hidden-on-versions" href="#versions" id="versionsLink">Versions</a>
+      <a class="topbar-link hidden-on-versions" href="#">Download</a>
       <a class="topbar-link" href="https://discord.gg/72dP7pPdR2" target="_blank" rel="noopener noreferrer">Discord</a>
     </div>
   </div>
-  <div class="page active" id="home">
+
+  <div class="page active" id="homePage">
     <div class="animation-stage">
       <div class="scene">
         <div class="cube animate" id="cube">
-          <div class="face front"><h1><span>Gekke.org Discord Raider</span></h1></div>
+          <div class="face front">
+            <h1><span>Gekke.org Discord Raider</span></h1>
+          </div>
           <div class="face bottom">
-            <div class="content-wrapper" id="cw">
-              <h1><span>Simple, Just Works</span><span class="underline" id="ul"></span></h1>
-              <div class="image-section" id="is">
+            <div class="content-wrapper" id="contentWrapper">
+              <h1>
+                <span>Simple, Just Works</span>
+                <span class="underline" id="underline"></span>
+              </h1>
+              <div class="image-section" id="imageSection">
                 <div class="showcase-panel">
                   <div class="showcase-header">
-                    <div class="showcase-dots"><div class="showcase-dot"></div><div class="showcase-dot"></div><div class="showcase-dot"></div></div>
+                    <div class="showcase-dots">
+                      <div class="showcase-dot"></div><div class="showcase-dot"></div><div class="showcase-dot"></div>
+                    </div>
                   </div>
-                  <img class="showcase-image" id="img" src="" alt="Discord Raider Interface" />
+                  <img class="showcase-image" id="showcaseImage" src="" alt="Discord Raider Interface" />
                 </div>
                 <div class="separator"></div>
                 <div class="buttons">
-                  <a href="#" class="btn btn-dl" id="dl">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download
-                  </a>
-                  <a href="https://discord.gg/72dP7pPdR2" class="btn btn-discord" target="_blank" rel="noopener noreferrer">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                    Discord
-                  </a>
+                  <div class="buttons-row">
+                    <a href="#" class="btn btn-dl" id="downloadBtn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      Download
+                    </a>
+                    <a href="https://discord.gg/72dP7pPdR2" class="btn btn-discord" target="_blank" rel="noopener noreferrer">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                      Discord
+                    </a>
+                  </div>
+                  <span class="details-toggle" id="detailsToggle">Show Details</span>
                 </div>
               </div>
             </div>
@@ -670,169 +352,291 @@
       </div>
     </div>
   </div>
-  <div class="page" id="vp">
+
+  <div class="page" id="versionsPage">
     <div class="versions-page">
-      <h2 class="vp-title">Versions</h2>
-      <p class="vp-sub">All releases of Discord Raider</p>
-      <div class="v-th"><div>Version</div><div>Release Date</div><div>Status</div><div></div></div>
-      <div class="v-list" id="vlist"><div style="text-align:center;color:rgba(255,255,255,0.3);padding:32px;">Loading versions...</div></div>
+      <h2 class="versions-page-title">Versions</h2>
+      <p class="versions-page-subtitle">All releases of Discord Raider</p>
+      <div class="versions-table-header">
+        <div>Version</div><div>Release Date</div><div>Status</div><div></div>
+      </div>
+      <div class="versions-list" id="versionsList">
+        <div style="text-align:center;color:rgba(255,255,255,0.3);padding:32px;">Loading versions...</div>
+      </div>
     </div>
   </div>
+
+  <div class="details-overlay" id="detailsOverlay">
+    <div class="details-modal">
+      <div class="details-modal-header">
+        <h3 id="detailsModalTitle">Version Details</h3>
+        <button class="details-modal-close" id="detailsModalClose">&times;</button>
+      </div>
+      <div class="details-modal-body">
+        <div class="details-panel" id="detailsChangelog"></div>
+        <div class="details-panel" id="detailsFeatures"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    (() => {
-      const r = document.documentElement;
+    (function() {
+      const root = document.documentElement;
       const cube = document.getElementById('cube');
-      const ul = document.getElementById('ul');
-      const cw = document.getElementById('cw');
-      const is = document.getElementById('is');
-      const img = document.getElementById('img');
-      const dl = document.getElementById('dl');
-      const tbd = document.getElementById('tbd');
-      const tb = document.getElementById('topbar');
-      const logo = document.getElementById('logo');
-      const home = document.getElementById('home');
-      const vp = document.getElementById('vp');
-      const vlist = document.getElementById('vlist');
-      const vlink = document.getElementById('vlink');
-      const hv = document.querySelectorAll('.hv');
-      const vps = 'https://imgekkefries.pythonanywhere.com';
+      const underline = document.getElementById('underline');
+      const contentWrapper = document.getElementById('contentWrapper');
+      const imageSection = document.getElementById('imageSection');
+      const showcaseImage = document.getElementById('showcaseImage');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const topbar = document.getElementById('topbar');
+      const topbarLogo = document.getElementById('topbarLogo');
+      const homePage = document.getElementById('homePage');
+      const versionsPage = document.getElementById('versionsPage');
+      const versionsList = document.getElementById('versionsList');
+      const versionsLink = document.getElementById('versionsLink');
+      const hiddenLinks = document.querySelectorAll('.hidden-on-versions');
+      const detailsToggle = document.getElementById('detailsToggle');
+      const detailsOverlay = document.getElementById('detailsOverlay');
+      const detailsModalClose = document.getElementById('detailsModalClose');
+      const detailsModalTitle = document.getElementById('detailsModalTitle');
+      const detailsChangelog = document.getElementById('detailsChangelog');
+      const detailsFeatures = document.getElementById('detailsFeatures');
+      const VPS_URL = 'https://imgekkefries.pythonanywhere.com';
+
       let api = null;
-      let test = false;
-      let imgOk = false;
-      let logoOk = false;
-      let latest = null;
-      let data = [];
-      let vOk = false;
-      const uSA = () => {
+      let isTesting = false;
+      let imageLoaded = false;
+      let logoLoaded = false;
+      let latestVersion = null;
+      let allVersionsData = [];
+      let versionsLoaded = false;
+
+      function updateShiftAmount() {
         const h = window.innerHeight;
-        r.style.setProperty('--sa', '-' + Math.max(80, h * 0.24) + 'px');
-      };
-      const dUL = () => ul.classList.add('draw');
-      const shift = () => {
-        cw.classList.add('shifted');
-        if (imgOk) setTimeout(() => is.classList.add('visible'), 350);
-      };
-      const sTB = () => setTimeout(() => { tb.classList.remove('hidden-initially'); tb.classList.add('visible'); }, 500);
-      const setDl = (v) => {
-        const base = test ? vps : (api || vps);
-        const url = base + '/raider/download/' + v + '/file';
-        dl.href = url;
-        dl.setAttribute('download', '');
-        tbd.href = url;
-        tbd.setAttribute('download', '');
-      };
-      const nav = (p) => {
-        if (p === 'versions') {
-          home.classList.remove('active');
-          vp.classList.add('active');
-          tb.classList.remove('hidden-initially');
-          tb.classList.add('visible');
-          hv.forEach(l => l.style.display = 'none');
-          if (!vOk) loadV();
-        } else {
-          vp.classList.remove('active');
-          home.classList.add('active');
-          hv.forEach(l => l.style.display = '');
+        const shiftPx = Math.max(80, h * 0.24);
+        root.style.setProperty('--shift-amount', '-' + shiftPx + 'px');
+      }
+
+      function drawUnderline() { underline.classList.add('draw'); }
+
+      function shiftUpAndShowImage() {
+        contentWrapper.classList.add('shifted');
+        if (imageLoaded) {
+          setTimeout(function() { imageSection.classList.add('visible'); }, 350);
         }
-      };
-      const chk = () => { const h = location.hash; nav(h === '#versions' ? 'versions' : 'home'); };
-      const loadV = async () => {
-        try {
-          if (!api) await fApi();
-          const res = await aFetch('/raider/versions');
-          const j = await res.json();
-          data = j.versions || [];
-          const latestV = j.latest || data[0];
-          vlist.innerHTML = '';
-          let d = 0;
-          for (const v of data) {
-            const isL = v === latestV;
-            let date = '', ch = [], ft = {};
-            try { const cr = await aFetch('/raider/changelog/' + v); const cj = await cr.json(); date = cj.date || ''; ch = cj.changes || []; } catch(e) {}
-            try { const ir = await aFetch('/raider/info/' + v); const ij = await ir.json(); ft = ij.features || {}; } catch(e) {}
-            const base = test ? vps : (api || vps);
-            const item = document.createElement('div');
-            item.className = 'v-item';
-            item.style.animationDelay = d + 's';
-            d += 0.08;
-            let cHTML = ch.length ? '<ul class="changelog-list">' + ch.map(c => `<li>${c}</li>`).join('') + '</ul>' : '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No changelog available.</p>';
-            let fHTML = '';
-            if (Object.keys(ft).length) {
-              for (const [cat, items] of Object.entries(ft)) {
-                if (typeof items === 'object' && items) {
-                  fHTML += `<div class="f-cat"><div class="f-cat-name">${cat.replace(/_/g,' ')}</div>`;
-                  for (const [k, val] of Object.entries(items)) {
-                    if (typeof val === 'string') fHTML += `<div class="f-item">${k.replace(/_/g,' ')}: ${val}</div>`;
-                    else if (typeof val === 'object' && val) { fHTML += `<div class="f-item">${k.replace(/_/g,' ')}:</div>`; for (const [sk, sv] of Object.entries(val)) fHTML += `<div class="f-item" style="padding-left:24px;">${sk.replace(/_/g,' ')}: ${sv}</div>`; }
+      }
+
+      function showTopbar() {
+        setTimeout(function() {
+          topbar.classList.remove('hidden-initially');
+          topbar.classList.add('visible');
+        }, 500);
+      }
+
+      function navigateTo(page) {
+        if (page === 'versions') {
+          homePage.classList.remove('active');
+          versionsPage.classList.add('active');
+          topbar.classList.remove('hidden-initially');
+          topbar.classList.add('visible');
+          hiddenLinks.forEach(function(link) { link.style.display = 'none'; });
+          if (!versionsLoaded) loadVersionsPage();
+        } else {
+          versionsPage.classList.remove('active');
+          homePage.classList.add('active');
+          hiddenLinks.forEach(function(link) { link.style.display = ''; });
+        }
+      }
+
+      function checkHash() {
+        var hash = window.location.hash;
+        if (hash === '#versions') navigateTo('versions');
+        else navigateTo('home');
+      }
+
+      function showDetailsModal() {
+        if (!latestVersion) return;
+        detailsModalTitle.textContent = 'Version ' + latestVersion;
+        detailsChangelog.innerHTML = '<p style="color:rgba(255,255,255,0.2);font-size:13px;">Loading...</p>';
+        detailsFeatures.innerHTML = '<p style="color:rgba(255,255,255,0.2);font-size:13px;">Loading...</p>';
+        detailsOverlay.classList.add('show');
+
+        apiFetch('/raider/changelog/' + latestVersion).then(function(r) { return r.json(); }).then(function(data) {
+          var changes = data.changes || [];
+          if (changes.length > 0) {
+            detailsChangelog.innerHTML = '<div class="details-panel-title">Changelog</div><ul class="changelog-list">' + changes.map(function(c) { return '<li>' + c + '</li>'; }).join('') + '</ul>';
+          } else {
+            detailsChangelog.innerHTML = '<div class="details-panel-title">Changelog</div><p style="color:rgba(255,255,255,0.3);font-size:13px;">No changelog available.</p>';
+          }
+        }).catch(function() {
+          detailsChangelog.innerHTML = '<div class="details-panel-title">Changelog</div><p style="color:rgba(255,255,255,0.3);font-size:13px;">No changelog available.</p>';
+        });
+
+        apiFetch('/raider/info/' + latestVersion).then(function(r) { return r.json(); }).then(function(data) {
+          var features = data.features || {};
+          var html = '<div class="details-panel-title">Features</div>';
+          var keys = Object.keys(features);
+          if (keys.length > 0) {
+            for (var i = 0; i < keys.length; i++) {
+              var category = keys[i];
+              var items = features[category];
+              html += '<div class="feature-category"><div class="feature-category-name">' + category.replace(/_/g, ' ') + '</div>';
+              if (typeof items === 'object' && items !== null) {
+                var subKeys = Object.keys(items);
+                for (var j = 0; j < subKeys.length; j++) {
+                  var subKey = subKeys[j];
+                  var subValue = items[subKey];
+                  if (typeof subValue === 'string') {
+                    html += '<div class="feature-item">' + subKey.replace(/_/g, ' ') + ': ' + subValue + '</div>';
+                  } else if (typeof subValue === 'object' && subValue !== null) {
+                    html += '<div class="feature-item">' + subKey.replace(/_/g, ' ') + ':</div>';
+                    var subSubKeys = Object.keys(subValue);
+                    for (var k = 0; k < subSubKeys.length; k++) {
+                      html += '<div class="feature-item" style="padding-left:20px;">' + subSubKeys[k].replace(/_/g, ' ') + ': ' + subValue[subSubKeys[k]] + '</div>';
+                    }
                   }
-                  fHTML += '</div>';
                 }
               }
-            } else fHTML = '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No feature details available.</p>';
-            item.innerHTML = `<div class="v-header"><div class="v-name"><span class="v-chevron">›</span>${v}</div><div class="v-date">${date||'—'}</div><div class="v-status">${isL?'Active':'Archived'}</div><div><a href="${base}/raider/download/${v}/file" class="v-dl" download>Download</a></div></div><div class="v-expand"><div class="v-expand-inner"><div class="v-grid"><div class="detail-panel"><div class="dp-title">Changelog</div>${cHTML}</div><div class="detail-panel"><div class="dp-title">Features</div>${fHTML}</div></div></div></div>`;
-            item.querySelector('.v-header').addEventListener('click', function(e) { if (!e.target.closest('.v-dl')) item.classList.toggle('expanded'); });
-            vlist.appendChild(item);
+              html += '</div>';
+            }
+          } else {
+            html += '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No feature details available.</p>';
           }
-          vOk = true;
-        } catch(e) { vlist.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:32px;">Failed to load versions.</div>'; }
-      };
-      vlink.addEventListener('click', (e) => {
-        e.preventDefault();
-        const url = window.location.href.split('#')[0] + '#versions';
-        window.open(url, '_blank');
+          detailsFeatures.innerHTML = html;
+        }).catch(function() {
+          detailsFeatures.innerHTML = '<div class="details-panel-title">Features</div><p style="color:rgba(255,255,255,0.3);font-size:13px;">No feature details available.</p>';
+        });
+      }
+
+      function hideDetailsModal() { detailsOverlay.classList.remove('show'); }
+
+      detailsToggle.addEventListener('click', showDetailsModal);
+      detailsModalClose.addEventListener('click', hideDetailsModal);
+      detailsOverlay.addEventListener('click', function(e) { if (e.target === detailsOverlay) hideDetailsModal(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && detailsOverlay.classList.contains('show')) hideDetailsModal(); });
+
+      async function loadVersionsPage() {
+        try {
+          if (!api) await fetchApiUrl();
+          var versionsRes = await apiFetch('/raider/versions');
+          var versionsData = await versionsRes.json();
+          allVersionsData = versionsData.versions || [];
+          var latest = versionsData.latest || allVersionsData[0];
+          versionsList.innerHTML = '';
+          var delay = 0;
+          for (var i = 0; i < allVersionsData.length; i++) {
+            var version = allVersionsData[i];
+            var isLatest = version === latest;
+            var date = '', changelog = [], features = {};
+            try { var cr = await apiFetch('/raider/changelog/' + version); var cd = await cr.json(); date = cd.date || ''; changelog = cd.changes || []; } catch(e) {}
+            try { var ir = await apiFetch('/raider/info/' + version); var id = await ir.json(); features = id.features || {}; } catch(e) {}
+            var base = isTesting ? VPS_URL : (api || VPS_URL);
+            var item = document.createElement('div');
+            item.className = 'version-item';
+            item.style.animationDelay = delay + 's';
+            delay += 0.08;
+            var chHTML = changelog.length > 0 ? '<ul class="changelog-list">' + changelog.map(function(c) { return '<li>' + c + '</li>'; }).join('') + '</ul>' : '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No changelog available.</p>';
+            var fHTML = '';
+            var fKeys = Object.keys(features);
+            if (fKeys.length > 0) {
+              for (var j = 0; j < fKeys.length; j++) {
+                var cat = fKeys[j], items = features[cat];
+                fHTML += '<div class="feature-category"><div class="feature-category-name">' + cat.replace(/_/g, ' ') + '</div>';
+                if (typeof items === 'object' && items !== null) {
+                  var sKeys = Object.keys(items);
+                  for (var k = 0; k < sKeys.length; k++) {
+                    var sk = sKeys[k], sv = items[sk];
+                    if (typeof sv === 'string') fHTML += '<div class="feature-item">' + sk.replace(/_/g, ' ') + ': ' + sv + '</div>';
+                    else if (typeof sv === 'object' && sv !== null) {
+                      fHTML += '<div class="feature-item">' + sk.replace(/_/g, ' ') + ':</div>';
+                      var ssKeys = Object.keys(sv);
+                      for (var l = 0; l < ssKeys.length; l++) fHTML += '<div class="feature-item" style="padding-left:20px;">' + ssKeys[l].replace(/_/g, ' ') + ': ' + sv[ssKeys[l]] + '</div>';
+                    }
+                  }
+                }
+                fHTML += '</div>';
+              }
+            } else fHTML = '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No feature details available.</p>';
+            item.innerHTML = '<div class="version-header"><div class="version-name"><span class="version-chevron">›</span>' + version + '</div><div class="version-date">' + (date || '—') + '</div><div class="version-status">' + (isLatest ? 'Active' : 'Archived') + '</div><div><a href="' + base + '/raider/download/' + version + '/file" class="version-dl-btn" download>Download</a></div></div><div class="version-expanded-content"><div class="version-expanded-inner"><div class="version-details-grid"><div class="detail-panel"><div class="detail-panel-title">Changelog</div>' + chHTML + '</div><div class="detail-panel"><div class="detail-panel-title">Features</div>' + fHTML + '</div></div></div></div>';
+            item.querySelector('.version-header').addEventListener('click', function(e) { if (!e.target.closest('.version-dl-btn')) item.classList.toggle('expanded'); });
+            versionsList.appendChild(item);
+          }
+          versionsLoaded = true;
+        } catch(err) { versionsList.innerHTML = '<div style="text-align:center;color:rgba(255,255,255,0.3);padding:32px;">Failed to load versions.</div>'; }
+      }
+
+      window.addEventListener('hashchange', checkHash);
+
+      function preloadLogo() {
+        topbarLogo.src = VPS_URL + '/logo.png';
+        topbarLogo.onload = function() { logoLoaded = true; topbarLogo.style.filter = 'none'; topbarLogo.style.backdropFilter = 'none'; };
+        topbarLogo.onerror = function() { topbarLogo.style.display = 'none'; };
+        if (topbarLogo.complete && topbarLogo.naturalWidth > 0) { logoLoaded = true; topbarLogo.style.filter = 'none'; topbarLogo.style.backdropFilter = 'none'; }
+      }
+
+      async function fetchApiUrl() {
+        try {
+          var res = await fetch(VPS_URL + '/vps');
+          if (res.status === 200) { var url = (await res.text()).trim(); if (url.startsWith('https://') && url.includes('trycloudflare.com')) { api = url; return api; } }
+          throw new Error('Invalid VPS URL');
+        } catch(err) { isTesting = true; api = VPS_URL; return api; }
+      }
+
+      async function apiFetch(endpoint) {
+        if (!api) throw new Error('API URL not set');
+        var url = isTesting ? VPS_URL + endpoint : api + endpoint;
+        var res = await fetch(url);
+        if (!res.ok) throw new Error('API fetch failed: ' + endpoint);
+        return res;
+      }
+
+      async function preloadImage() {
+        try {
+          await fetchApiUrl();
+          var versionsRes = await apiFetch('/raider/versions');
+          var versionsData = await versionsRes.json();
+          latestVersion = versionsData.latest || versionsData.versions[0];
+          if (!latestVersion) throw new Error('No version found');
+          var infoRes = await apiFetch('/raider/info/' + latestVersion);
+          var infoData = await infoRes.json();
+          var frontImage = infoData.front_image;
+          if (frontImage) {
+            var img = new Image();
+            img.onload = function() { showcaseImage.src = frontImage; imageLoaded = true; showcaseImage.style.filter = 'none'; showcaseImage.style.backdropFilter = 'none'; };
+            img.onerror = function() { imageSection.style.display = 'none'; };
+            img.src = frontImage;
+          } else { imageSection.style.display = 'none'; }
+          var base = isTesting ? VPS_URL : (api || VPS_URL);
+          downloadBtn.href = base + '/raider/download/' + latestVersion + '/file';
+          downloadBtn.setAttribute('download', '');
+        } catch(err) { imageSection.style.display = 'none'; }
+      }
+
+      updateShiftAmount();
+      preloadImage();
+      preloadLogo();
+      checkHash();
+
+      cube.addEventListener('animationend', function handler(e) {
+        if (e.animationName === 'rollBack') { cube.removeEventListener('animationend', handler); setTimeout(drawUnderline, 200); }
       });
-      window.addEventListener('hashchange', chk);
-      const pLogo = () => {
-        logo.src = vps + '/logo.png';
-        logo.onload = () => { logoOk = true; logo.style.filter = 'none'; logo.style.backdropFilter = 'none'; };
-        logo.onerror = () => logo.style.display = 'none';
-        if (logo.complete && logo.naturalWidth > 0) { logoOk = true; logo.style.filter = 'none'; logo.style.backdropFilter = 'none'; }
-      };
-      const fApi = async () => {
-        try {
-          const r = await fetch(vps + '/vps');
-          if (r.status === 200) { const u = (await r.text()).trim(); if (u.startsWith('https://') && u.includes('trycloudflare.com')) { api = u; return api; } }
-          throw new Error('bad');
-        } catch(e) { test = true; api = vps; return api; }
-      };
-      const aFetch = async (ep) => { if (!api) throw new Error('no api'); const u = test ? vps + ep : api + ep; const r = await fetch(u); if (!r.ok) throw new Error('fetch fail'); return r; };
-      const pImg = async () => {
-        try {
-          await fApi();
-          const vr = await aFetch('/raider/versions');
-          const vd = await vr.json();
-          latest = vd.latest || vd.versions[0];
-          if (!latest) throw new Error('no version');
-          const ir = await aFetch('/raider/info/' + latest);
-          const id = await ir.json();
-          const fi = id.front_image;
-          if (fi) {
-            const im = new Image();
-            im.onload = () => { img.src = fi; imgOk = true; img.style.filter = 'none'; img.style.backdropFilter = 'none'; img.style.webkitBackdropFilter = 'none'; };
-            im.onerror = () => is.style.display = 'none';
-            im.src = fi;
-          } else is.style.display = 'none';
-          setDl(latest);
-        } catch(e) { console.warn('img fail'); is.style.display = 'none'; }
-      };
-      uSA(); pImg(); pLogo(); chk();
-      cube.addEventListener('animationend', function h(e) { if (e.animationName === 'rollBack') { cube.removeEventListener('animationend', h); setTimeout(dUL, 200); } });
-      ul.addEventListener('animationend', function h(e) { if (e.animationName === 'drawLine') { ul.removeEventListener('animationend', h); uSA(); setTimeout(shift, 400); sTB(); } });
-      let rt;
-      window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(uSA, 100); });
+      underline.addEventListener('animationend', function handler(e) {
+        if (e.animationName === 'drawLine') { underline.removeEventListener('animationend', handler); updateShiftAmount(); setTimeout(shiftUpAndShowImage, 400); showTopbar(); }
+      });
+
+      var resizeTimeout;
+      window.addEventListener('resize', function() { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(updateShiftAmount, 100); });
+
       (function() {
-        const c = document.getElementById('bgtext');
+        var c = document.getElementById('bgtext');
         if (!c) return;
-        const g = () => {
-          c.innerHTML = '';
-          let w = window.innerWidth, cols = 16, rows = 20;
+        function gen() {
+          c.innerHTML = ''; var w = window.innerWidth, cols = 16, rows = 20;
           if (w < 768) { cols = 10; rows = 15; } else if (w > 1600) { cols = 20; rows = 24; }
-          c.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-          c.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
-          for (let i = 0; i < cols * rows; i++) { const d = document.createElement('div'); d.textContent = 'gekke.org'; c.appendChild(d); }
-        };
-        g();
-        window.addEventListener('resize', () => setTimeout(g, 100));
+          c.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)'; c.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
+          for (var i = 0; i < cols * rows; i++) { var d = document.createElement('div'); d.textContent = 'gekke.org'; c.appendChild(d); }
+        }
+        gen(); window.addEventListener('resize', function() { setTimeout(gen, 100); });
       })();
     })();
   </script>
