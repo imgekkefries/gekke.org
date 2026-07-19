@@ -255,6 +255,10 @@
 
 
 
+
+
+
+
 <!-- ############################################ -->
 <!-- FRAGMENT: Entrance page                      -->
 <!-- ############################################ -->
@@ -263,19 +267,71 @@
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         display: flex; flex-direction: column; align-items: center;
         z-index: 2; overflow-y: auto; overflow-x: hidden;
-        background: linear-gradient(180deg, #080a10 0%, #0a0c16 30%, #0c0e18 60%, #080a10 100%);
+        background: 
+            radial-gradient(ellipse 80% 60% at 50% -20%, rgba(120,130,255,0.08) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 50% at 90% 60%, rgba(160,140,255,0.05) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 40% at 10% 30%, rgba(100,120,220,0.04) 0%, transparent 50%),
+            radial-gradient(circle at 50% 100%, rgba(40,50,80,0.15) 0%, transparent 40%),
+            linear-gradient(180deg, #080a10 0%, #0a0c16 30%, #0c0e18 60%, #080a10 100%);
         scroll-behavior: smooth;
+    }
+    .entrance-container::before {
+        content: '';
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: 
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.004) 2px, rgba(255,255,255,0.004) 4px),
+            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.004) 2px, rgba(255,255,255,0.004) 4px);
+        pointer-events: none; z-index: 0;
+    }
+    .entrance-container::after {
+        content: '';
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: 
+            radial-gradient(ellipse at 20% 50%, rgba(100,130,255,0.06) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 50%, rgba(140,100,220,0.04) 0%, transparent 50%),
+            radial-gradient(circle at 50% 0%, rgba(200,200,255,0.03) 0%, transparent 40%);
+        pointer-events: none; z-index: 0;
+        animation: ambientShift 20s ease-in-out infinite;
+    }
+    @keyframes ambientShift {
+        0%, 100% { opacity: 1; }
+        25% { opacity: 0.7; }
+        50% { opacity: 0.85; }
+        75% { opacity: 0.6; }
+    }
+
+    .static-orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(120px);
+        pointer-events: none;
+        z-index: 0;
+    }
+    .static-orb.orb-1 {
+        width: 600px; height: 600px;
+        background: rgba(100, 120, 255, 0.03);
+        top: -200px; left: -150px;
+    }
+    .static-orb.orb-2 {
+        width: 500px; height: 500px;
+        background: rgba(140, 100, 220, 0.025);
+        bottom: -150px; right: -100px;
+    }
+    .static-orb.orb-3 {
+        width: 400px; height: 400px;
+        background: rgba(80, 100, 200, 0.02);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
     }
 
     .reveal-section {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-        will-change: opacity, transform;
+        opacity: 0.35;
+        filter: brightness(0.6);
+        transition: opacity 1s ease, filter 1s ease;
     }
     .reveal-section.revealed {
         opacity: 1;
-        transform: translateY(0);
+        filter: brightness(1);
     }
 
     .entrance-nav {
@@ -296,7 +352,7 @@
         padding: 8px 20px; font-family: var(--mono); font-size: 12px;
         border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
         background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.8); cursor: pointer;
-        transition: background 0.2s ease, border-color 0.2s ease; letter-spacing: 0.3px;
+        transition: background 0.3s ease, border-color 0.3s ease; letter-spacing: 0.3px;
     }
     .entrance-nav .login-nav-btn:hover {
         background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2);
@@ -305,6 +361,22 @@
     .entrance-hero {
         text-align: center; max-width: 600px; padding: 200px 32px 120px;
         position: relative; z-index: 1;
+        opacity: 0.35; filter: brightness(0.6);
+        transition: opacity 1s ease, filter 1s ease;
+    }
+    .entrance-hero.revealed {
+        opacity: 1; filter: brightness(1);
+    }
+    
+    .hero-ring {
+        position: absolute; top: 160px; left: 50%; transform: translateX(-50%);
+        width: 300px; height: 300px; border-radius: 50%;
+        border: 1px solid rgba(255,255,255,0.02);
+        pointer-events: none; z-index: -1;
+    }
+    .hero-ring::before {
+        content: ''; position: absolute; top: -1px; left: 20%; width: 60%; height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(140,160,255,0.15), transparent);
     }
     
     .entrance-hero h1 {
@@ -313,6 +385,7 @@
         background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(200,210,240,0.7) 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         background-clip: text;
+        position: relative;
     }
     .hero-accent-line {
         width: 60px; height: 1px;
@@ -327,7 +400,7 @@
     .entrance-hero .hero-cta {
         padding: 14px 40px; font-family: var(--mono); font-size: 14px;
         font-weight: 500; border: none; border-radius: 12px;
-        cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease;
+        cursor: pointer; transition: background 0.3s ease, border-color 0.3s ease;
         background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9);
         border: 1px solid rgba(255,255,255,0.1); letter-spacing: 0.2px;
     }
@@ -356,7 +429,7 @@
     
     .section-divider {
         width: 100%; height: 1px;
-        background: rgba(255,255,255,0.03);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
         margin-bottom: 80px;
     }
     
@@ -367,7 +440,13 @@
     .feature-card {
         background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
         border-radius: 16px; padding: 28px 22px;
-        transition: background 0.2s ease, border-color 0.2s ease;
+        transition: background 0.3s ease, border-color 0.3s ease;
+        position: relative; overflow: hidden;
+    }
+    .feature-card::after {
+        content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%;
+        background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%);
+        pointer-events: none;
     }
     .feature-card:hover { 
         background: rgba(255,255,255,0.04); 
@@ -378,6 +457,12 @@
         margin-bottom: 16px; display: flex; align-items: center;
         justify-content: center; font-size: 1.1rem;
         background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.5);
+        position: relative;
+    }
+    .fc-icon-glow {
+        position: absolute; width: 100%; height: 100%; border-radius: 10px;
+        background: radial-gradient(circle at center, rgba(140,160,255,0.06) 0%, transparent 70%);
+        pointer-events: none;
     }
     .feature-card .fc-title {
         font-size: 14px; font-weight: 500; margin-bottom: 4px; color: rgba(255,255,255,0.75);
@@ -398,7 +483,13 @@
     .ticket-card {
         background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
         border-radius: 16px; padding: 28px;
-        transition: background 0.2s ease, border-color 0.2s ease;
+        transition: background 0.3s ease, border-color 0.3s ease;
+        position: relative; overflow: hidden;
+    }
+    .ticket-card::after {
+        content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%;
+        background: radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 70%);
+        pointer-events: none;
     }
     .ticket-card:hover { 
         background: rgba(255,255,255,0.04); 
@@ -409,6 +500,12 @@
         margin-bottom: 16px; display: flex; align-items: center;
         justify-content: center; font-size: 1.1rem;
         background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.5);
+        position: relative;
+    }
+    .tc-icon-glow {
+        position: absolute; width: 100%; height: 100%; border-radius: 10px;
+        background: radial-gradient(circle at center, rgba(140,160,255,0.06) 0%, transparent 70%);
+        pointer-events: none;
     }
     .ticket-card .tc-title {
         font-size: 14px; font-weight: 500; margin-bottom: 4px; color: rgba(255,255,255,0.75);
@@ -433,20 +530,26 @@
         .entrance-hero { padding: 180px 20px 80px; }
         .entrance-hero h1 { font-size: 36px; }
         .entrance-nav { gap: 16px; padding: 8px 16px; }
+        .hero-ring { width: 200px; height: 200px; top: 180px; }
     }
 </style>
 
 <div class="entrance-container" id="entrance-section">
+    <div class="static-orb orb-1"></div>
+    <div class="static-orb orb-2"></div>
+    <div class="static-orb orb-3"></div>
+
     <div class="entrance-nav">
         <span class="nav-brand">gekke.org</span>
         <button class="login-nav-btn" onclick="goToAuth()">Sign In</button>
     </div>
     
     <div class="entrance-hero reveal-section" id="hero-section">
+        <div class="hero-ring"></div>
         <h1>GekkeBot</h1>
         <div class="hero-accent-line"></div>
         <p class="hero-subtitle">
-            Full ticket system, AI moderation, NSFW link detection, MrBeast scam prevention, and smart moderation commands - all in one bot.
+            Full ticket system, AI moderation, NSFW link detection, MrBeast scam prevention, and smart moderation commands — all in one bot.
         </p>
         <button class="hero-cta" onclick="goToAuth()">Get Started</button>
     </div>
@@ -460,6 +563,7 @@
             <div class="ticket-grid">
                 <div class="ticket-card">
                     <div class="tc-icon">
+                        <div class="tc-icon-glow"></div>
                         <i class="fas fa-palette"></i>
                     </div>
                     <div class="tc-title">Custom Embeds</div>
@@ -468,6 +572,7 @@
                 </div>
                 <div class="ticket-card">
                     <div class="tc-icon">
+                        <div class="tc-icon-glow"></div>
                         <i class="fas fa-rotate"></i>
                     </div>
                     <div class="tc-title">Auto Resending</div>
@@ -476,6 +581,7 @@
                 </div>
                 <div class="ticket-card">
                     <div class="tc-icon">
+                        <div class="tc-icon-glow"></div>
                         <i class="fas fa-book"></i>
                     </div>
                     <div class="tc-title">Complete Logs</div>
@@ -484,6 +590,7 @@
                 </div>
                 <div class="ticket-card">
                     <div class="tc-icon">
+                        <div class="tc-icon-glow"></div>
                         <i class="fas fa-download"></i>
                     </div>
                     <div class="tc-title">JSON Downloads</div>
@@ -503,6 +610,7 @@
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-link-slash"></i>
                     </div>
                     <div class="fc-title">Link Detection</div>
@@ -511,6 +619,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-robot"></i>
                     </div>
                     <div class="fc-title">AI Classification</div>
@@ -519,6 +628,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-shield"></i>
                     </div>
                     <div class="fc-title">Instant Removal</div>
@@ -538,6 +648,7 @@
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-eye"></i>
                     </div>
                     <div class="fc-title">Vision Detection</div>
@@ -546,6 +657,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-gauge-high"></i>
                     </div>
                     <div class="fc-title">Threshold Control</div>
@@ -554,6 +666,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-trash-can"></i>
                     </div>
                     <div class="fc-title">Auto Delete</div>
@@ -573,6 +686,7 @@
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-brain"></i>
                     </div>
                     <div class="fc-title">Smart Detection</div>
@@ -581,6 +695,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-trash"></i>
                     </div>
                     <div class="fc-title">Auto Delete</div>
@@ -589,6 +704,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-clock"></i>
                     </div>
                     <div class="fc-title">Auto Timeout</div>
@@ -608,6 +724,7 @@
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-user-slash"></i>
                     </div>
                     <div class="fc-title">Smart Unban</div>
@@ -616,6 +733,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-volume-xmark"></i>
                     </div>
                     <div class="fc-title">Smart Unmute</div>
@@ -624,6 +742,7 @@
                 </div>
                 <div class="feature-card">
                     <div class="fc-icon">
+                        <div class="fc-icon-glow"></div>
                         <i class="fas fa-sliders"></i>
                     </div>
                     <div class="fc-title">Role Based Access</div>
@@ -1363,12 +1482,10 @@
         overflow: hidden;
     }
 
-    /* Collapse button - REMOVED */
     .sidebar-collapse-btn {
         display: none;
     }
 
-    /* Expand tab - appears when sidebar is collapsed */
     .sidebar-expand-tab {
         position: fixed; top: 50%; left: 0; z-index: 101;
         transform: translateY(-50%);
@@ -1650,10 +1767,9 @@
     }
     .edit-input-row input::placeholder, .edit-input-row textarea::placeholder { color: rgba(255,255,255,0.25); }
 
-    /* Mobile dropdown overlay - ABOVE sidebar (higher z-index) */
     .mobile-dropdown-overlay { 
         display: none; 
-        z-index: 350; /* Above sidebar */
+        z-index: 350; 
     }
     .mobile-sidebar-overlay { display: none; }
     .mobile-sidebar-toggle { display: none; }
@@ -1703,7 +1819,6 @@
             border-radius: 0 10px 10px 0;
             top: 50%;
         }
-        /* Hide collapse button on mobile too */
         .sidebar-collapse-btn {
             display: none;
         }
@@ -1715,12 +1830,12 @@
         .list-id-nav-btn { font-size: 10px; }
         .mobile-dropdown-overlay {
             display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.55); z-index: 350; /* Above sidebar */ opacity: 0; visibility: hidden;
+            background: rgba(0,0,0,0.55); z-index: 350;  opacity: 0; visibility: hidden;
             pointer-events: none; transition: opacity 0.25s ease, visibility 0.25s ease;
         }
         .mobile-dropdown-overlay.active { opacity: 1; visibility: visible; pointer-events: auto; }
         .mobile-dropdown-sheet {
-            position: fixed; bottom: 0; left: 0; right: 0; z-index: 351; /* Above overlay */
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 351;
             background: rgba(22, 26, 34, 0.98); backdrop-filter: blur(24px);
             border-radius: 18px 18px 0 0; padding: 8px 8px 24px;
             border-top: 1px solid rgba(255,255,255,0.1);
@@ -2341,6 +2456,491 @@
 </script>
 
 
+
+
+
+
+<!-- ############################################ -->
+<!-- FRAGMENT: W/G Message                       -->
+<!-- ############################################ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/lint/lint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/lint/json-lint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.3/jsonlint.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/lint/lint.min.css">
+
+<style>
+    .wg-placeholder-hint {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+    }
+    .wg-placeholder-tag {
+        font-size: 10px; font-family: var(--mono); letter-spacing: 0.5px;
+        background: rgba(88,101,242,0.1); border: 1px solid rgba(88,101,242,0.2);
+        color: #b0ceff; padding: 4px 10px; border-radius: 6px;
+        cursor: default; user-select: all;
+    }
+    .wg-discohook-note {
+        display: flex; align-items: flex-start; gap: 8px;
+        font-size: 11px; color: var(--t2); margin-bottom: 16px;
+        padding: 10px 14px; background: rgba(88,101,242,0.04);
+        border: 1px solid rgba(88,101,242,0.1); border-radius: 10px;
+        line-height: 1.6;
+    }
+    .wg-discohook-note i { color: var(--accent); font-size: 0.85rem; margin-top: 1px; flex-shrink: 0; }
+    .wg-discohook-note a { color: #b0ceff; text-decoration: none; }
+    .wg-discohook-note a:hover { text-decoration: underline; }
+    .wg-embed-codemirror-wrap {
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: border-color 0.2s;
+    }
+    .wg-embed-codemirror-wrap:focus-within {
+        border-color: var(--accent);
+    }
+    .wg-embed-codemirror-wrap .CodeMirror {
+        height: 200px;
+        min-height: 200px;
+        background: rgba(255,255,255,0.03) !important;
+        font-family: var(--input-mono);
+        font-size: 11px;
+        border-radius: 10px;
+    }
+    .wg-embed-codemirror-wrap .CodeMirror-gutters {
+        background: rgba(255,255,255,0.02) !important;
+        border-right: 1px solid rgba(255,255,255,0.05);
+    }
+    .wg-embed-codemirror-wrap .CodeMirror-lint-tooltip {
+        background: #1a1d24;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        color: var(--t1);
+        font-family: var(--mono);
+        font-size: 11px;
+        padding: 8px 12px;
+    }
+    .wg-embed-resize-handle {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        height: 36px; cursor: ns-resize; user-select: none;
+        margin-top: 4px; touch-action: none;
+    }
+    .wg-embed-resize-handle .resize-line {
+        width: 40px; height: 2px; border-radius: 1px;
+        background: rgba(255,255,255,0.1);
+        transition: background 0.2s;
+    }
+    .wg-embed-resize-handle .resize-label {
+        font-size: 10px; color: rgba(255,255,255,0.2); font-family: var(--mono);
+        letter-spacing: 1px; text-transform: uppercase;
+        transition: color 0.2s;
+    }
+    .wg-embed-resize-handle:hover .resize-line {
+        background: rgba(255,255,255,0.3);
+    }
+    .wg-embed-resize-handle:hover .resize-label {
+        color: rgba(255,255,255,0.45);
+    }
+    .wg-embed-resize-handle:active .resize-line {
+        background: var(--accent);
+    }
+    .wg-embed-resize-handle:active .resize-label {
+        color: var(--accent);
+    }
+    @media (max-width: 480px) {
+        .wg-placeholder-hint { gap: 6px; }
+        .wg-placeholder-tag { font-size: 9px; padding: 6px 10px; width: 100%; text-align: center; }
+    }
+</style>
+
+<!-- ############################################ -->
+<!-- FRAGMENT: W/G Message - Welcome             -->
+<!-- ############################################ -->
+<div class="edit-section hidden-section" id="section-wg-welcome">
+    <h3><i class="fas fa-door-open"></i> W/G Message | Welcome</h3>
+    <p class="section-desc">Configure the welcome message sent when a new member joins the server.</p>
+    
+    <div class="toggle-row">
+        <div class="toggle-info">
+            <div class="toggle-label">Welcome Active</div>
+            <div class="toggle-desc">Enable or disable the welcome message</div>
+        </div>
+        <label class="toggle-switch"><input type="checkbox" id="edit-welcome-active" onchange="checkChanges()"><span class="toggle-slider"></span></label>
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="edit-input-row">
+        <label>Welcome Message</label>
+        <p class="section-desc" style="margin-bottom:8px;">This message is sent when a new member joins. Use the placeholders below.</p>
+        <div class="wg-placeholder-hint">
+            <span class="wg-placeholder-tag">[user] &rarr; pings the new member</span>
+            <span class="wg-placeholder-tag">[count] &rarr; total member count</span>
+        </div>
+        <textarea id="edit-welcome-message" placeholder="Welcome [user]! you're the [count]th member" rows="3" oninput="checkChanges()"></textarea>
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="edit-input-row">
+        <label>Channel ID</label>
+        <input type="text" id="edit-welcome-channelid" placeholder="Enter channel ID for welcome messages" oninput="checkChanges()">
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="toggle-row">
+        <div class="toggle-info">
+            <div class="toggle-label">Custom Embed</div>
+            <div class="toggle-desc">Use a custom embed instead of the plain text message</div>
+        </div>
+        <label class="toggle-switch"><input type="checkbox" id="edit-welcome-customembed" onchange="checkChanges()"><span class="toggle-slider"></span></label>
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="wg-discohook-note">
+        <i class="fas fa-info-circle"></i>
+        <span>Create your embed at <a href="https://discohook.org/" target="_blank" rel="noopener">discohook.org</a>, then copy the JSON output and paste it below.</span>
+    </div>
+    
+    <div class="edit-input-row">
+        <label>Embed JSON</label>
+        <div class="wg-embed-codemirror-wrap">
+            <textarea id="edit-welcome-embed" placeholder='{"content": "","embeds": [{"title": "Welcome!","description": "Welcome to the server, [user]!","color": 5814783}],"attachments": []}'></textarea>
+        </div>
+        <div class="wg-embed-resize-handle" id="welcome-embed-resize-handle">
+            <div class="resize-line"></div>
+            <span class="resize-label">drag to expand</span>
+            <div class="resize-line"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('edit-section').appendChild(document.getElementById('section-wg-welcome'));
+
+    var welcomeEmbedEditor = null;
+
+    function initWelcomeEmbedEditor() {
+        if (welcomeEmbedEditor) return;
+        var textarea = document.getElementById('edit-welcome-embed');
+        welcomeEmbedEditor = CodeMirror.fromTextArea(textarea, {
+            mode: { name: 'javascript', json: true },
+            theme: 'dracula',
+            lineNumbers: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            lint: true,
+            gutters: ['CodeMirror-lint-markers'],
+            placeholder: '{"content": "","embeds": [{"title": "Welcome!","description": "Welcome to the server, [user]!","color": 5814783}],"attachments": []}'
+        });
+        welcomeEmbedEditor.setSize(null, 200);
+        welcomeEmbedEditor.on('change', function() {
+            updateWelcomeEmbedValue();
+            checkChanges();
+        });
+    }
+
+    function updateWelcomeEmbedValue() {
+        if (!currentListData) return;
+        if (!currentListData.WelcomeAndGoodbyeMessage) currentListData.WelcomeAndGoodbyeMessage = {};
+        if (!currentListData.WelcomeAndGoodbyeMessage.Welcome) currentListData.WelcomeAndGoodbyeMessage.Welcome = {};
+        var val = getWelcomeEmbedEditorValue();
+        try {
+            currentListData.WelcomeAndGoodbyeMessage.Welcome.Embed = JSON.parse(val);
+        } catch(e) {
+            currentListData.WelcomeAndGoodbyeMessage.Welcome.Embed = {};
+        }
+    }
+
+    function getWelcomeEmbedEditorValue() {
+        if (welcomeEmbedEditor) return welcomeEmbedEditor.getValue();
+        var textarea = document.getElementById('edit-welcome-embed');
+        return textarea ? textarea.value : '';
+    }
+
+    function setWelcomeEmbedEditorValue(val) {
+        var strVal = typeof val === 'string' ? val : JSON.stringify(val, null, 2);
+        if (welcomeEmbedEditor) { welcomeEmbedEditor.setValue(strVal); return; }
+        var textarea = document.getElementById('edit-welcome-embed');
+        if (textarea) textarea.value = strVal;
+    }
+
+    (function() {
+        var handle = document.getElementById('welcome-embed-resize-handle');
+        var isResizing = false;
+        var startY, startHeight;
+
+        function onStart(y) {
+            if (!welcomeEmbedEditor) return;
+            isResizing = true;
+            startY = y;
+            startHeight = welcomeEmbedEditor.getWrapperElement().offsetHeight;
+            document.body.style.cursor = 'ns-resize';
+            document.body.style.userSelect = 'none';
+            handle.classList.add('active');
+        }
+
+        function onMove(y) {
+            if (!isResizing || !welcomeEmbedEditor) return;
+            var delta = y - startY;
+            var newHeight = Math.max(200, startHeight + delta);
+            welcomeEmbedEditor.setSize(null, newHeight);
+        }
+
+        function onEnd() {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+                handle.classList.remove('active');
+            }
+        }
+
+        handle.addEventListener('mousedown', function(e) {
+            onStart(e.clientY);
+            e.preventDefault();
+        });
+
+        handle.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1) {
+                onStart(e.touches[0].clientY);
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('mousemove', function(e) {
+            onMove(e.clientY);
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 1) {
+                onMove(e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+        document.addEventListener('touchcancel', onEnd);
+    })();
+
+    registerSection({
+        id: 'wg-welcome',
+        parent: 'wg-message',
+        parentLabel: 'W/G Message',
+        parentIcon: 'fas fa-envelope',
+        label: 'Welcome',
+        icon: 'fas fa-door-open',
+        contentId: 'section-wg-welcome',
+        fields: [
+            { id: 'edit-welcome-active', type: 'checkbox', path: 'WelcomeAndGoodbyeMessage.Welcome.Active', default: false },
+            { id: 'edit-welcome-message', type: 'textarea', path: 'WelcomeAndGoodbyeMessage.Welcome.Message', default: 'Welcome [user]! you\'re the [count]th member' },
+            { id: 'edit-welcome-channelid', type: 'text', path: 'WelcomeAndGoodbyeMessage.Welcome.ChannelID', default: '' },
+            { id: 'edit-welcome-customembed', type: 'checkbox', path: 'WelcomeAndGoodbyeMessage.Welcome.CustomEmbedActive', default: false },
+            { id: 'edit-welcome-embed', type: 'json', path: 'WelcomeAndGoodbyeMessage.Welcome.Embed', default: {}, getValue: getWelcomeEmbedEditorValue, setValue: setWelcomeEmbedEditorValue }
+        ],
+        onShow: function() {
+            initWelcomeEmbedEditor();
+        }
+    });
+</script>
+
+<!-- ############################################ -->
+<!-- FRAGMENT: W/G Message - Goodbye             -->
+<!-- ############################################ -->
+<div class="edit-section hidden-section" id="section-wg-goodbye">
+    <h3><i class="fas fa-door-closed"></i> W/G Message | Goodbye</h3>
+    <p class="section-desc">Configure the goodbye message sent when a member leaves the server.</p>
+    
+    <div class="toggle-row">
+        <div class="toggle-info">
+            <div class="toggle-label">Goodbye Active</div>
+            <div class="toggle-desc">Enable or disable the goodbye message</div>
+        </div>
+        <label class="toggle-switch"><input type="checkbox" id="edit-goodbye-active" onchange="checkChanges()"><span class="toggle-slider"></span></label>
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="edit-input-row">
+        <label>Goodbye Message</label>
+        <p class="section-desc" style="margin-bottom:8px;">This message is sent when a member leaves. Use the placeholders below.</p>
+        <div class="wg-placeholder-hint">
+            <span class="wg-placeholder-tag">[user] &rarr; mentions the user who left</span>
+            <span class="wg-placeholder-tag">[count] &rarr; remaining member count</span>
+        </div>
+        <textarea id="edit-goodbye-message" placeholder="Goodbye [user]! We'll miss you!" rows="3" oninput="checkChanges()"></textarea>
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="edit-input-row">
+        <label>Channel ID</label>
+        <input type="text" id="edit-goodbye-channelid" placeholder="Enter channel ID for goodbye messages" oninput="checkChanges()">
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="toggle-row">
+        <div class="toggle-info">
+            <div class="toggle-label">Custom Embed</div>
+            <div class="toggle-desc">Use a custom embed instead of the plain text message</div>
+        </div>
+        <label class="toggle-switch"><input type="checkbox" id="edit-goodbye-customembed" onchange="checkChanges()"><span class="toggle-slider"></span></label>
+    </div>
+    
+    <div class="section-separator"></div>
+    
+    <div class="wg-discohook-note">
+        <i class="fas fa-info-circle"></i>
+        <span>Create your embed at <a href="https://discohook.org/" target="_blank" rel="noopener">discohook.org</a>, then copy the JSON output and paste it below.</span>
+    </div>
+    
+    <div class="edit-input-row">
+        <label>Embed JSON</label>
+        <div class="wg-embed-codemirror-wrap">
+            <textarea id="edit-goodbye-embed" placeholder='{"content": "","embeds": [{"title": "Goodbye!","description": "Sorry to see you go, [user]!","color": 15548997}],"attachments": []}'></textarea>
+        </div>
+        <div class="wg-embed-resize-handle" id="goodbye-embed-resize-handle">
+            <div class="resize-line"></div>
+            <span class="resize-label">drag to expand</span>
+            <div class="resize-line"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('edit-section').appendChild(document.getElementById('section-wg-goodbye'));
+
+    var goodbyeEmbedEditor = null;
+
+    function initGoodbyeEmbedEditor() {
+        if (goodbyeEmbedEditor) return;
+        var textarea = document.getElementById('edit-goodbye-embed');
+        goodbyeEmbedEditor = CodeMirror.fromTextArea(textarea, {
+            mode: { name: 'javascript', json: true },
+            theme: 'dracula',
+            lineNumbers: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            lint: true,
+            gutters: ['CodeMirror-lint-markers'],
+            placeholder: '{"content": "","embeds": [{"title": "Goodbye!","description": "Sorry to see you go, [user]!","color": 15548997}],"attachments": []}'
+        });
+        goodbyeEmbedEditor.setSize(null, 200);
+        goodbyeEmbedEditor.on('change', function() {
+            updateGoodbyeEmbedValue();
+            checkChanges();
+        });
+    }
+
+    function updateGoodbyeEmbedValue() {
+        if (!currentListData) return;
+        if (!currentListData.WelcomeAndGoodbyeMessage) currentListData.WelcomeAndGoodbyeMessage = {};
+        if (!currentListData.WelcomeAndGoodbyeMessage.Goodbye) currentListData.WelcomeAndGoodbyeMessage.Goodbye = {};
+        var val = getGoodbyeEmbedEditorValue();
+        try {
+            currentListData.WelcomeAndGoodbyeMessage.Goodbye.Embed = JSON.parse(val);
+        } catch(e) {
+            currentListData.WelcomeAndGoodbyeMessage.Goodbye.Embed = {};
+        }
+    }
+
+    function getGoodbyeEmbedEditorValue() {
+        if (goodbyeEmbedEditor) return goodbyeEmbedEditor.getValue();
+        var textarea = document.getElementById('edit-goodbye-embed');
+        return textarea ? textarea.value : '';
+    }
+
+    function setGoodbyeEmbedEditorValue(val) {
+        var strVal = typeof val === 'string' ? val : JSON.stringify(val, null, 2);
+        if (goodbyeEmbedEditor) { goodbyeEmbedEditor.setValue(strVal); return; }
+        var textarea = document.getElementById('edit-goodbye-embed');
+        if (textarea) textarea.value = strVal;
+    }
+
+    (function() {
+        var handle = document.getElementById('goodbye-embed-resize-handle');
+        var isResizing = false;
+        var startY, startHeight;
+
+        function onStart(y) {
+            if (!goodbyeEmbedEditor) return;
+            isResizing = true;
+            startY = y;
+            startHeight = goodbyeEmbedEditor.getWrapperElement().offsetHeight;
+            document.body.style.cursor = 'ns-resize';
+            document.body.style.userSelect = 'none';
+            handle.classList.add('active');
+        }
+
+        function onMove(y) {
+            if (!isResizing || !goodbyeEmbedEditor) return;
+            var delta = y - startY;
+            var newHeight = Math.max(200, startHeight + delta);
+            goodbyeEmbedEditor.setSize(null, newHeight);
+        }
+
+        function onEnd() {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+                handle.classList.remove('active');
+            }
+        }
+
+        handle.addEventListener('mousedown', function(e) {
+            onStart(e.clientY);
+            e.preventDefault();
+        });
+
+        handle.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1) {
+                onStart(e.touches[0].clientY);
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('mousemove', function(e) {
+            onMove(e.clientY);
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 1) {
+                onMove(e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+        document.addEventListener('touchcancel', onEnd);
+    })();
+
+    registerSection({
+        id: 'wg-goodbye',
+        parent: 'wg-message',
+        label: 'Goodbye',
+        icon: 'fas fa-door-closed',
+        contentId: 'section-wg-goodbye',
+        fields: [
+            { id: 'edit-goodbye-active', type: 'checkbox', path: 'WelcomeAndGoodbyeMessage.Goodbye.Active', default: false },
+            { id: 'edit-goodbye-message', type: 'textarea', path: 'WelcomeAndGoodbyeMessage.Goodbye.Message', default: '' },
+            { id: 'edit-goodbye-channelid', type: 'text', path: 'WelcomeAndGoodbyeMessage.Goodbye.ChannelID', default: '' },
+            { id: 'edit-goodbye-customembed', type: 'checkbox', path: 'WelcomeAndGoodbyeMessage.Goodbye.CustomEmbedActive', default: false },
+            { id: 'edit-goodbye-embed', type: 'json', path: 'WelcomeAndGoodbyeMessage.Goodbye.Embed', default: {}, getValue: getGoodbyeEmbedEditorValue, setValue: setGoodbyeEmbedEditorValue }
+        ],
+        onShow: function() {
+            initGoodbyeEmbedEditor();
+        }
+    });
+</script>
+
 <!-- ############################################ -->
 <!-- FRAGMENT: Anti NSFW Links                   -->
 <!-- ############################################ -->
@@ -2887,6 +3487,230 @@
 
 
 
+
+
+
+
+<!-- ############################################ -->
+<!-- FRAGMENT: ChatAI                            -->
+<!-- ############################################ -->
+<style>
+    .chatai-input-wrap {
+        position: relative;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        overflow: hidden;
+        transition: border-color 0.2s, background 0.2s;
+    }
+    .chatai-input-wrap:focus-within {
+        border-color: var(--accent);
+        background: rgba(255,255,255,0.05);
+    }
+    .chatai-input-wrap textarea {
+        width: 100%;
+        background: transparent;
+        border: none;
+        color: var(--t1);
+        font-family: var(--input-mono);
+        font-size: 13px;
+        outline: none;
+        padding: 14px 52px 14px 16px;
+        box-sizing: border-box;
+        resize: vertical;
+        min-height: 140px;
+        line-height: 1.6;
+    }
+    .chatai-input-wrap textarea::placeholder {
+        color: rgba(255,255,255,0.18);
+    }
+    .chatai-input-wrap .chatai-char-count {
+        position: absolute;
+        right: 14px;
+        bottom: 12px;
+        font-size: 10px;
+        color: var(--t3);
+        font-family: var(--mono);
+        pointer-events: none;
+        transition: color 0.2s;
+    }
+    .chatai-input-wrap .chatai-char-count.over {
+        color: #ff5f56;
+    }
+    .chatai-resize-handle {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        height: 36px; cursor: ns-resize; user-select: none;
+        margin-top: 4px; touch-action: none;
+    }
+    .chatai-resize-handle .resize-line {
+        width: 40px; height: 2px; border-radius: 1px;
+        background: rgba(255,255,255,0.1);
+        transition: background 0.2s;
+    }
+    .chatai-resize-handle .resize-label {
+        font-size: 10px; color: rgba(255,255,255,0.2); font-family: var(--mono);
+        letter-spacing: 1px; text-transform: uppercase;
+        transition: color 0.2s;
+    }
+    .chatai-resize-handle:hover .resize-line {
+        background: rgba(255,255,255,0.3);
+    }
+    .chatai-resize-handle:hover .resize-label {
+        color: rgba(255,255,255,0.45);
+    }
+    .chatai-resize-handle:active .resize-line {
+        background: var(--accent);
+    }
+    .chatai-resize-handle:active .resize-label {
+        color: var(--accent);
+    }
+    @media (max-width: 480px) {
+        .chatai-input-wrap textarea {
+            font-size: 16px;
+            padding: 14px 48px 14px 14px;
+            min-height: 120px;
+        }
+    }
+</style>
+
+<div class="edit-section hidden-section" id="section-chatai">
+    <h3><i class="fas fa-comment-dots"></i> ChatAI <span class="beta-badge">Beta</span></h3>
+    <p class="section-desc">An AI chatbot that responds when a member mentions or replies to it in chat.</p>
+
+    <div class="big-toggle">
+        <label class="big-toggle-switch">
+            <input type="checkbox" id="edit-chatai-active" onchange="checkChanges()">
+            <span class="big-toggle-slider"></span>
+        </label>
+        <div class="big-toggle-info">
+            <div class="big-toggle-label">ChatAI Active</div>
+            <div class="big-toggle-desc">Disable or enable the AI chatbot that responds when a member mentions or replies to it.</div>
+        </div>
+    </div>
+
+    <div class="section-separator"></div>
+
+    <div class="edit-input-row">
+        <label>Extra Information</label>
+        <p class="section-desc" style="margin-bottom:8px;">Feed the ChatAI bot extra information it can use to give better, more contextual answers. This can include server rules, FAQs, member roles, inside jokes, or any context you want the bot to know.</p>
+        <div class="chatai-input-wrap">
+            <textarea
+                id="edit-chatai-information"
+                placeholder="This server is about gaming and tech. The owner is @gekkefries. We have channels for #general, #memes, and #help. The most active members are..."
+                maxlength="14000"
+                oninput="updateChatAIInfo(this);"></textarea>
+            <span class="chatai-char-count" id="chatai-char-count">0 / 14000</span>
+        </div>
+        <div class="chatai-resize-handle" id="chatai-resize-handle">
+            <div class="resize-line"></div>
+            <span class="resize-label">drag to expand</span>
+            <div class="resize-line"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('edit-section').appendChild(document.getElementById('section-chatai'));
+
+    function updateChatAIInfo(el) {
+        if (!currentListData) return;
+        if (!currentListData.ChatAI) currentListData.ChatAI = { Active: false, information: '' };
+        currentListData.ChatAI.information = el.value;
+
+        var count = el.value.length;
+        var countEl = document.getElementById('chatai-char-count');
+        if (countEl) {
+            countEl.textContent = count + ' / 14000';
+            countEl.className = 'chatai-char-count' + (count > 14000 ? ' over' : '');
+        }
+        checkChanges();
+    }
+
+    function getChatAIInfo() {
+        if (!currentListData || !currentListData.ChatAI) return '';
+        return currentListData.ChatAI.information || '';
+    }
+
+    (function() {
+        var handle = document.getElementById('chatai-resize-handle');
+        var textarea = document.getElementById('edit-chatai-information');
+        var isResizing = false;
+        var startY, startHeight;
+
+        function onStart(y) {
+            if (!textarea) return;
+            isResizing = true;
+            startY = y;
+            startHeight = textarea.offsetHeight;
+            document.body.style.cursor = 'ns-resize';
+            document.body.style.userSelect = 'none';
+            handle.classList.add('active');
+        }
+
+        function onMove(y) {
+            if (!isResizing || !textarea) return;
+            var delta = y - startY;
+            var newHeight = Math.max(140, startHeight + delta);
+            textarea.style.height = newHeight + 'px';
+            textarea.style.minHeight = newHeight + 'px';
+        }
+
+        function onEnd() {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+                handle.classList.remove('active');
+            }
+        }
+
+        handle.addEventListener('mousedown', function(e) {
+            onStart(e.clientY);
+            e.preventDefault();
+        });
+
+        handle.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1) {
+                onStart(e.touches[0].clientY);
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('mousemove', function(e) {
+            onMove(e.clientY);
+        });
+
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 1) {
+                onMove(e.touches[0].clientY);
+            }
+        }, { passive: false });
+
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+        document.addEventListener('touchcancel', onEnd);
+    })();
+
+    registerSection({
+        id: 'chatai',
+        label: 'ChatAI',
+        icon: 'fas fa-comment-dots',
+        badge: 'Beta',
+        contentId: 'section-chatai',
+        fields: [
+            { id: 'edit-chatai-active', type: 'checkbox', path: 'ChatAI.Active', default: false },
+            { type: 'custom', path: 'ChatAI.information', getValue: getChatAIInfo }
+        ],
+        onShow: function() {
+            var info = getChatAIInfo();
+            var textarea = document.getElementById('edit-chatai-information');
+            if (textarea) {
+                textarea.value = info;
+                updateChatAIInfo(textarea);
+            }
+        }
+    });
+</script>
 
 
 
@@ -3971,7 +4795,7 @@
     var currentPassword = null;
 
     function fetchApiUrl() {
-        const test = false;
+        const test = true;
         if (test) {
             api = 'http://localhost:5000';
             console.log('api:', api);
