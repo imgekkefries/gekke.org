@@ -558,7 +558,10 @@
               }
             } else fHTML = '<p style="color:rgba(255,255,255,0.3);font-size:13px;">No feature details available.</p>';
             item.innerHTML = '<div class="version-header"><div class="version-name"><span class="version-chevron">›</span>' + version + '</div><div class="version-date">' + (date || '—') + '</div><div class="version-status">' + (isLatest ? 'Active' : 'Archived') + '</div><div><a href="' + base + '/raider/download/' + version + '/file" class="version-dl-btn" download>Download</a></div></div><div class="version-expanded-content"><div class="version-expanded-inner"><div class="version-details-grid"><div class="detail-panel"><div class="detail-panel-title">Changelog</div>' + chHTML + '</div><div class="detail-panel"><div class="detail-panel-title">Features</div>' + fHTML + '</div></div></div></div>';
-            item.querySelector('.version-header').addEventListener('click', function(e) { if (!e.target.closest('.version-dl-btn')) item.classList.toggle('expanded'); });
+            
+            let currentItem = item;
+            item.querySelector('.version-header').addEventListener('click', function(e) { if (!e.target.closest('.version-dl-btn')) currentItem.classList.toggle('expanded'); });
+            
             versionsList.appendChild(item);
           }
           versionsLoaded = true;
