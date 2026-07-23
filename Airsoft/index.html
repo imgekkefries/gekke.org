@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="author" content="gekkefries">
+  <title>Airsoft Setup ~ gekke.org</title>
+  <meta name="description" content="My airsoft loadout list – AK74M-2.0 AEG, LCT mid-cap magazines, Pirate Arms side mount, RAM Tactical red dot, Element lens protector, Emerson combat pants, and Big Dragon suppressor.">
+  <meta property="og:title" content="Airsoft Setup ~ gekke.org">
+  <meta property="og:description" content="My airsoft loadout list – AK74M-2.0 AEG, LCT mid-cap magazines, Pirate Arms side mount, RAM Tactical red dot, Element lens protector, Emerson combat pants, and Big Dragon suppressor.">
+  <meta property="og:url" content="https://gekke.org/Airsoft/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Airsoft Setup ~ gekke.org">
+  <meta name="twitter:description" content="My airsoft loadout list – AK74M-2.0 AEG, LCT mid-cap magazines, Pirate Arms side mount, RAM Tactical red dot, Element lens protector, Emerson combat pants, and Big Dragon suppressor.">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @font-face {
+      font-family: 'Terminal';
+      src: url('https://imgekkefries.pythonanywhere.com/terminal.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --bg: #10131a;
+      --card-bg: rgba(14, 17, 22, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --t1: #f0f3f8;
+      --t2: #b9c2d4;
+      --t3: #7e8a98;
+      --acc: #5865F2;
+      --price-color: #c7d2e0;
+      --optional-badge: #8b7e6a;
+      --ease: cubic-bezier(0.23, 1, 0.32, 1);
+      --mono: 'Terminal', 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      --glow1: rgba(210, 230, 255, 0.05);
+      --glow2: rgba(255, 245, 240, 0.035);
+    }
+
+    body {
+      background: var(--bg);
+      font-family: var(--mono);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-x: hidden;
+      position: relative;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 0 0 60px;
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; margin: 4px 0; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+    ::-webkit-scrollbar-corner { background: transparent; }
+    * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.1) transparent; }
+
+    .grid {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 18px), linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 55px 55px, 42px 42px, 42px 42px;
+      pointer-events: none; z-index: 0;
+    }
+    .glow {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 20% 30%, var(--glow1) 0%, transparent 55%), radial-gradient(circle at 80% 70%, var(--glow2) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+    .diag {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: repeating-linear-gradient(45deg, rgba(255,255,255,0.004) 0px, rgba(255,255,255,0.004) 1px, transparent 1px, transparent 12px);
+      pointer-events: none; z-index: 0;
+    }
+    .txt {
+      position: fixed; top: -5%; left: -5%; width: 110%; height: 110%; pointer-events: none; z-index: 0;
+      display: grid; grid-template-columns: repeat(16, 1fr); grid-template-rows: repeat(20, 1fr);
+      gap: 0.3rem; transform: rotate(-4deg); opacity: 0.35;
+      font-family: var(--mono); text-transform: uppercase;
+      font-size: clamp(0.6rem, 1.5vw, 0.95rem); font-weight: 400;
+      letter-spacing: 0.15em; color: rgba(255,255,255,0.14); padding: 1.5rem;
+    }
+    .txt div { display: flex; align-items: center; justify-content: center; white-space: nowrap; text-shadow: 0 0 2px rgba(255,255,255,0.1); }
+    .txt div:nth-child(3n) { opacity: 0.7; }
+    .txt div:nth-child(5n) { transform: rotate(1deg); }
+    .txt div:nth-child(7n) { transform: rotate(-1deg); }
+
+    .topbar {
+      position: fixed; top: 0; left: 0; width: 100%; height: clamp(54px, 7.5vh, 74px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 4vw, 48px); z-index: 100;
+      background: rgba(16, 19, 26, 0.8); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .topbar-left { display: flex; align-items: center; gap: clamp(12px, 1.8vw, 18px); }
+    .topbar-logo { height: clamp(34px, 4.8vw, 46px); width: auto; display: block; border-radius: 6px; }
+    .topbar-brand { font-size: clamp(14px, 1.6vw, 17px); color: rgba(255,255,255,0.75); letter-spacing: 0.5px; font-weight: 400; }
+
+    .page {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 120px 24px 40px;
+      z-index: 5;
+      position: relative;
+      animation: fadeUp 0.6s var(--ease) forwards;
+    }
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title {
+      font-size: clamp(28px, 4vw, 42px);
+      color: var(--t1);
+      margin-bottom: 8px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+    .page-subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 24px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding-bottom: 24px;
+    }
+    .total-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: auto;
+    }
+    .optional-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--t3);
+      letter-spacing: 0.3px;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    .optional-toggle:hover {
+      color: var(--t2);
+    }
+    .optional-toggle input[type="checkbox"] {
+      display: none;
+    }
+    .toggle-box {
+      width: 36px;
+      height: 20px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      position: relative;
+      transition: all 0.3s var(--ease);
+      flex-shrink: 0;
+    }
+    .toggle-box::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: var(--t3);
+      border-radius: 50%;
+      transition: all 0.3s var(--ease);
+    }
+    .optional-toggle input:checked + .toggle-box {
+      background: rgba(88, 101, 242, 0.2);
+      border-color: rgba(88, 101, 242, 0.4);
+    }
+    .optional-toggle input:checked + .toggle-box::after {
+      left: 18px;
+      background: #fff;
+    }
+    .total-cost {
+      font-size: 15px;
+      color: var(--price-color);
+      background: rgba(255,255,255,0.04);
+      padding: 6px 16px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.1);
+      letter-spacing: 0.4px;
+      white-space: nowrap;
+    }
+    .total-cost span {
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .category-section {
+      margin-bottom: 40px;
+    }
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-left: 4px;
+    }
+    .category-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--t3);
+      font-weight: 400;
+    }
+    .category-badge {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--optional-badge);
+      background: rgba(139, 126, 106, 0.1);
+      border: 1px solid rgba(139, 126, 106, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .setup-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .item-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.4s var(--ease);
+      display: flex;
+      flex-direction: column;
+      animation: cardAppear 0.5s var(--ease) forwards;
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    .item-card.optional-item {
+      border-left: 2px solid rgba(139, 126, 106, 0.3);
+    }
+    .item-card.optional-dimmed {
+      opacity: 0.45;
+    }
+    .item-card:hover {
+      border-color: rgba(255,255,255,0.18);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+    }
+    @keyframes cardAppear {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-main {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .card-image {
+      width: 260px;
+      flex-shrink: 0;
+      background: #0f1218;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      position: relative;
+    }
+    .card-image img {
+      max-width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+      transition: transform 0.3s ease;
+    }
+    .item-card:hover .card-image img {
+      transform: scale(1.03);
+    }
+
+    .card-content {
+      flex: 1;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 6px;
+    }
+    .item-title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .item-title {
+      font-size: 19px;
+      font-weight: 500;
+      color: var(--t1);
+      letter-spacing: 0.2px;
+      line-height: 1.3;
+    }
+    .item-optional-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--optional-badge);
+      background: rgba(139, 126, 106, 0.12);
+      border: 1px solid rgba(139, 126, 106, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .item-pricing {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+    }
+    .item-unit-price {
+      font-size: 13px;
+      color: var(--t3);
+      letter-spacing: 0.3px;
+    }
+    .item-qty {
+      font-size: 13px;
+      color: var(--t3);
+      letter-spacing: 0.3px;
+      background: rgba(255,255,255,0.04);
+      padding: 3px 10px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .item-total-price {
+      font-size: 19px;
+      font-weight: 500;
+      color: #e0e6f0;
+      background: rgba(255,255,255,0.04);
+      padding: 4px 14px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+      letter-spacing: 0.3px;
+      min-width: 95px;
+      text-align: right;
+    }
+    .item-meta {
+      font-size: 13px;
+      color: var(--t3);
+      letter-spacing: 0.3px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .item-meta span {
+      background: rgba(255,255,255,0.04);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .item-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--t2);
+      letter-spacing: 0.15px;
+      margin-bottom: 18px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .item-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--t2);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 8px 18px;
+      border-radius: 6px;
+    }
+    .btn:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+    .btn-details {
+      background: transparent;
+      border: none;
+      padding: 8px 4px;
+      color: var(--t3);
+      font-size: 13px;
+      cursor: pointer;
+      transition: color 0.25s;
+      font-family: var(--mono);
+      letter-spacing: 0.3px;
+    }
+    .btn-details:hover {
+      color: #fff;
+    }
+
+    .card-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s var(--ease), padding 0.3s ease;
+      background: rgba(0,0,0,0.25);
+      border-top: 1px solid transparent;
+      padding: 0 28px;
+    }
+    .item-card.expanded .card-details {
+      max-height: 2000px;
+      border-top-color: rgba(255,255,255,0.06);
+      padding: 24px 28px;
+    }
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 14px 24px;
+      font-size: 13px;
+      color: var(--t2);
+    }
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .detail-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--t3);
+    }
+    .detail-value {
+      color: #e0e4ec;
+      font-weight: 500;
+    }
+    .full-description {
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #cbd0db;
+      white-space: pre-wrap;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 18px;
+    }
+
+    @media (max-width: 750px) {
+      .card-main {
+        flex-direction: column;
+      }
+      .card-image {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        padding: 20px;
+        max-height: 220px;
+      }
+      .card-image img {
+        max-height: 160px;
+      }
+      .card-content {
+        padding: 20px;
+      }
+      .item-header {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .item-pricing {
+        flex-wrap: wrap;
+      }
+      .page {
+        padding: 100px 16px 30px;
+      }
+      .page-subtitle {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .total-section {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="diag"></div>
+  <div class="txt" id="bgtext"></div>
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-left">
+      <img class="topbar-logo" id="topbarLogo" src="https://imgekkefries.pythonanywhere.com/logo.png" alt="Logo" onerror="this.style.display='none'" />
+      <span class="topbar-brand">gekke.org</span>
+    </div>
+  </div>
+
+  <div class="page">
+    <h1 class="page-title">Airsoft Setup</h1>
+    <div class="page-subtitle">
+      <span>Current loadout & wishlist items</span>
+      <div class="total-section">
+        <label class="optional-toggle" id="optionalToggleLabel">
+          <input type="checkbox" id="optionalCheckbox" onchange="toggleOptional()">
+          <span class="toggle-box"></span>
+          <span>incl. optioneel</span>
+        </label>
+        <span class="total-cost">Totaal: <span id="totalPrice">€712,65</span></span>
+      </div>
+    </div>
+
+    <div id="categoriesContainer"></div>
+  </div>
+
+  <script>
+    const ITEMS = [
+      // PRIMARY WEAPON
+      {
+        id: 'item1',
+        category: 'Primary Weapon',
+        title: 'AK74M-2.0 | Rifle | AEG | LCT',
+        price: 499.00,
+        qty: 1,
+        optional: false,
+        url: 'https://www.shogun.nl/ak74m-20-rifle-aeg-lct.html',
+        image: 'https://shogun.nl/img/dj-LobmE77-fVTIjlMBHsQj3PwkCRT7uEA0YeLiRGco/resize:fit:0:0/aHR0cHM6Ly93d3cuc2hvZ3VuLm5sL21lZGlhL2NhdGFsb2cvcHJvZHVjdC9hL2svYWs3NG0yMF9yaWZsZV9hZWdfYXV0b21hdGljX2VsZWN0cmljX2d1bl9sY3RfMS5qcGc_.jpg',
+        metaTags: ['AEG', '400 FPS', '3.4 kg', 'LCT'],
+        shortDesc: 'De AK74M-2.0 AEG is een elektrisch aangedreven assault rifle op het AK74-platform, uitgevoerd in een combinatie van polymeer en metaal. Met een inklapbare kolf en een vuursnelheid van zowel semi als automatisch heeft deze replica direct alles wat je nodig hebt voor een allround skirmdag.',
+        details: [
+          ['SKU', 'AKG001-00-00-00'],
+          ['Gewicht', '3.40 kg'],
+          ['Type', 'Assault rifles (AR)'],
+          ['Kleur', 'Zwart'],
+          ['Platform', 'AK, AK74'],
+          ['Krachtbron', 'AEG'],
+          ['Blowback', 'Geen Blowback'],
+          ['FPS', '400'],
+          ['Schietmodus', 'Semi & auto'],
+          ['Materiaal', 'Polymeer / Metaal'],
+          ['Lengte', '70.50 cm'],
+          ['Looplengte', '435 mm'],
+          ['Loopuiteinde', '14mm CCW'],
+          ['Magazijn', '130 rds'],
+          ['Batterij', 'LiPo 11.1V / 7.4V'],
+          ['Connector', 'Deans'],
+          ['Gearbox', 'Versie 3'],
+          ['Verstelbaar', 'Kolf inklapbaar, Hop-Up'],
+          ['Merk', 'LCT']
+        ],
+        fullDesc: '<strong>AK74M-2.0 AEG – De klassieke AK in een moderne, elektrische uitvoering</strong><br>De AK74M-2.0 AEG is een elektrisch aangedreven assault rifle op het AK74-platform, uitgevoerd in een combinatie van polymeer en metaal. Met een inklapbare kolf en een vuursnelheid van zowel semi als automatisch heeft deze replica direct alles wat je nodig hebt voor een allround skirmdag.<br><br><strong>Ervaring & handling</strong><br>Met een lengte van 70,5 cm valt de AK74M-2.0 AEG in het allround formaat: groot genoeg voor stabiliteit, maar niet zo log dat hij je hindert in kleinere ruimtes. De kolf is inklapbaar, waardoor je de replica snel passend kunt maken aan jouw lichaamslengte of situatie. Het gewicht bedraagt 3,4 kg, wat je na een langere dag in het veld zeker merkt, dus een goede sling is geen overbodige luxe.<br><br><strong>Techniek & prestaties</strong><br>FPS: 400 | Looplengte: 435 mm | Magazijn: 130 BB\'s | Batterij: 11,1 V of 7,4 V LiPo (Deans) | Hop-up verstelbaar | Safety aanwezig.<br><br><em>Tip: gebruik na iedere skirm een trekkoord met een schone doek om de loop vrij te houden van vuil.</em>'
+      },
+
+      // MAGAZINES & ACCESSORIES
+      {
+        id: 'item2',
+        category: 'Magazines & Accessories',
+        title: 'LCK-15 | Mid-Cap | 130rds | AEG | Magazijn | LCT',
+        price: 14.95,
+        qty: 3,
+        optional: false,
+        url: 'https://www.shogun.nl/lck-15-mid-cap-130rds-aeg-magazijn-lct.html',
+        image: 'https://shogun.nl/img/hYRvEhDURbwdnE2u_0UUA1P8mWRb9nMNSmnFkkBOiBA/resize:fit:0:0/aHR0cHM6Ly93d3cuc2hvZ3VuLm5sL21lZGlhL2NhdGFsb2cvcHJvZHVjdC9sL2MvbGNrMTVfbWlkY2FwXzEzMHJkc19hZWdfbWFnYXppbmVfbGN0XzEuanBnPw.jpg',
+        metaTags: ['Mid-Cap', '130 BB\'s', '186 g', 'LCT'],
+        shortDesc: 'Het LCT LCK-15 magazijn is een mid-cap AEG magazijn speciaal ontworpen voor de LCT LCK-15 serie replica\'s. Met een capaciteit van 130 rounds biedt dit magazijn een perfecte balans tussen munitievoorraad en realisme. De polymeer constructie maakt het magazijn licht maar duurzaam.',
+        details: [
+          ['SKU', 'PAA359-00-00-00'],
+          ['Kleur', 'Zwart'],
+          ['Type', 'AEG magazijnen'],
+          ['Krachtbron', 'AEG'],
+          ['Capaciteit', '130'],
+          ['Merk', 'LCT'],
+          ['Gewicht', '186 g'],
+          ['Materiaal', 'Polymeer']
+        ],
+        fullDesc: '<strong>LCT LCK-15 Mid-Cap 130rds AEG Magazijn</strong><br>Dit magazijn is specifiek ontwikkeld voor AEG replica\'s uit de LCT LCK-15 serie. Als mid-cap magazijn blijven de BB\'s stil zitten tijdens het lopen of rennen, in tegenstelling tot hi-cap magazijnen waar BB\'s kunnen rammelen. Het laden gebeurt met een speedloader via de vulmond aan de bovenzijde. De veerdruk zorgt voor betrouwbare toevoer naar de hop-up unit.<br><br><em>Ideaal voor tactisch realisme en milsim-gebruik.</em>'
+      },
+
+      // ATTACHMENTS – AK Side Mount Base
+      {
+        id: 'item4',
+        category: 'Attachments',
+        title: 'AK Side Mount Base | Pirate Arms',
+        price: 24.95,
+        qty: 1,
+        optional: false,
+        url: 'https://www.shogun.shop/ak-side-mount-base-pirate-arms.html',
+        image: 'https://www.shogun.shop/img/TVnJBLrqFnEPnYoTcXYimkMxhyBBQnBKvPZNPAWBocE/resize:fit:0:0/aHR0cHM6Ly93d3cuc2hvZ3VuLnNob3AvbWVkaWEvY2F0YWxvZy9wcm9kdWN0L2Evay9ha19zaWRlX21vdW50X2Jhc2VfcGlyYXRlX2FybXNfMS5wbmc_.png',
+        metaTags: ['Aluminium', 'Picatinny', '226 g', 'Pirate Arms'],
+        shortDesc: 'This side mount adapter from Pirate Arms attaches to the side of AK replicas. It provides a stable platform for optics such as red dot sights and rifle scopes, without requiring you to remove the original iron sights. The Picatinny rail on top accepts virtually all modern aiming devices.',
+        details: [
+          ['SKU', '2157'],
+          ['Gewicht', '0.23 kg'],
+          ['Kleur', 'Zwart'],
+          ['Type', 'Rail adapters'],
+          ['Geschikt voor', 'Universeel'],
+          ['Platform', 'Universeel'],
+          ['Materiaal', 'Aluminium'],
+          ['Top rail type', 'Picatinny'],
+          ['Merk', 'Pirate Arms']
+        ],
+        fullDesc: '<strong>AK Side Mount Base | Pirate Arms – this rail adapter for your airsoft setup</strong><br>This side mount adapter from Pirate Arms attaches to the side of AK replicas. It provides a stable platform for optics such as red dot sights and rifle scopes, without requiring you to remove the original iron sights. The Picatinny rail on top accepts virtually all modern aiming devices.<br><br><strong>Technical specifications</strong><br>This rail adapter is made from aluminium and weighs 226 grams. The black finish matches standard AK replicas. The mounting system clicks securely onto the standard side mount point found on many AK models. The lever ensures a solid lock without any play.<br><br><strong>Application during skirms</strong><br>On AK replicas, the iron sight is often positioned above the gas block, making direct mounting of optics difficult. This side mount solves that by providing a mounting platform next to the receiver. You retain access to your iron sights while using modern optics – useful if your battery runs out or you need to quickly switch between distances.<br><br><em>Ideaal voor airsoft players who want to equip their AK with modern optics – geschikt voor zowel CQB als outdoor velden.</em>'
+      },
+
+      // ATTACHMENTS – Red Dot Sight
+      {
+        id: 'item5',
+        category: 'Attachments',
+        title: 'Red Dot Sight | 552 Advanced | Red/Green Dot | Black | RAM Tactical',
+        price: 58.95,
+        qty: 1,
+        optional: false,
+        url: 'https://www.shogun.shop/ram-tactical-advanced-552-red-green-dot-sight-black-rt320.html',
+        image: 'https://www.shogun.shop/img/y5y_8x68KPj07mkU-ziEZ2cvVFOA9sik7JDvoKTy7Nw/resize:fit:520:696/aHR0cHM6Ly93d3cuc2hvZ3VuLnNob3AvbWVkaWEvY2F0YWxvZy9wcm9kdWN0L3IvZS9yZWRfZG90X3NpZ2h0XzU1Ml9hZHZhbmNlZF9yZWRncmVlbl9kb3RfYmxhY2tfcmFtX3RhY3RpY2FsXzQuanBnP3dpZHRoPTUyMCZoZWlnaHQ9Njk2.jpg',
+        metaTags: ['1x Vergroting', 'Red/Green Dot', 'Picatinny', 'RAM Tactical'],
+        shortDesc: 'The Advanced 552 from RAM Tactical is a versatile red dot sight that helps you acquire your target quickly. With a choice between a red or green dot and adjustable brightness, this sight adapts perfectly to various lighting conditions. Whether you\'re training at the shooting range or engaged in an airsoft match, this compact optic gives you the advantage of fast and intuitive aiming.',
+        details: [
+          ['SKU', 'RT320'],
+          ['Gewicht', '0.28 kg'],
+          ['Kleur', 'Zwart'],
+          ['Type', 'Red Dot Sights'],
+          ['Materiaal', 'Aluminium'],
+          ['Lengte', '13.00 cm'],
+          ['Hoogte', '6.50 cm'],
+          ['Top rail type', 'Picatinny'],
+          ['Mounting Rail', 'Picatinny, Weaver'],
+          ['Batterij', 'AAA'],
+          ['Reticle', 'Red / Green Dot'],
+          ['Vergroting', '1x'],
+          ['Merk', 'RAM Tactical']
+        ],
+        fullDesc: '<strong>Advanced 552 red/green Dot Sight – this red dot sight for rapid target acquisition</strong><br>The Advanced 552 from RAM Tactical is a versatile red dot sight that helps you acquire your target quickly. With a choice between a red or green dot and adjustable brightness, this sight adapts perfectly to various lighting conditions. Whether you\'re training at the shooting range or engaged in an airsoft match, this compact optic gives you the advantage of fast and intuitive aiming.<br><br><strong>What we think of this red dot sight</strong><br>The Shogun team is impressed by the practical operation of this sight. The control panel at the front is conveniently accessible – even with gloves you can easily switch between red and green or adjust the brightness. At 275 grams, this sight is sturdy enough to be reliable, but not so heavy that it unbalances your setup.<br><br><strong>Technology and optical performance</strong><br>This red dot sight operates with 1x magnification, which means you can keep both eyes open whilst aiming – ideal for rapid target acquisition. The 27 metre wide field of view at 100 metres distance gives you a broad overview of your surroundings. The red/green dot is fully adjustable in brightness, so you always have a clear aiming point without disrupting your night vision.<br><br><strong>Mounting and compatibility</strong><br>This sight is mounted on a Picatinny rail – this is the standard for airsoft replicas and many PCP air rifles. The included 21mm screw mount ensures a secure attachment and broad compatibility with both Picatinny and Weaver rails. The elevation and windage adjustment works with 1 MOA clicks, which means each click moves your point of aim approximately 3mm at 100 metres distance.<br><br><em>Ideaal voor zowel beginners als gevorderde airsofters – geschikt voor verschillende omgevingen met rode of groene dot.</em>'
+      },
+
+      // ATTACHMENTS – Lens Protector
+      {
+        id: 'item6',
+        category: 'Attachments',
+        title: 'Lens Protector for Holo-sight | Element',
+        price: 4.95,
+        qty: 1,
+        optional: false,
+        url: 'https://www.shogun.shop/lens-protector-for-holo-sight.html',
+        image: 'https://www.shogun.shop/img/seKV-ntPLtDLtdOIYkZO3VqHmhoqrVFeQ2-bbeV6rdI/resize:fit:520:696/aHR0cHM6Ly93d3cuc2hvZ3VuLnNob3AvbWVkaWEvY2F0YWxvZy9wcm9kdWN0L2wvZS9sZW5zX3Byb3RlY3Rvcl9mb3JfaG9sb3NpZ2h0X2VsZW1lbnRfMS5wbmc_d2lkdGg9NTIwJmhlaWdodD02OTY.png',
+        metaTags: ['Plastic', 'Slide-in mount', 'Element'],
+        shortDesc: 'If you use a Holo-sight during airsoft, you know how important it is to protect your sight from BBs. This lens protector from Element is specifically developed to safeguard the fragile glass of your Holo-sight without obstructing your view.',
+        details: [
+          ['SKU', 'EX013-2448'],
+          ['Kleur', 'Zwart'],
+          ['Type', 'Protection'],
+          ['Materiaal', 'Plastic'],
+          ['Mounting Rail', 'Other'],
+          ['Merk', 'Element']
+        ],
+        fullDesc: '<strong>Lens Protector for Holo-sight | Element – This protection for your optics</strong><br>If you use a Holo-sight during airsoft, you know how important it is to protect your sight from BBs. This lens protector from Element is specifically developed to safeguard the fragile glass of your Holo-sight without obstructing your view.<br><br><strong>Our opinion on this protection</strong><br>At Shogun, we are fans of smart solutions, and this lens protector is one of them. What stands out most to us is the ease of installation – you simply slide it into your Holo-sight and you\'re done. No hassle with screws or complicated assembly. The transparent plastic is clear enough not to disturb your view, yet sturdy enough to absorb BB impacts.<br><br><strong>Technology and protective performance</strong><br>The lens protector is made from robust plastic that is specially selected for optical clarity and impact resistance. The material effectively absorbs BBs and prevents costly damage to the lens of your Holo-sight. The black finish matches most Holo-sights seamlessly, giving the whole setup a professional look.<br><br><strong>Mounting and compatibility</strong><br>This lens protector features an other mounting type, which in this case means it is specially designed to slide directly into your Holo-sight. So, no universal rail, but a fit specifically tailored to Holo-sight models. This ensures a stable attachment without any play.<br><br><em>Voor airsofters die hun Holo-sight willen beschermen – vooral aanbevolen voor CQB scenarios.</em>'
+      },
+
+      // ATTACHMENTS – Geluiddemper (Optional)
+      {
+        id: 'item3',
+        category: 'Attachments',
+        title: 'Geluiddemper | 19.5 cm | Zwart | Big Dragon',
+        price: 19.95,
+        qty: 1,
+        optional: true,
+        url: 'https://www.shogun.nl/geluiddemper-195-cm-zwart-big-dragon.html',
+        image: 'https://shogun.nl/img/RUU2gPY6a9NTrXAHezTiYhjf56amOUw13gb05OB2-Yo/resize:fit:0:0/aHR0cHM6Ly93d3cuc2hvZ3VuLm5sL21lZGlhL2NhdGFsb2cvcHJvZHVjdC9zL3Uvc3VwcHJlc3Nvcl8xOTVfY21fYmxhY2tfYmlnX2RyYWdvbl8zLmpwZz8.jpg',
+        metaTags: ['Aluminium', '14mm CCW', '35mm Ø', 'Big Dragon'],
+        shortDesc: 'Deze geluiddemper is een functionele toevoeging voor je airsoft replica. Met een lengte van 19,5 cm en een diameter van 35 mm geeft het je wapen een realistischer uiterlijk. De demper heeft een 14mm CCW schroefdraad waardoor deze op de meeste airsoftwapens past.',
+        details: [
+          ['SKU', '1968910'],
+          ['Kleur', 'Zwart'],
+          ['Type', 'Dempers'],
+          ['Geschikt voor', '6mm BB'],
+          ['Materiaal', 'Aluminium'],
+          ['Lengte', '19.50 cm'],
+          ['Loopuiteinde', '14mm CCW'],
+          ['Diameter', '35.00 mm'],
+          ['Merk', 'Big Dragon']
+        ],
+        fullDesc: '<strong>Geluiddemper | 19.5 cm | Zwart | Big Dragon</strong><br>Deze geluiddemper is een functionele toevoeging voor je airsoft replica. Met een lengte van 19,5 cm en een diameter van 35 mm geeft het je wapen een realistischer uiterlijk. De demper heeft een 14mm CCW schroefdraad waardoor deze op de meeste airsoftwapens past.<br><br><strong>Technische eigenschappen</strong><br>Deze demper is vervaardigd uit aluminium, wat zorgt voor een stevige maar lichte constructie. De zwarte afwerking past bij vrijwel elke replica. Met een lengte van 195mm en een diameter van 35mm heeft deze demper realistische afmetingen. De 14mm linkse draad (CCW) is de standaard voor veel airsoftwapens.<br><br><strong>Toepassing tijdens airsoft</strong><br>Tijdens skirms voegt deze demper vooral visuele waarde toe aan je replica. Hoewel het geen daadwerkelijk geluiddempend effect heeft bij airsoftwapens, draagt het bij aan de tactische uitstraling van je loadout. De aluminium constructie kan kleine stoten opvangen zonder direct beschadigd te raken.<br><br><em>Voor airsofters die waarde hechten aan een realistische uitstraling – geschikt voor vrijwel elke replica met 14mm CCW aansluiting.</em>'
+      },
+
+      // GEAR – Emerson Combat Pants
+      {
+        id: 'item7',
+        category: 'Gear',
+        title: 'G3 Combat Pants Advanced Version | Multicam | Emerson Gear',
+        price: 79.95,
+        qty: 1,
+        optional: false,
+        url: 'https://www.shogun.shop/emerson-gear-g3-combat-pants-advanced-version-multicam.html',
+        image: 'https://www.shogun.shop/img/2Ae-ccbkzJ_rpmZb6QK4KdGZISB3eHHsdwihwei0XhA/resize:fit:520:696/aHR0cHM6Ly93d3cuc2hvZ3VuLnNob3AvbWVkaWEvY2F0YWxvZy9wcm9kdWN0L2cvMy9nM19jb21iYXRfcGFudHNfYWR2YW5jZWRfdmVyc2lvbl9tdWx0aWNhbV9lbWVyc29uX2dlYXJfMV81LmpwZz93aWR0aD01MjAmaGVpZ2h0PTY5Ng.jpg',
+        metaTags: ['Nylon', 'Multicam', 'Knee Pads', 'Emerson Gear'],
+        shortDesc: 'The G3 Combat Pants by Emerson Gear are advanced airsoft trousers developed for intensive action. With the well-known Multicam camouflage pattern, you remain inconspicuous in various terrain conditions. These trousers stand out due to the removable knee pads and the fully adjustable fit, ensuring you always play comfortably.',
+        details: [
+          ['SKU', 'EM9351MC'],
+          ['Color', 'Multicolor'],
+          ['Type', 'Trousers'],
+          ['Style', 'Tactical'],
+          ['Camo Print', 'Multicam Tropic'],
+          ['Material', 'Nylon'],
+          ['Gender', 'Men\'s'],
+          ['Water/windproof', 'No'],
+          ['Brand', 'Emerson']
+        ],
+        fullDesc: '<strong>G3 Combat Pants Advanced Version – These trousers ready for your setup</strong><br>The G3 Combat Pants by Emerson Gear are advanced airsoft trousers developed for intensive action. With the well-known Multicam camouflage pattern, you remain inconspicuous in various terrain conditions. These trousers stand out due to the removable knee pads and the fully adjustable fit, ensuring you always play comfortably. Whether you are participating in an airsoft skirmish or engaged in outdoor training, these trousers adapt to your movements.<br><br><strong>Material and technical finish</strong><br>These combat trousers are made from durable nylon that withstands intensive use. The 3D cut and stretch fabric provide optimal freedom of movement when crawling, running, or squatting. The breathable material prevents overheating during long playing sessions. The expandable pockets and multiple belt loops allow you to carry all your essential gear in an organised manner. While not water- or windproof, the material does offer good protection against branches and rough terrain.<br><br><strong>Practical use during airsoft or outdoor activities</strong><br>The adjustable waistband, knee pads, and leg openings make these trousers particularly versatile. You can position and secure the knee pads at exactly the right height, which is crucial when taking shooting positions. The hidden pockets and strategically placed compartments keep your equipment discreetly at hand. Thanks to the elastic properties, the trousers adapt to different body types, with the size chart serving as a guide for the best choice.<br><br><em>Ideaal voor airsoft players die waarde hechten aan mobiliteit en bescherming – geschikt voor uitgebreide missies of trainingen.</em>'
+      },
+
+
+
+// GEAR – Mechanix Wear Fast Fit Gen II Gloves
+{
+  id: 'item8',
+  category: 'Gear',
+  title: 'Fast Fit Gen II | Multicam | Mechanix Wear',
+  price: 19.95,
+  qty: 1,
+  optional: false,
+  url: 'https://www.shogun.shop/fast-fit-gen-ii-multicam-mechanix-wear.html',
+  image: 'https://www.shogun.shop/img/BJIWpY1aAY4jIeTPgJpcX29omh6YqmwCfMsvinXzdRU/resize:fit:520:696/aHR0cHM6Ly93d3cuc2hvZ3VuLnNob3AvbWVkaWEvY2F0YWxvZy9wcm9kdWN0L2YvYS9mYXN0X2ZpdF9nZW5faWlfbXVsdGljYW1fbWVjaGFuaXhfd2Vhcl8zXzQuanBnP3dpZHRoPTUyMCZoZWlnaHQ9Njk2.jpg',
+  metaTags: ['TrekDry', 'Multicam', 'Unisex', 'Mechanix Wear'],
+  shortDesc: 'The Fast Fit Gen II gloves from Mechanix Wear are designed for speed and versatility. With the distinctive multicam camouflage pattern, these gloves seamlessly integrate into any tactical gear. The flexible design adapts instantly to the shape of your hand, providing optimal freedom of movement from the very first moment.',
+  details: [
+    ['SKU', 'MFFG'],
+    ['Color', 'Camouflage'],
+    ['Type', 'Gloves'],
+    ['Style', 'Tactical'],
+    ['Camo Print', 'Multicam'],
+    ['Material', 'TrekDry®'],
+    ['Gender', 'Unisex'],
+    ['Water/windproof', 'No'],
+    ['Brand', 'Mechanix Wear']
+  ],
+  fullDesc: '<strong>Fast Fit Gen II Multicam – gloves for reliable performance in the field</strong><br>The Fast Fit Gen II gloves from Mechanix Wear are designed for speed and versatility. With the distinctive multicam camouflage pattern, these gloves seamlessly integrate into any tactical gear. The flexible design adapts instantly to the shape of your hand, providing optimal freedom of movement from the very first moment.<br><br><strong>Material and functionality</strong><br>These gloves are made from TrekDry material, a technical fabric renowned for its breathable properties. Strategically placed reinforcements at vulnerable points ensure extra durability without compromising comfort. These gloves are not water- or windproof, but the lightweight material offers advantages during activities where ventilation is essential. The multicam pattern is functional for camouflage and gives the gloves a professional appearance.<br><br><strong>Use during airsoft</strong><br>The Fast Fit system makes it easy to put on these gloves – even with one hand. The elastic cuff fits comfortably around your wrist without creating pressure points. During skirms, they offer the balance between protection and finger sensitivity for operating your replica. The breathable TrekDry material keeps your hands cool and dry, even during long skirms or training sessions. The airsoft gloves combine effortlessly with other gear such as tactical vests or plate carriers.<br><br><em>Geschikt voor airsoft players die waarde hechten aan snelheid en behendigheid – ook ideaal voor outdoor instructeurs en DIY-ers.</em>'
+},
+
+// GEAR – 101 Inc. Dump Pouch (Optional)
+{
+  id: 'item9',
+  category: 'Gear',
+  title: 'Dump Pouch | 101 Inc.',
+  price: 14.95,
+  qty: 1,
+  optional: true,
+  url: 'https://www.shogun.nl/dump-pouch-101inc.html',
+  image: 'https://shogun.nl/img/P9MFGQ02fCz3h2Rl-ZhObvXp68HguGqP3w4leDSqnKw/resize:fit:520:696/aHR0cHM6Ly93d3cuc2hvZ3VuLm5sL21lZGlhL2NhdGFsb2cvcHJvZHVjdC9kL3UvZHVtcF9wb3VjaF8xMDFfaW5jXzFfMy5qcGc_d2lkdGg9NTIwJmhlaWdodD02OTY.jpg',
+  metaTags: ['Nylon', 'MOLLE', 'Opvouwbaar', '101 Inc.'],
+  shortDesc: 'De Dump Pouch van 101 Inc. is een handige opvouwbare magazijnpouch die je gebruikt voor het snel opbergen van lege magazijnen tijdens skirms. Deze magazijn pouch vouwt compact op wanneer je hem niet gebruikt, waardoor hij geen onnodige ruimte inneemt aan je loadout.',
+  details: [
+    ['SKU', '359540GR'],
+    ['Kleur', 'Groen'],
+    ['Type', 'Magazijn pouches'],
+    ['Merk', '101 Inc.']
+  ],
+  fullDesc: '<strong>Dump Pouch Zwart | 101 Inc. – opvouwbare pouch voor snelle magazijnwissels</strong><br>De Dump Pouch van 101 Inc. is een handige opvouwbare magazijnpouch die je gebruikt voor het snel opbergen van lege magazijnen tijdens skirms. Deze magazijn pouch vouwt compact op wanneer je hem niet gebruikt, waardoor hij geen onnodige ruimte inneemt aan je loadout.<br><br><strong>Materiaal en functionaliteit</strong><br>Deze dump pouch is gemaakt van stevig nylon dat bestand is tegen de omstandigheden op het veld. Met afmetingen van 20 x 14,5 x 12 cm biedt deze pouch voldoende ruimte voor meerdere magazijnen. Het trekkoord-systeem houdt je spullen veilig op hun plaats, ook tijdens snelle bewegingen. De zwarte kleur past bij vrijwel elke uitrusting.<br><br><strong>Gebruik tijdens skirms</strong><br>Via het MOLLE-systeem bevestig je deze pouch aan je vest, battle belt of plate carrier. Tijdens het spel klap je de pouch uit wanneer je lege magazijnen moet dumpen. Dit maakt herladen sneller omdat je niet hoeft te zoeken naar de originele magazijnpouches. De mesh-zijkanten zorgen voor ventilatie en laten eventueel vocht weglopen.<br><br><em>Voor airsofters die tijdens langere skirms snel willen wisselen tussen magazijnen – ook geschikt als verzamelpouch voor outdoor-activiteiten.</em>'
+}
+    ];
+
+    function formatPrice(price) {
+      return '€' + price.toFixed(2).replace('.', ',');
+    }
+
+    function buildItemCard(item, index) {
+      const totalPrice = item.price * item.qty;
+      const optionalClass = item.optional ? ' optional-item' : '';
+      const optionalTag = item.optional ? '<div class="item-optional-tag">optioneel</div>' : '';
+      const titleRow = item.optional
+        ? '<div class="item-title-row"><div class="item-title">' + item.title + '</div>' + optionalTag + '</div>'
+        : '<div class="item-title">' + item.title + '</div>';
+
+      const metaHTML = item.metaTags.map(function(t) { return '<span>' + t + '</span>'; }).join('');
+      const detailsHTML = item.details.map(function(d) {
+        return '<div class="detail-item"><span class="detail-label">' + d[0] + '</span><span class="detail-value">' + d[1] + '</span></div>';
+      }).join('');
+
+      return '<div class="item-card' + optionalClass + '" id="' + item.id + '" data-optional="' + item.optional + '" data-price="' + item.price + '" data-qty="' + item.qty + '" style="animation-delay:' + (index * 0.08) + 's">' +
+        '<div class="card-main">' +
+          '<div class="card-image">' +
+            '<img src="' + item.image + '" alt="' + item.title + '" loading="lazy">' +
+          '</div>' +
+          '<div class="card-content">' +
+            '<div class="item-header">' +
+              titleRow +
+              '<div class="item-pricing">' +
+                '<span class="item-qty">' + item.qty + '×</span>' +
+                '<span class="item-unit-price">' + formatPrice(item.price) + '</span>' +
+                '<span class="item-total-price">' + formatPrice(totalPrice) + '</span>' +
+              '</div>' +
+            '</div>' +
+            '<div class="item-meta">' + metaHTML + '</div>' +
+            '<div class="item-desc">' + item.shortDesc + '</div>' +
+            '<div class="item-actions">' +
+              '<a href="' + item.url + '" target="_blank" rel="noopener" class="btn">Bekijk op Shogun</a>' +
+              '<button class="btn-details" onclick="toggleCard(\'' + item.id + '\')">Meer details</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="card-details">' +
+          '<div class="details-grid">' + detailsHTML + '</div>' +
+          '<div class="full-description">' + item.fullDesc + '</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    function buildCategorySection(category, items, startIndex) {
+      var html = '<div class="category-section"><div class="category-header"><div class="category-title">' + category + '</div></div><div class="setup-list">';
+      for (var i = 0; i < items.length; i++) {
+        html += buildItemCard(items[i], startIndex + i);
+      }
+      html += '</div></div>';
+      return html;
+    }
+
+    function renderAllCategories() {
+      var categories = {};
+      for (var i = 0; i < ITEMS.length; i++) {
+        var cat = ITEMS[i].category;
+        if (!categories[cat]) categories[cat] = [];
+        categories[cat].push(ITEMS[i]);
+      }
+      var catOrder = ['Primary Weapon', 'Magazines & Accessories', 'Attachments', 'Gear'];
+      var html = '';
+      var index = 0;
+      for (var c = 0; c < catOrder.length; c++) {
+        var catName = catOrder[c];
+        if (categories[catName]) {
+          html += buildCategorySection(catName, categories[catName], index);
+          index += categories[catName].length;
+        }
+      }
+      document.getElementById('categoriesContainer').innerHTML = html;
+    }
+
+    function calculateGrandTotal(includeOptional) {
+      var grandTotal = 0;
+      for (var i = 0; i < ITEMS.length; i++) {
+        var item = ITEMS[i];
+        if (item.optional && !includeOptional) continue;
+        grandTotal += item.price * item.qty;
+      }
+      document.getElementById('totalPrice').textContent = formatPrice(grandTotal);
+    }
+
+    window.toggleOptional = function() {
+      var checkbox = document.getElementById('optionalCheckbox');
+      var includeOptional = checkbox.checked;
+      var optionalCards = document.querySelectorAll('.item-card[data-optional="true"]');
+      for (var i = 0; i < optionalCards.length; i++) {
+        if (includeOptional) {
+          optionalCards[i].classList.remove('optional-dimmed');
+        } else {
+          optionalCards[i].classList.add('optional-dimmed');
+        }
+      }
+      calculateGrandTotal(includeOptional);
+    };
+
+    window.toggleCard = function(id) {
+      var card = document.getElementById(id);
+      if (card) card.classList.toggle('expanded');
+    };
+
+    renderAllCategories();
+    calculateGrandTotal(false);
+
+    (function() {
+      var g = document.getElementById('bgtext');
+      if (g) {
+        function r() {
+          g.innerHTML = '';
+          var w = window.innerWidth;
+          var c = 16, ro = 20;
+          if (w < 768) { c = 10; ro = 15; }
+          else if (w > 1600) { c = 20; ro = 24; }
+          g.style.gridTemplateColumns = 'repeat(' + c + ', 1fr)';
+          g.style.gridTemplateRows = 'repeat(' + ro + ', 1fr)';
+          for (var i = 0; i < c * ro; i++) {
+            var d = document.createElement('div');
+            d.textContent = 'gekke.org';
+            g.appendChild(d);
+          }
+        }
+        r();
+        window.addEventListener('resize', function() { setTimeout(r, 100); });
+      }
+
+      var logo = document.getElementById('topbarLogo');
+      if (logo) {
+        logo.onerror = function() { logo.style.display = 'none'; };
+        if (logo.complete && logo.naturalWidth === 0) logo.style.display = 'none';
+      }
+    })();
+  </script>
+</body>
+</html>
