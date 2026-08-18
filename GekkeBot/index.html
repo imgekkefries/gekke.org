@@ -2388,21 +2388,21 @@
         return payload;
     }
 
-    function saveEditedList() {
-        if (!editingListId || !currentUser || !currentPassword) return;
-        var payload = getCurrentFormData();
-        payload.username = currentUser; payload.password = currentPassword; payload.list_id = editingListId;
-        fetch(api + '/GekkeBot/updatelist', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-        }).then(function(res) { return res.json(); }).then(function(data) {
-            if (data.message) {
-                window.notify.success('Saved', 'List updated successfully!');
-                if (data.list) currentListData = data.list;
-                document.getElementById('saveChangesBar').classList.remove('visible');
-                originalFormState = snapshotForm(); goBackToDashboard();
-            } else { window.notify.error('Error', data.error || 'Failed to save'); }
-        }).catch(function() { window.notify.error('Error', 'Cannot connect to server'); });
-    }
+function saveEditedList() {
+    if (!editingListId || !currentUser || !currentPassword) return;
+    var payload = getCurrentFormData();
+    payload.username = currentUser; payload.password = currentPassword; payload.list_id = editingListId;
+    fetch(api + '/GekkeBot/updatelist', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+    }).then(function(res) { return res.json(); }).then(function(data) {
+        if (data.message) {
+            window.notify.success('Saved', 'List updated successfully!');
+            if (data.list) currentListData = data.list;
+            document.getElementById('saveChangesBar').classList.remove('visible');
+            originalFormState = snapshotForm(); 
+        } else { window.notify.error('Error', data.error || 'Failed to save'); }
+    }).catch(function() { window.notify.error('Error', 'Cannot connect to server'); });
+}
 
     function goBackToDashboard() {
         stopTicketListRefresh(); stopTicketDetailRefresh();
