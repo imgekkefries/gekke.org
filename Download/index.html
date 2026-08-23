@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download - Gekke.org</title>
+  
+  <style>
+    @property --_w { syntax: "<length>"; inherits: true; initial-value: 100vw; }
+    @property --_h { syntax: "<length>"; inherits: true; initial-value: 100vh; }
+
+    :root {
+      --screenWidth: tan(atan2(var(--_w), 1px));
+      --screenHeight: tan(atan2(var(--_h), 1px));
+      --accentColor: #5E6AD2;
+      --fontInvertColor: #e8e8e8;
+      --buttonColor: #e8e8e8;
+      --borderColorLight: #e8e8e844;
+      --inactiveColor: #8d8d8d;
+      --backgroundColor: #0c0f15;
+      --highlightColor: #5E6AD2;
+      --listItemIconColor: #e8e8e8;
+      --backgroundIconColor: #e8e8e8;
+      --globeGraphicColor: #e8e8e8;
+      --tagTextColor: #e8e8e8;
+      --headingTextColor: #e8e8e8;
+      --bodyTextColor: #e8e8e8;
+      --marqueeTextColor: #e8e8e8;
+      --filterTextActive: #e8e8e8;
+      --squareTextColor: #e8e8e8;
+      --sectionLabels: #e8e8e8;
+      --borderColor: #e8e8e8;
+      --filterBorderColor: #e8e8e844;
+      --tagBorderColor: #e8e8e844;
+      --dottedBorderColor: #e8e8e844;
+      --marqueeTagBorder: #e8e8e844;
+      --filterTextInactive: #e8e8e844;
+      --navButtonBG: #e8e8e811;
+      --counterColor: #e8e8e8;
+      --windowFrameBG: #1a1a1a;
+      --artBackground: #0c0f15;
+      --artForeground: #1a1a1a;
+      --artStroke: #e8e8e8;
+      --windowBarText: #e8e8e8;
+      --terminalBackground: #1e1e1e;
+      --listItemText: #e8e8e8;
+      --invertedTextColor: #1e1e1e;
+      --codeBG: #1a1a1a;
+      --codeBorderColor: #333;
+      --blogImageBorder: #333;
+      --blogImageBG: #1a1a1a;
+      --artGridDotColor: #e8e8e8;
+      --tagHighlightColor: #5E6AD2;
+      --terminalTextSecondary: #cacaca;
+      --terminalTextPrimary: #e8e8e8;
+      --terminalHighlight: #5E6AD2;
+      --fontColor: #e8e8e8;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      background: #0c0f15;
+      background-image: none;
+      font-family: 'Terminal', "Sohne-var", "Helvetica Neue", Arial, sans-serif;
+      color: var(--bodyTextColor);
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @font-face {
+      font-family: 'Terminal';
+      src: url('https://imgekkefries.pythonanywhere.com/terminal.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0c0f15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #5E6AD2;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .bg-layer-text {
+        position: fixed;
+        top: -5%; left: -5%;
+        width: 110%; height: 110%;
+        pointer-events: none;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(16, 1fr);
+        grid-template-rows: repeat(20, 1fr);
+        gap: 5px;
+        transform: rotate(-4deg);
+        opacity: 0.4;
+        font-family: 'Terminal', 'Sohne-mono', monospace;
+        text-transform: uppercase;
+        font-size: clamp(0.6rem, 1.5vw, 0.95rem);
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.12);
+        padding: 24px;
+        transition: color 0.5s ease;
+    }
+
+    .bg-layer-text div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        text-shadow: 0 0 2px rgba(255,255,255,0.08);
+        transition: text-shadow 0.5s ease;
+    }
+
+    .bg-layer-text div:nth-child(3n) { opacity: 0.7; }
+    .bg-layer-text div:nth-child(5n) { transform: rotate(1deg); }
+    .bg-layer-text div:nth-child(7n) { transform: rotate(-1deg); }
+
+    @media (max-width: 700px) {
+        .bg-layer-text {
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+        }
+    }
+
+    @media (min-width: 1600px) {
+        .bg-layer-text {
+            grid-template-columns: repeat(20, 1fr);
+            grid-template-rows: repeat(24, 1fr);
+        }
+    }
+
+    .download-container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 600px;
+      width: 90%;
+    }
+
+    .download-title {
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: 32px;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--headingTextColor);
+      margin-bottom: 10px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .download-title.visible {
+      opacity: 1;
+    }
+
+    .download-version {
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accentColor);
+      margin-bottom: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .download-version.visible {
+      opacity: 1;
+    }
+
+    .download-status {
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: 14px;
+      color: var(--bodyTextColor);
+      margin-bottom: 20px;
+      min-height: 24px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .download-status.visible {
+      opacity: 1;
+    }
+
+    .download-status.error {
+      color: #ff6b6b;
+    }
+
+    .download-status.success {
+      color: #51cf66;
+    }
+
+    .download-progress {
+      width: 100%;
+      height: 4px;
+      background: var(--navButtonBG);
+      border-radius: 2px;
+      margin-bottom: 30px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .download-progress-bar {
+      height: 100%;
+      background: var(--accentColor);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .download-button {
+      display: none;
+      background: var(--accentColor);
+      color: #ffffff;
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .download-button.visible {
+      display: inline-block;
+    }
+
+    .download-button:hover {
+      background: #7b87e0;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--inactiveColor);
+      text-decoration: none;
+      transition: color 0.3s ease;
+      opacity: 0;
+    }
+
+    .back-link.visible {
+      opacity: 1;
+    }
+
+    .back-link:hover {
+      color: var(--accentColor);
+    }
+  </style>
+</head>
+<body style="background-image: none;" id="bodyElement">
+
+<div class="bg-layer-text" id="bgTextGrid"></div>
+
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-spinner"></div>
+</div>
+
+<div class="download-container" id="downloadContainer">
+  <div class="download-title" id="toolName"></div>
+  <div class="download-version" id="toolVersion"></div>
+  
+  <div class="download-status" id="downloadStatus"></div>
+  
+  <div class="download-progress" id="downloadProgress">
+    <div class="download-progress-bar" id="progressBar"></div>
+  </div>
+  
+  <a href="#" class="download-button" id="manualDownload">Download Manually</a>
+  
+  <br>
+  <a href="/" class="back-link" id="backLink">← Back to Home</a>
+</div>
+
+<script>
+  const VpsURL = 'https://imgekkefries.pythonanywhere.com/vps';
+
+  (function() {
+    const gridContainer = document.getElementById('bgTextGrid');
+    if (!gridContainer) return;
+    
+    function generateGridText() {
+      gridContainer.innerHTML = '';
+      const width = window.innerWidth;
+      let columns = 16, rows = 20;
+      if (width < 768) { columns = 10; rows = 15; }
+      else if (width > 1600) { columns = 20; rows = 24; }
+      
+      gridContainer.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+      gridContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+      
+      for (let i = 0; i < columns * rows; i++) {
+        const cell = document.createElement('div');
+        cell.textContent = 'gekke.org';
+        gridContainer.appendChild(cell);
+      }
+    }
+    
+    generateGridText();
+    window.addEventListener('resize', () => { setTimeout(generateGridText, 100); });
+  })();
+
+  (function() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function() {
+        setTimeout(function() {
+          loadingScreen.classList.add('hidden');
+          setTimeout(function() { loadingScreen.remove(); }, 500);
+        }, 300);
+      });
+    } else {
+      setTimeout(function() {
+        loadingScreen.classList.add('hidden');
+        setTimeout(function() { loadingScreen.remove(); }, 500);
+      }, 1000);
+    }
+  })();
+
+  (function() {
+    let baseurl = null;
+    let downloadUrl = null;
+    let toolName = '';
+    let toolVersion = '';
+    let downloadFilename = '';
+
+    async function fetchBaseUrl() {
+      try {
+        const response = await fetch(VpsURL);
+        if (response.ok) {
+          baseurl = await response.text();
+          baseurl = baseurl.trim();
+          console.log('Base URL set:', baseurl);
+          return baseurl;
+        }
+      } catch (e) {
+        console.log('Failed to fetch base URL');
+      }
+      return null;
+    }
+
+    function parseUrl() {
+      const path = window.location.pathname;
+      const parts = path.split('/').filter(p => p.length > 0);
+      
+      if (parts.length >= 2 && parts[0].toLowerCase() === 'download') {
+        toolName = parts[1];
+        toolVersion = parts[2] || 'latest';
+        return true;
+      }
+      return false;
+    }
+
+    async function fetchToolInfo(tool, version) {
+      if (!baseurl) await fetchBaseUrl();
+      if (!baseurl) return null;
+
+      try {
+        const endpoint = version === 'latest' 
+          ? `${baseurl}/${tool}/info`
+          : `${baseurl}/${tool}/info/${version}`;
+        
+        const response = await fetch(endpoint);
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch (e) {
+        console.log('Failed to fetch tool info');
+      }
+      return null;
+    }
+
+    async function fetchToolVersions(tool) {
+      if (!baseurl) await fetchBaseUrl();
+      if (!baseurl) return [];
+
+      try {
+        const response = await fetch(`${baseurl}/${tool}/versions`);
+        if (response.ok) {
+          const data = await response.json();
+          return data.versions || [];
+        }
+      } catch (e) {
+        console.log('Failed to fetch versions');
+      }
+      return [];
+    }
+
+    function getDownloadUrl(tool, version) {
+      const versionPath = version === 'latest' ? '' : `/${version}`;
+      return `${baseurl}/${tool}/download${versionPath}/file`;
+    }
+
+    function showError(message) {
+      const statusElement = document.getElementById('downloadStatus');
+      const backLink = document.getElementById('backLink');
+      
+      statusElement.textContent = message;
+      statusElement.classList.add('error', 'visible');
+      backLink.classList.add('visible');
+    }
+
+    function showSuccess(message) {
+      const statusElement = document.getElementById('downloadStatus');
+      statusElement.textContent = message;
+      statusElement.classList.add('success', 'visible');
+    }
+
+    async function startDownload() {
+      const statusElement = document.getElementById('downloadStatus');
+      const progressElement = document.getElementById('downloadProgress');
+      const progressBar = document.getElementById('progressBar');
+      const manualButton = document.getElementById('manualDownload');
+      const nameElement = document.getElementById('toolName');
+      const versionElement = document.getElementById('toolVersion');
+      const backLink = document.getElementById('backLink');
+
+      if (!parseUrl()) {
+        showError('Invalid download URL');
+        return;
+      }
+
+      const info = await fetchToolInfo(toolName, toolVersion);
+      
+      if (!info) {
+        showError('Tool not found');
+        return;
+      }
+
+      let actualVersion = toolVersion;
+      if (toolVersion === 'latest') {
+        const versions = await fetchToolVersions(toolName);
+        if (versions.length === 0) {
+          showError('No versions available');
+          return;
+        }
+        actualVersion = versions[0];
+      }
+
+      nameElement.textContent = info.full_name || toolName;
+      nameElement.classList.add('visible');
+      
+      versionElement.textContent = `v${actualVersion}`;
+      versionElement.classList.add('visible');
+
+      downloadUrl = getDownloadUrl(toolName, actualVersion);
+      downloadFilename = `${info.full_name || toolName} ${actualVersion}.zip`;
+
+      manualButton.href = downloadUrl;
+      manualButton.setAttribute('download', downloadFilename);
+
+      progressElement.style.display = 'block';
+      progressBar.style.width = '5%';
+      statusElement.textContent = 'Starting download...';
+      statusElement.classList.add('visible');
+      backLink.classList.add('visible');
+
+      try {
+        const response = await fetch(downloadUrl);
+        
+        if (!response.ok) {
+          throw new Error(`Download failed with status: ${response.status}`);
+        }
+
+        const contentLength = response.headers.get('Content-Length');
+        const total = parseInt(contentLength, 10);
+        
+        const reader = response.body.getReader();
+        const chunks = [];
+        let received = 0;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          
+          if (done) break;
+          
+          chunks.push(value);
+          received += value.length;
+          
+          if (total) {
+            const percent = (received / total) * 100;
+            progressBar.style.width = `${percent}%`;
+            statusElement.textContent = `Downloading... ${Math.round(percent)}%`;
+          } else {
+            const mbReceived = (received / 1024 / 1024).toFixed(1);
+            statusElement.textContent = `Downloading... ${mbReceived} MB`;
+          }
+        }
+
+        const blob = new Blob(chunks);
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = downloadFilename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(blobUrl);
+
+        progressBar.style.width = '100%';
+        showSuccess('Download complete!');
+        manualButton.textContent = 'Download Again';
+        manualButton.classList.add('visible');
+
+      } catch (e) {
+        console.log('Auto download failed:', e);
+        statusElement.textContent = 'Auto download blocked. Use manual download below.';
+        statusElement.classList.add('visible');
+        progressElement.style.display = 'none';
+        manualButton.textContent = 'Download Manually';
+        manualButton.classList.add('visible');
+      }
+    }
+
+    // Start download when page loads
+    window.addEventListener('load', function() {
+      setTimeout(startDownload, 500);
+    });
+  })();
+</script>
+
+</body>
+</html>
