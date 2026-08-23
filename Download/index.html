@@ -376,13 +376,13 @@
       return null;
     }
 
-    function parseUrl() {
-      const path = window.location.pathname;
-      const parts = path.split('/').filter(p => p.length > 0);
+    function parseHash() {
+      const hash = window.location.hash.substring(1);
+      const parts = hash.split('/').filter(p => p.length > 0);
       
-      if (parts.length >= 2 && parts[0].toLowerCase() === 'download') {
-        toolName = parts[1];
-        toolVersion = parts[2] || 'latest';
+      if (parts.length >= 1) {
+        toolName = parts[0].toLowerCase();
+        toolVersion = parts[1] || 'latest';
         return true;
       }
       return false;
@@ -452,8 +452,8 @@
       const versionElement = document.getElementById('toolVersion');
       const backLink = document.getElementById('backLink');
 
-      if (!parseUrl()) {
-        showError('Invalid download URL');
+      if (!parseHash()) {
+        showError('Invalid download URL. Use format: /Download/#tool/version');
         return;
       }
 
@@ -549,7 +549,6 @@
       }
     }
 
-    // Start download when page loads
     window.addEventListener('load', function() {
       setTimeout(startDownload, 500);
     });
