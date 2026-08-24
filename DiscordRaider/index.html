@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discord Raider - Gekke.org</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Discord Raider – Gekke.org</title>
   <style>
     @property --_w { syntax: "<length>"; inherits: true; initial-value: 100vw; }
     @property --_h { syntax: "<length>"; inherits: true; initial-value: 100vh; }
@@ -57,7 +56,11 @@
       --fontColor: #e8e8e8;
     }
 
-    * { box-sizing: border-box; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
     body {
       background: #0c0f15;
       background-image: none;
@@ -78,37 +81,23 @@
 
     .loading-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       background: #0c0f15;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       z-index: 99999;
       transition: opacity 0.5s ease;
     }
-
-    .loading-screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
+    .loading-screen.hidden { opacity: 0; pointer-events: none; }
     .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
+      width: 40px; height: 40px;
+      border: 3px solid rgba(255,255,255,0.1);
       border-top: 3px solid #5E6AD2;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
+    /* Mobile-first grid: 8 columns */
     .GridLayout-module__h3nX9W__grid {
       display: grid;
       grid-template-columns: repeat(8, 1fr);
@@ -143,8 +132,9 @@
       color: var(--squareTextColor, var(--fontColor));
     }
 
+    /* fixed nav – same on all screens */
     .Nav-module__bLoQaq__nav {
-      z-index: 3;
+      z-index: 20;
       display: flex;
       justify-content: space-between;
       gap: 3px;
@@ -153,14 +143,15 @@
       margin: auto;
       padding: 12px;
       position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translate(-50%);
+      top: 0; left: 50%;
+      transform: translateX(-50%);
       background: transparent;
+      pointer-events: none;
     }
     .Nav-module__bLoQaq__nav__left {
       display: flex;
       gap: 2px;
+      pointer-events: auto;
     }
     .Nav-module__bLoQaq__nav__link {
       background: var(--navButtonBG);
@@ -180,10 +171,7 @@
       border: none;
       cursor: pointer;
     }
-    .Nav-module__bLoQaq__nav__link:hover {
-      background: var(--highlightColor);
-      color: #ffffff;
-    }
+    .Nav-module__bLoQaq__nav__link:hover { background: var(--highlightColor); color: #fff; }
 
     .TableHeader-module__qdaoaq__container {
       display: grid;
@@ -226,7 +214,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 250px;
+      min-height: 220px;
       max-height: 375px;
       color: var(--bodyTextColor);
       font-family: 'Terminal', 'Sohne-mono', monospace;
@@ -234,6 +222,7 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       overflow: hidden;
+      background: #0c0f15;
     }
     .Tools-module__imagePlaceholder img {
       width: 100%;
@@ -248,13 +237,14 @@
     }
     .Tools-module__toolTitle {
       font-family: 'Terminal', 'Sohne-mono', monospace;
-      font-size: 32px;
+      font-size: 28px;
       text-transform: uppercase;
       letter-spacing: -0.02em;
       color: var(--headingTextColor);
+      line-height: 1.1;
     }
     .Tools-module__toolDesc {
-      font-size: 18px;
+      font-size: 16px;
       color: var(--bodyTextColor);
       line-height: 1.5;
     }
@@ -270,18 +260,19 @@
     .Tools-module__firstRow .Tools-module__textContent {
       align-items: center;
       max-width: 800px;
+      width: 100%;
     }
-    .Tools-module__firstRow .Tools-module__toolTitle {
-      font-size: 40px;
-    }
-    .Tools-module__firstRow .Tools-module__toolDesc {
-      font-size: 20px;
-    }
+    .Tools-module__firstRow .Tools-module__toolTitle { font-size: 34px; }
+    .Tools-module__firstRow .Tools-module__toolDesc { font-size: 18px; }
+
     .Tools-module__imagePlaceholder[data-adapt="true"] {
       width: fit-content;
       max-width: 100%;
       min-height: 0;
       max-height: 500px;
+      margin: 0 auto;
+      background: transparent;
+      border: 1px dashed var(--dottedBorderColor);
     }
     .Tools-module__imagePlaceholder[data-adapt="true"] img {
       width: auto;
@@ -290,6 +281,42 @@
       max-height: 500px;
       object-fit: contain;
       display: block;
+    }
+
+    /* Media queries to maintain grid positions at larger sizes */
+    @media (min-width: 960px) {
+      .Tools-module__toolTitle { font-size: 32px; }
+      .Tools-module__toolDesc { font-size: 18px; }
+      .Tools-module__firstRow .Tools-module__toolTitle { font-size: 40px; }
+      .Tools-module__firstRow .Tools-module__toolDesc { font-size: 20px; }
+    }
+    @media (max-width: 959px) {
+      /* mobile / tablet stacking: all grid columns become full width */
+      .Tools-module__textContent,
+      .Tools-module__imagePlaceholder,
+      .Tools-module__firstRow,
+      .Tools-module__firstRow .Tools-module__textContent,
+      .Tools-module__firstRow .Tools-module__imagePlaceholder {
+        grid-column: 1 / -1 !important;
+        width: 100%;
+        max-width: 100%;
+      }
+      .Tools-module__firstRow {
+        align-items: center;
+        text-align: center;
+      }
+      .Tools-module__imagePlaceholder[data-adapt="true"] {
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+    }
+    @media (min-width: 960px) {
+      /* Desktop / ultrawide grid positions */
+      .Tools-module__textContent[style*="grid-column: 1 / 14"] { grid-column: 1 / 14 !important; }
+      .Tools-module__imagePlaceholder[style*="grid-column: 15 / 25"] { grid-column: 15 / 25 !important; }
+      .Tools-module__imagePlaceholder[style*="grid-column: 1 / 11"] { grid-column: 1 / 11 !important; }
+      .Tools-module__textContent[style*="grid-column: 12 / 25"] { grid-column: 12 / 25 !important; }
     }
 
     .Raider-module__invertDark {
@@ -326,15 +353,14 @@
       flex-direction: column;
       align-items: center;
       position: absolute;
-      left: 0;
-      right: 0;
+      left: 0; right: 0;
       will-change: transform;
       transform: translateZ(0);
       backface-visibility: hidden;
     }
     .Raider-module__featureItem {
       font-family: 'Terminal', 'Sohne-mono', monospace;
-      font-size: 20px;
+      font-size: 18px;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       padding: 14px 0;
@@ -345,58 +371,46 @@
     }
 
     .bg-layer-text {
-        position: fixed;
-        top: -5%; left: -5%;
-        width: 110%; height: 110%;
-        pointer-events: none;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: repeat(16, 1fr);
-        grid-template-rows: repeat(20, 1fr);
-        gap: 5px;
-        transform: rotate(-4deg);
-        opacity: 0.4;
-        font-family: 'Terminal', 'Sohne-mono', monospace;
-        text-transform: uppercase;
-        font-size: clamp(0.6rem, 1.5vw, 0.95rem);
-        font-weight: 400;
-        letter-spacing: 0.15em;
-        color: rgba(255, 255, 255, 0.12);
-        padding: 24px;
-        transition: color 0.5s ease;
+      position: fixed;
+      top: -5%; left: -5%;
+      width: 110%; height: 110%;
+      pointer-events: none;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(16, 1fr);
+      grid-template-rows: repeat(20, 1fr);
+      gap: 5px;
+      transform: rotate(-4deg);
+      opacity: 0.4;
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      text-transform: uppercase;
+      font-size: clamp(0.6rem, 1.5vw, 0.95rem);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.12);
+      padding: 24px;
+      transition: color 0.5s ease;
     }
-
     .bg-layer-text div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        text-shadow: 0 0 2px rgba(255,255,255,0.08);
-        transition: text-shadow 0.5s ease;
+      display: flex; align-items: center; justify-content: center;
+      white-space: nowrap;
+      text-shadow: 0 0 2px rgba(255,255,255,0.08);
+      transition: text-shadow 0.5s ease;
     }
-
     .bg-layer-text div:nth-child(3n) { opacity: 0.7; }
     .bg-layer-text div:nth-child(5n) { transform: rotate(1deg); }
     .bg-layer-text div:nth-child(7n) { transform: rotate(-1deg); }
 
     @media (max-width: 700px) {
-        .bg-layer-text {
-            grid-template-columns: repeat(10, 1fr);
-            grid-template-rows: repeat(15, 1fr);
-        }
+      .bg-layer-text { grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(15, 1fr); font-size: 0.8rem; }
     }
-
     @media (min-width: 1600px) {
-        .bg-layer-text {
-            grid-template-columns: repeat(20, 1fr);
-            grid-template-rows: repeat(24, 1fr);
-        }
+      .bg-layer-text { grid-template-columns: repeat(20, 1fr); grid-template-rows: repeat(24, 1fr); }
     }
 
     .btn {
       display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       gap: 9px;
       padding: 11px 22px;
       border-radius: 6px;
@@ -419,13 +433,15 @@
       box-shadow: 0 1px 4px rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.1);
     }
-    .btn-dl:hover {
-      background: #f0f0f0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    }
-    .btn svg {
-      flex-shrink: 0;
-      shape-rendering: geometricPrecision;
+    .btn-dl:hover { background: #f0f0f0; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+    .btn svg { flex-shrink: 0; shape-rendering: geometricPrecision; }
+
+    /* additional responsiveness */
+    @media (max-width: 480px) {
+      .Tools-module__toolTitle { font-size: 24px; }
+      .Tools-module__firstRow .Tools-module__toolTitle { font-size: 30px; }
+      .Tools-module__toolDesc { font-size: 15px; }
+      .Raider-module__featureItem { font-size: 15px; padding: 10px 0; }
     }
   </style>
 </head>
@@ -440,7 +456,6 @@
 <div id="__next">
   <main>
     <div class="GridLayout-module__h3nX9W__grid">
-
       <nav class="Nav-module__bLoQaq__nav">
         <div class="Nav-module__bLoQaq__nav__left">
           <a class="text-smallcaps Nav-module__bLoQaq__nav__link" href="https://discord.gg/FawJXb6JKJ" target="_blank">Discord</a>
@@ -516,7 +531,6 @@
           </div>
         </div>
       </section>
-
     </div>
   </main>
 </div>
@@ -525,36 +539,35 @@
   (function() {
     const gridContainer = document.getElementById('bgTextGrid');
     if (!gridContainer) return;
-    
+
     function generateGridText() {
       gridContainer.innerHTML = '';
       const width = window.innerWidth;
       let columns = 16, rows = 20;
       if (width < 768) { columns = 10; rows = 15; }
       else if (width > 1600) { columns = 20; rows = 24; }
-      
+
       gridContainer.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
       gridContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-      
+
       for (let i = 0; i < columns * rows; i++) {
         const cell = document.createElement('div');
         cell.textContent = 'gekke.org';
         gridContainer.appendChild(cell);
       }
     }
-    
+
     generateGridText();
     window.addEventListener('resize', () => { setTimeout(generateGridText, 100); });
   })();
 
   window.baseurl = null;
-  
+
   async function fetchBaseUrl() {
     try {
       const response = await fetch('https://imgekkefries.pythonanywhere.com/vps');
       if (response.ok) {
-        window.baseurl = await response.text();
-        window.baseurl = window.baseurl.trim();
+        window.baseurl = (await response.text()).trim();
         console.log('Base URL set:', window.baseurl);
         return window.baseurl;
       }
@@ -585,28 +598,17 @@
 
   (function() {
     const features = [
-      { type: 'item', text: 'Token Login' },
-      { type: 'item', text: 'Token Checker' },
-      { type: 'item', text: 'Pfp Changer' },
-      { type: 'item', text: 'Bio Changer' },
-      { type: 'item', text: 'Nickname Changer' },
-      { type: 'item', text: 'GlobalNick Changer' },
-      { type: 'item', text: 'Pronounce Changer' },
-      { type: 'item', text: 'Guild Joiner' },
-      { type: 'item', text: 'Manual Joiner' },
-      { type: 'item', text: 'Guild Leaver' },
-      { type: 'item', text: 'Message Sender' },
-      { type: 'item', text: 'VC Player' },
-      { type: 'item', text: 'Audio Manager' },
-      { type: 'item', text: 'Member Scraper' },
-      { type: 'item', text: 'Restorecord Bypass' },
-      { type: 'item', text: 'Rules Bypass' },
-      { type: 'item', text: 'Onboarding Bypass' },
-      { type: 'item', text: 'Button Bypass' },
-      { type: 'item', text: 'Reaction Bypass' },
-      { type: 'item', text: 'Bloxlink Bypass' },
-      { type: 'item', text: 'Rover Bypass' },
-      { type: 'item', text: 'Settings' }
+      { type: 'item', text: 'Token Login' }, { type: 'item', text: 'Token Checker' },
+      { type: 'item', text: 'Pfp Changer' }, { type: 'item', text: 'Bio Changer' },
+      { type: 'item', text: 'Nickname Changer' }, { type: 'item', text: 'GlobalNick Changer' },
+      { type: 'item', text: 'Pronounce Changer' }, { type: 'item', text: 'Guild Joiner' },
+      { type: 'item', text: 'Manual Joiner' }, { type: 'item', text: 'Guild Leaver' },
+      { type: 'item', text: 'Message Sender' }, { type: 'item', text: 'VC Player' },
+      { type: 'item', text: 'Audio Manager' }, { type: 'item', text: 'Member Scraper' },
+      { type: 'item', text: 'Restorecord Bypass' }, { type: 'item', text: 'Rules Bypass' },
+      { type: 'item', text: 'Onboarding Bypass' }, { type: 'item', text: 'Button Bypass' },
+      { type: 'item', text: 'Reaction Bypass' }, { type: 'item', text: 'Bloxlink Bypass' },
+      { type: 'item', text: 'Rover Bypass' }, { type: 'item', text: 'Settings' }
     ];
 
     const col1 = document.getElementById('raiderCol1');
@@ -638,17 +640,11 @@
 
       function animate() {
         scrollPos += reversed ? speed : -speed;
-
-        if (scrollPos <= minScroll) {
-          scrollPos += maxScroll;
-        } else if (scrollPos >= -maxScroll) {
-          scrollPos -= maxScroll;
-        }
-
+        if (scrollPos <= minScroll) scrollPos += maxScroll;
+        else if (scrollPos >= -maxScroll) scrollPos -= maxScroll;
         inner.style.transform = `translateY(${scrollPos}px)`;
         requestAnimationFrame(animate);
       }
-
       requestAnimationFrame(animate);
     }
 
@@ -665,7 +661,6 @@
 
       document.querySelectorAll('[data-media-folder]').forEach(function(toolBlock) {
         const folder = toolBlock.getAttribute('data-media-folder');
-
         toolBlock.querySelectorAll('[data-media-src]').forEach(function(container) {
           const fileName = container.getAttribute('data-media-src');
           const isAdaptive = container.getAttribute('data-adapt') === 'true';
@@ -675,7 +670,6 @@
           img.onload = function() {
             container.innerHTML = '';
             container.appendChild(img);
-
             if (isAdaptive) {
               img.style.width = 'auto';
               img.style.height = 'auto';
@@ -687,27 +681,22 @@
               img.style.height = '100%';
               img.style.objectFit = 'cover';
             }
-
-            if (shouldInvert) {
-              img.classList.add('Raider-module__invertDark');
-            }
+            if (shouldInvert) img.classList.add('Raider-module__invertDark');
           };
           img.onerror = function() {
             container.innerHTML = '[ IMAGE ]';
           };
-
           img.src = window.baseurl + '/Media/Website/' + folder + '/' + fileName;
         });
       });
     }
-
     tryLoadMedia();
   })();
 
   const be = "$MBNQW@&R8GD6S9OH#E5UK0AA2XP34ZC%VIF17YTJL*";
   const _e = be.toLowerCase().replace(/[0-9@&#$%()[\]{}|\\/?!;*^]/g, "");
-  const xe = new Map;
-  const We = new Map;
+  const xe = new Map();
+  const We = new Map();
   const we = [];
 
   function startHoverEffect(e, t, o, n) {
@@ -727,88 +716,87 @@
   }
 
   let Me;
-
   function animateHoverEffects() {
     xe.forEach((e, t) => {
       const o = t.textContent.split("");
       let n = !1;
       for (const [a, { start: r, char: s, isLower: i, duration: l }] of Object.entries(e)) {
-        const t = 0,
-          c = Date.now(),
-          d = l * (1 - t),
-          u = z(Math.min((c - r) / d, 1)),
+        const t = 0, c = Date.now(), d = l * (1 - t), u = z(Math.min((c - r) / d, 1)),
           h = 1 - 2 * Math.abs(u - .5),
           f = i ? _e : be,
           p = f.indexOf(i ? s : s.toUpperCase()),
           m = p < f.length / 2 ? f.length - 1 : 0,
           g = f[Math.floor(H(p, m, h))];
-        o[a] = g, n = !0, u >= .99 && (o[a] = s, delete e[a])
+        o[a] = g; n = !0; u >= .99 && (o[a] = s, delete e[a]);
       }
-      n && (t.textContent = o.join("")), 0 === Object.keys(e).length && (xe.delete(t),
-        function(e) {
-          for (const [t, o] of We)
-            o.delete(e), 0 === o.size && (t.style.width = "", We.delete(t))
-        }(t))
-    }), Me = setTimeout(animateHoverEffects, 35)
+      n && (t.textContent = o.join(""));
+      if (0 === Object.keys(e).length) {
+        xe.delete(t);
+        (function(e) {
+          for (const [t, o] of We) {
+            o.delete(e);
+            if (0 === o.size) { t.style.width = ""; We.delete(t); }
+          }
+        })(t);
+      }
+    });
+    Me = setTimeout(animateHoverEffects, 35);
   }
 
   function initHoverEffects() {
-    clearTimeout(Me), animateHoverEffects();
+    clearTimeout(Me);
+    animateHoverEffects();
     for (const e of document.querySelectorAll("a, button, .hoverchar")) {
       if (e.dataset.active || e.closest(".text p")) continue;
       e.dataset.active = "true";
-      const t = parseInt(e.dataset.dy) || 0,
-        o = parseInt(e.dataset.dx) || 1,
-        n = parseInt(e.dataset.duration) || 180;
+      const t = parseInt(e.dataset.dy) || 0, o = parseInt(e.dataset.dx) || 1, n = parseInt(e.dataset.duration) || 180;
       const handler = a => {
-        const r = 5,
-          { clientX: s, clientY: i } = a;
+        const r = 5, { clientX: s, clientY: i } = a;
         const adjustedX = s - (2 * r);
         for (let l = -t; l <= t; l++)
           for (let t = -o; t <= o; t++) {
-            const o = adjustedX + t * r,
-              a = i + l * r * 2;
+            const o = adjustedX + t * r, a = i + l * r * 2;
             let c;
             if (document.caretPositionFromPoint) {
               const e = document.caretPositionFromPoint(o, a);
               if (!e) return;
-              c = document.createRange(), c.setStart(e.offsetNode, e.offset), c.setEnd(e.offsetNode, e.offset)
-            } else document.caretRangeFromPoint && (c = document.caretRangeFromPoint(o, a));
+              c = document.createRange(); c.setStart(e.offsetNode, e.offset); c.setEnd(e.offsetNode, e.offset);
+            } else if (document.caretRangeFromPoint) {
+              c = document.caretRangeFromPoint(o, a);
+            }
             if (!c) break;
             const d = c.getClientRects();
             if (!d.length) break;
-            const u = [...d][0],
-              h = c.startContainer,
-              f = c.startOffset;
+            const u = [...d][0], h = c.startContainer, f = c.startOffset;
             if (o > u.left + r * f) break;
             if (h && h.nodeType === Node.TEXT_NODE && e.contains(h) && !h.parentNode.closest(".big, .mega")) {
               const e = (h.textContent || "").split("");
               if (f >= 0 && f < e.length) {
                 const o = e[f];
-                o.trim() && (be.includes(o.toUpperCase()) || _e.includes(o)) && startHoverEffect(h, f, Math.abs(t * l), n)
+                o.trim() && (be.includes(o.toUpperCase()) || _e.includes(o)) && startHoverEffect(h, f, Math.abs(t * l), n);
               }
-              h.textContent = e.join("")
+              h.textContent = e.join("");
             }
           }
       };
       if (isTouchDevice()) {
         const t = e => handler(e.touches[0]);
-        e.addEventListener("touchmove", t), we.push({ element: e, type: "touchmove", handler: t })
-      } else e.addEventListener("mousemove", handler), we.push({ element: e, type: "mousemove", handler: handler })
+        e.addEventListener("touchmove", t);
+        we.push({ element: e, type: "touchmove", handler: t });
+      } else {
+        e.addEventListener("mousemove", handler);
+        we.push({ element: e, type: "mousemove", handler: handler });
+      }
     }
   }
 
-  function isTouchDevice() {
-    return matchMedia("(hover: none)").matches
-  }
-
-  function z(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t }
-  function H(t, e, o) { return t + (e - t) * o }
+  function isTouchDevice() { return matchMedia("(hover: none)").matches; }
+  function z(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+  function H(t, e, o) { return t + (e - t) * o; }
 
   window.addEventListener('load', function() {
     initHoverEffects();
   });
 </script>
-
 </body>
 </html>
