@@ -1,769 +1,679 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="author" content="gekkefries">
-    <title>gekkefries</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        :root {
-            --bg: #080a0e;
-            --bg2: #0c0f15;
-            --card: rgba(16, 20, 28, 0.75);
-            --cardh: rgba(20, 25, 35, 0.85);
-            --t1: #f0f3f8;
-            --t2: #b9c2d4;
-            --t3: #7e8a98;
-            --bl: rgba(255, 255, 255, 0.08);
-            --bm: rgba(255, 255, 255, 0.15);
-            --bc: rgba(255, 255, 255, 0.1);
-            --acc: #5865F2;
-            --ease: cubic-bezier(0.23, 1, 0.32, 1);
-            --mono: 'Terminal', 'SF Mono', 'Fira Code', 'Courier New', monospace;
-            --g1: rgba(210, 230, 255, 0.04);
-            --g2: rgba(255, 245, 240, 0.025);
-        }
-        @font-face {
-            font-family: 'Terminal';
-            src: url('https://imgekkefries.pythonanywhere.com/terminal.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            background: var(--bg);
-            font-family: var(--mono);
-            color: var(--t1);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-        .g {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.012) 0px, rgba(255, 255, 255, 0.012) 1px, transparent 1px, transparent 15px), linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-            background-size: 50px 50px, 40px 40px, 40px 40px;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .gl {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 30%, var(--g1) 0%, transparent 50%), radial-gradient(circle at 80% 70%, var(--g2) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 1;
-        }
-        .dg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.003) 0px, rgba(255, 255, 255, 0.003) 1px, transparent 1px, transparent 10px);
-            pointer-events: none;
-            z-index: 1;
-        }
-        .tx {
-            position: fixed;
-            top: -5%;
-            left: -5%;
-            width: 110%;
-            height: 110%;
-            pointer-events: none;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: repeat(16, 1fr);
-            grid-template-rows: repeat(20, 1fr);
-            gap: 0.3rem;
-            transform: rotate(-4deg);
-            opacity: 0.4;
-            font-family: var(--mono);
-            text-transform: uppercase;
-            font-size: clamp(0.6rem, 1.5vw, 0.95rem);
-            font-weight: 400;
-            letter-spacing: 0.15em;
-            color: rgba(255, 255, 255, 0.12);
-            padding: 1.5rem;
-        }
-        .tx div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            white-space: nowrap;
-            text-shadow: 0 0 2px rgba(255, 255, 255, 0.08);
-        }
-        .tx div:nth-child(3n) {
-            opacity: 0.7;
-        }
-        .tx div:nth-child(5n) {
-            transform: rotate(1deg);
-        }
-        .tx div:nth-child(7n) {
-            transform: rotate(-1deg);
-        }
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 2px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .sb {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 2px;
-            background: var(--acc);
-            z-index: 1000;
-            transition: width 0.1s ease;
-        }
-        .wrap {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            justify-content: center;
-        }
-        .main {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 24px;
-            width: 100%;
-        }
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-        }
-        .wm {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 18vw;
-            font-weight: 700;
-            color: rgba(255, 255, 255, 0.012);
-            white-space: nowrap;
-            pointer-events: none;
-            letter-spacing: -0.06em;
-            z-index: -1;
-            user-select: none;
-        }
-        .hero h1 {
-            font-size: clamp(48px, 8vw, 96px);
-            font-weight: 500;
-            letter-spacing: -0.04em;
-            line-height: 1;
-        }
-        .hero p {
-            font-size: 16px;
-            color: var(--t3);
-            margin-top: 16px;
-            letter-spacing: 0.4px;
-        }
-        .sh {
-            position: absolute;
-            bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .sh span {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--t3);
-        }
-        .sh svg {
-            width: 20px;
-            height: 20px;
-            stroke: var(--t3);
-            animation: b 1.5s ease-in-out infinite;
-        }
-        @keyframes b {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(8px);
-            }
-        }
-        .sec {
-            padding: 80px 0;
-            border-top: 1px solid var(--bl);
-        }
-        .sec .lbl {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--t3);
-            margin-bottom: 20px;
-        }
-        .sec h2 {
-            font-size: clamp(24px, 3.5vw, 34px);
-            font-weight: 500;
-            letter-spacing: -0.03em;
-            line-height: 1.25;
-            margin-bottom: 16px;
-        }
-        .sec .txt {
-            font-size: 16px;
-            color: var(--t2);
-            line-height: 1.8;
-            max-width: 560px;
-        }
-        .lk {
-            color: var(--t1);
-            text-decoration: none;
-            border-bottom: 1px solid var(--bm);
-            transition: border-color 0.2s, color 0.2s;
-            padding-bottom: 1px;
-        }
-        .lk:hover {
-            border-color: var(--acc);
-            color: #b8cef0;
-        }
-        .cg {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
-            margin-top: 32px;
-        }
-        .cd {
-            background: var(--card);
-            backdrop-filter: blur(14px);
-            border-radius: 20px;
-            padding: 28px;
-            border: 1px solid var(--bc);
-            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-        .cd:hover {
-            border-color: rgba(255, 255, 255, 0.18);
-            transform: translateY(-3px);
-            box-shadow: 0 28px 38px -14px #000000;
-            background: var(--cardh);
-        }
-        .cd::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #b0ceff, #ffffff, #b0ceff);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .cd:hover::before {
-            opacity: 0.6;
-        }
-        .cd .ic {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            color: #fff;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .cd:hover .ic {
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(176, 206, 255, 0.1);
-        }
-        .cd h3 {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            letter-spacing: -0.01em;
-        }
-        .cd .desc {
-            font-size: 0.85rem;
-            color: var(--t2);
-            line-height: 1.6;
-        }
-        .cc {
-            background: var(--card);
-            backdrop-filter: blur(14px);
-            border-radius: 20px;
-            border: 1px solid var(--bc);
-            box-shadow: 0 18px 30px -12px rgba(0, 0, 0, 0.5);
-            margin-top: 32px;
-            max-width: 420px;
-            padding: 28px;
-            transition: border-color 0.3s;
-        }
-        .cc:hover {
-            border-color: rgba(255, 255, 255, 0.18);
-        }
-        .ct {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-        .aw {
-            position: relative;
-            flex-shrink: 0;
-        }
-        .av {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: #1a1d2e;
-        }
-        .aw .sr {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 3px solid var(--bg);
-        }
-        .aw .sr.on {
-            background: #27c93f;
-        }
-        .aw .sr.id {
-            background: #ffbd2e;
-        }
-        .aw .sr.dn {
-            background: #ff5f56;
-        }
-        .aw .sr.of {
-            background: #5a5e66;
-        }
-        .ci {
-            flex: 1;
-            min-width: 0;
-        }
-        .ci .nm {
-            font-size: 20px;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-        }
-        .ci .tg {
-            font-size: 13px;
-            color: var(--t3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 2px;
-        }
-        .ci .tg button {
-            background: none;
-            border: none;
-            color: var(--t3);
-            cursor: pointer;
-            font-family: var(--mono);
-            font-size: 11px;
-            padding: 2px 0;
-            transition: color 0.2s;
-        }
-        .ci .tg button:hover {
-            color: var(--t1);
-        }
-        .ci .tg .cp {
-            color: #27c93f;
-            font-size: 10px;
-            display: none;
-        }
-        .cpf {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: var(--t3);
-            margin-top: 6px;
-        }
-        .cpf svg {
-            width: 14px;
-            height: 14px;
-            opacity: 0.6;
-        }
-        .ft {
-            padding: 40px 0 60px;
-            border-top: 1px solid var(--bl);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 12px;
-            color: var(--t3);
-            letter-spacing: 0.3px;
-        }
-        .ft a {
-            color: var(--t2);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .ft a:hover {
-            color: var(--t1);
-        }
-        @media (max-width: 700px) {
-            .tx {
-                grid-template-columns: repeat(10, 1fr);
-                grid-template-rows: repeat(15, 1fr);
-            }
-            .wm {
-                font-size: 24vw;
-            }
-            .sec {
-                padding: 60px 0;
-            }
-            .cg {
-                grid-template-columns: 1fr;
-            }
-            .cc {
-                max-width: 100%;
-            }
-        }
-        @media (min-width: 1600px) {
-            .tx {
-                grid-template-columns: repeat(20, 1fr);
-                grid-template-rows: repeat(24, 1fr);
-            }
-        }
-        .sections {
-            position: fixed;
-            left: calc((100vw - 1000px) / 2 - 50px);
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px;
-            pointer-events: none;
-            transition: left 0.3s ease;
-        }
-        .sections .line {
-            border-radius: 4px;
-            transition: all 0.35s var(--ease);
-        }
-        .sections .line.main {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.16);
-            margin-top: 4px;
-        }
-        .sections .line.main:first-child {
-            margin-top: 0;
-        }
-        .sections .line.main:nth-child(1) {
-            width: 26px;
-        }
-        .sections .line.main:nth-child(5) {
-            width: 38px;
-        }
-        .sections .line.main:nth-child(8) {
-            width: 32px;
-        }
-        .sections .line.main:nth-child(12) {
-            width: 46px;
-        }
-        .sections .line.main:nth-child(16) {
-            width: 36px;
-        }
-        .sections .line.main:nth-child(20) {
-            width: 42px;
-        }
-        .sections .line.sub {
-            height: 3px;
-            width: 26px;
-            background: rgba(255, 255, 255, 0.12);
-        }
-        .sections .line.active {
-            background: rgba(255, 255, 255, 0.95) !important;
-            box-shadow: 0 0 16px rgba(255, 255, 255, 0.5), 0 0 32px rgba(255, 255, 255, 0.2);
-        }
-        .sections .line.main.active {
-            height: 6px;
-        }
-        .sections .line.sub.active {
-            height: 4.5px;
-        }
-        .sections .line.done.main {
-            background: rgba(255, 255, 255, 0.45);
-        }
-        .sections .line.done.sub {
-            background: rgba(255, 255, 255, 0.33);
-        }
-        @media (max-width: 1100px) {
-            .sections {
-                left: 12px;
-                gap: 4px;
-            }
-            .sections .line.main:nth-child(1) {
-                width: 18px;
-            }
-            .sections .line.main:nth-child(5) {
-                width: 26px;
-            }
-            .sections .line.main:nth-child(8) {
-                width: 22px;
-            }
-            .sections .line.main:nth-child(12) {
-                width: 32px;
-            }
-            .sections .line.main:nth-child(16) {
-                width: 25px;
-            }
-            .sections .line.main:nth-child(20) {
-                width: 29px;
-            }
-            .sections .line.sub {
-                height: 2px;
-                width: 18px;
-            }
-            .sections .line.main {
-                margin-top: 3px;
-            }
-            .sections .line.main.active {
-                height: 4.5px;
-            }
-            .sections .line.sub.active {
-                height: 3px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Joost Klein</title>
+  
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background: #000000;
+      font-family: 'Terminal', "Sohne-var", "Helvetica Neue", Arial, sans-serif;
+      color: #e8e8e8;
+      -webkit-font-smoothing: antialiased;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @font-face {
+      font-family: 'Terminal';
+      src: url('https://imgekkefries.pythonanywhere.com/terminal.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0c0f15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #5E6AD2;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .video-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 1;
+      background: #000000;
+    }
+
+    video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 100%;
+      min-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      background: #000;
+      filter: brightness(0.65);
+    }
+
+    video::-webkit-media-controls {
+      display: none !important;
+    }
+    
+    video::-webkit-media-controls-enclosure {
+      display: none !important;
+    }
+
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .error-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      text-align: center;
+      display: none;
+      color: white;
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+
+    .error-message h1 {
+      font-size: clamp(32px, 5vw, 64px);
+      margin-bottom: 10px;
+    }
+
+    .error-message p {
+      font-size: clamp(18px, 2.5vw, 32px);
+      color: #8d8d8d;
+    }
+
+    .header-container {
+      z-index: 3;
+      display: flex;
+      justify-content: flex-start;
+      gap: 3px;
+      width: 100%;
+      max-width: 1728px;
+      margin: auto;
+      padding: 2% 2%;
+      position: fixed;
+      top: 3%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: transparent;
+      pointer-events: none;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .header-content {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 0;
+      pointer-events: auto;
+    }
+
+    .header-title {
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: clamp(56px, 9vw, 140px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-decoration: none;
+      display: block;
+      cursor: default;
+      user-select: none;
+      line-height: 1;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+    }
+
+    .info-section {
+      margin-top: clamp(20px, 3vh, 40px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1.5vh, 18px);
+    }
+
+    .section-label {
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      opacity: 0.9;
+    }
+
+    .section-items {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(8px, 1.2vh, 14px);
+    }
+
+    .section-item {
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1vw, 14px);
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: clamp(20px, 2.5vw, 34px);
+      font-weight: 400;
+      color: #e8e8e8;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      opacity: 0.85;
+    }
+
+    .section-item-bullet {
+      width: clamp(7px, 0.5vw, 9px);
+      height: clamp(7px, 0.5vw, 9px);
+      background: #ffffff;
+      border-radius: 50%;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .flag-icon {
+      width: clamp(28px, 2.5vw, 36px);
+      height: auto;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-left: 5px;
+      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+    }
+
+    .python-icon {
+      width: clamp(24px, 2vw, 30px);
+      height: auto;
+      vertical-align: middle;
+      margin-left: 5px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+    }
+
+    .ski-icon {
+      width: clamp(24px, 2vw, 30px);
+      height: auto;
+      vertical-align: middle;
+      margin-left: 5px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+    }
+
+    .scuba-icon {
+      width: clamp(24px, 2vw, 30px);
+      height: auto;
+      vertical-align: middle;
+      margin-left: 5px;
+      filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+    }
+
+    .social-link {
+      font-family: 'Terminal', 'Sohne-mono', monospace;
+      font-size: clamp(20px, 2.5vw, 34px);
+      font-weight: 400;
+      color: #e8e8e8;
+      text-decoration: none;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      opacity: 0.85;
+      display: inline-block;
+      transition: opacity 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    .social-link:hover {
+      opacity: 1;
+      color: #ffffff;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+    }
+
+    @media (max-width: 750px) {
+      .header-title {
+        font-size: clamp(36px, 11vw, 64px);
+      }
+      
+      .header-container {
+        top: 2%;
+      }
+      
+      .section-label {
+        font-size: clamp(22px, 4.5vw, 32px);
+      }
+      
+      .section-item,
+      .social-link {
+        font-size: clamp(16px, 3.5vw, 24px);
+      }
+      
+      .flag-icon,
+      .python-icon,
+      .ski-icon,
+      .scuba-icon {
+        width: clamp(18px, 2.5vw, 24px);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="g"></div>
-    <div class="gl"></div>
-    <div class="dg"></div>
-    <div class="tx" id="bt"></div>
-    <div class="sb" id="sb"></div>
-    <div class="sections" id="sections">
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line main"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-        <div class="line sub"></div>
-    </div>
-    <div class="wrap">
-        <div class="main">
-            <section class="hero">
-                <div class="wm">gekkefries</div>
-                <h1>Hey, I'm Sam</h1>
-                <p>known as gekkefries</p>
-                <div class="sh">
-                    <span>Scroll</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
-                </div>
-            </section>
 
-            <section class="sec">
-                <div class="lbl">About</div>
-                <h2>Building things that work</h2>
-                <p class="txt">I'm 17 and from The Netherlands. I spend my time creating tools that are simple, useful, and reliable. My focus is on automation, bots, and small experimental projects that solve real problems without unnecessary complexity.</p>
-                <div class="cg">
-                    <div class="cd">
-                        <div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-                        <h3>Automation Tools</h3>
-                        <div class="desc">Mainly discord related tools that interacts with discord endpoints using multiple accounts at a time.</div>
-                    </div>
-                    <div class="cd">
-                        <div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-                        <h3>Discord Bots</h3>
-                        <div class="desc">Discord bots with different purposes.</div>
-                    </div>
-                    <div class="cd">
-                        <div class="ic"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg></div>
-                        <h3>Small Experiments</h3>
-                        <div class="desc">Always coming up with idea's that I would like to execute, making them simple but effective.</div>
-                    </div>
-                </div>
-            </section>
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-spinner"></div>
+</div>
 
-            <section class="sec">
-                <div class="lbl">What I do</div>
-                <h2>Automation, bots, experiments</h2>
-                <p class="txt">I build Discord automation tools that handle tasks quickly and reliably. I also develop custom Discord bots and enjoy working on smaller experimental projects. The goal is always the same: make things that are simple, effective, and don't break.</p>
-                <p class="txt" style="margin-top: 16px;">Everything I release is available on <a href="https://gekke.org" class="lk">gekke.org</a> | free executables and affordable source code for those who want to learn or build upon my work.</p>
-            </section>
+<div class="video-container" id="videoContainer">
+  <video id="backgroundVideo" autoplay muted loop playsinline></video>
+</div>
 
-            <section class="sec">
-                <div class="lbl">Connect</div>
-                <h2>Say hi on Discord</h2>
-                <div class="cc" id="cc">
-                    <div class="ct">
-                        <div class="aw">
-                            <img class="av" id="ca" src="" alt="avatar">
-                            <div class="sr of" id="cr"></div>
-                        </div>
-                        <div class="ci">
-                            <div class="nm" id="cn">gekkefries1</div>
-                            <div class="tg">
-                                <span id="ctg">@gekkefries1</span>
-                                <button id="cb" onclick="copyTag()">copy</button>
-                                <span class="cp" id="cm">copied!</span>
-                            </div>
-                            <div class="cpf" id="cp"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+<div class="video-overlay"></div>
 
-            <footer class="ft">
-                <span>gekkefries</span>
-                <a href="https://gekke.org">gekke.org</a>
-            </footer>
+<div class="header-container">
+  <div class="header-content">
+    <span class="header-title hoverchar" id="headerTitle">Gekkefries</span>
+    
+    <div class="info-section">
+      <div class="section-label hoverchar">About me:</div>
+      
+      <div class="section-items">
+        <div class="section-item">
+          <span class="section-item-bullet"></span>
+          <span class="hoverchar">18</span>
         </div>
+        
+        <div class="section-item">
+          <span class="section-item-bullet"></span>
+          <span class="hoverchar">Netherlands</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/330px-Flag_of_the_Netherlands.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail" alt="Netherlands Flag" class="flag-icon">
+        </div>
+        
+        <div class="section-item">
+          <span class="section-item-bullet"></span>
+          <span class="hoverchar">Python for 2 years</span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/3840px-Python-logo-notext.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail" alt="Python" class="python-icon">
+        </div>
+      </div>
     </div>
 
-    <script>
-        (function() {
-            var container = document.getElementById('sections');
-            var allLines = container.querySelectorAll('.line');
-            var totalLines = allLines.length;
+    <div class="info-section">
+      <div class="section-label hoverchar">Hobbies:</div>
+      
+      <div class="section-items">
+        <div class="section-item">
+          <span class="section-item-bullet"></span>
+          <span class="hoverchar">Skiing</span>
+          <img src="https://cdn-icons-png.flaticon.com/512/94/94150.png" alt="Skiing" class="ski-icon">
+        </div>
+        
+        <div class="section-item">
+          <span class="section-item-bullet"></span>
+          <span class="hoverchar">Scuba Diving</span>
+          <img src="https://www.svgrepo.com/show/241907/scuba-diving-dive.svg" alt="Scuba Diving" class="scuba-icon">
+        </div>
+      </div>
+    </div>
 
-            function getActiveLineIndex() {
-                var scrollH = document.documentElement.scrollHeight - window.innerHeight;
-                if (scrollH <= 0) return 0;
-                var pct = window.scrollY / scrollH;
-                var lineIdx = Math.floor(pct * totalLines);
-                if (lineIdx >= totalLines) lineIdx = totalLines - 1;
-                if (lineIdx < 0) lineIdx = 0;
-                return lineIdx;
+    <div class="info-section">
+      <div class="section-label hoverchar">Socials:</div>
+      
+      <div class="section-items">
+        <div class="section-item">
+          <span class="section-item-bullet"></span>
+          <a href="https://discord.com/users/1147540007171670077" target="_blank" rel="noopener" class="social-link hoverchar">Discord</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="error-message" id="errorMessage">
+  <h1>Video Not Found</h1>
+  <p>The JoostKlein video could not be loaded.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.10/dist/hls.min.js"></script>
+
+<script>
+  const VpsURL = 'https://imgekkefries.pythonanywhere.com/vps';
+
+  const be = "$MBNQW@&R8GD6S9OH#E5UK0AA2XP34ZC%VIF17YTJL*";
+  const _e = be.toLowerCase().replace(/[0-9@&#$%()[\]{}|\\/?!;*^]/g, "");
+  const xe = new Map;
+  const We = new Map;
+  const we = [];
+
+  function startHoverEffect(e, t, o, n) {
+    xe.has(e) || (xe.set(e, {}), adjustButtonWidth(e));
+    const a = xe.get(e);
+    if (!(t in a)) {
+      const r = e.textContent.split("")[t],
+        s = r === r.toLowerCase() && r !== r.toUpperCase();
+      a[t] = { distance: o, start: Date.now(), char: r, isLower: s, duration: n }
+    }
+  }
+
+  function adjustButtonWidth(e) {
+    var t;
+    const o = null == (t = e.parentNode) ? void 0 : t.closest("button, a.button");
+    o && !o.classList.contains("fullwidth") && (We.has(o) || (o.style.width = o.getBoundingClientRect().width + "px", We.set(o, new Set)), We.get(o).add(e))
+  }
+
+  let Me;
+
+  function animateHoverEffects() {
+    xe.forEach((e, t) => {
+      const o = t.textContent.split("");
+      let n = !1;
+      for (const [a, { start: r, char: s, isLower: i, duration: l }] of Object.entries(e)) {
+        const t = 0,
+          c = Date.now(),
+          d = l * (1 - t),
+          u = z(Math.min((c - r) / d, 1)),
+          h = 1 - 2 * Math.abs(u - .5),
+          f = i ? _e : be,
+          p = f.indexOf(i ? s : s.toUpperCase()),
+          m = p < f.length / 2 ? f.length - 1 : 0,
+          g = f[Math.floor(H(p, m, h))];
+        o[a] = g, n = !0, u >= .99 && (o[a] = s, delete e[a])
+      }
+      n && (t.textContent = o.join("")), 0 === Object.keys(e).length && (xe.delete(t),
+        function(e) {
+          for (const [t, o] of We)
+            o.delete(e), 0 === o.size && (t.style.width = "", We.delete(t))
+        }(t))
+    }), Me = setTimeout(animateHoverEffects, 35)
+  }
+
+  function initHoverEffects() {
+    clearTimeout(Me), animateHoverEffects();
+    for (const e of document.querySelectorAll("a, button, .hoverchar")) {
+      if (e.dataset.active || e.closest(".text p")) continue;
+      e.dataset.active = "true";
+      const t = parseInt(e.dataset.dy) || 0,
+        o = parseInt(e.dataset.dx) || 1,
+        n = parseInt(e.dataset.duration) || 180;
+      const handler = a => {
+        const r = 5,
+          { clientX: s, clientY: i } = a;
+        const adjustedX = s - (2 * r);
+        for (let l = -t; l <= t; l++)
+          for (let t = -o; t <= o; t++) {
+            const o = adjustedX + t * r,
+              a = i + l * r * 2;
+            let c;
+            if (document.caretPositionFromPoint) {
+              const e = document.caretPositionFromPoint(o, a);
+              if (!e) return;
+              c = document.createRange(), c.setStart(e.offsetNode, e.offset), c.setEnd(e.offsetNode, e.offset)
+            } else document.caretRangeFromPoint && (c = document.caretRangeFromPoint(o, a));
+            if (!c) break;
+            const d = c.getClientRects();
+            if (!d.length) break;
+            const u = [...d][0],
+              h = c.startContainer,
+              f = c.startOffset;
+            if (o > u.left + r * f) break;
+            if (h && h.nodeType === Node.TEXT_NODE && e.contains(h) && !h.parentNode.closest(".big, .mega")) {
+              const e = (h.textContent || "").split("");
+              if (f >= 0 && f < e.length) {
+                const o = e[f];
+                o.trim() && (be.includes(o.toUpperCase()) || _e.includes(o)) && startHoverEffect(h, f, Math.abs(t * l), n)
+              }
+              h.textContent = e.join("")
             }
+          }
+      };
+      if (isTouchDevice()) {
+        const t = e => handler(e.touches[0]);
+        e.addEventListener("touchmove", t), we.push({ element: e, type: "touchmove", handler: t })
+      } else e.addEventListener("mousemove", handler), we.push({ element: e, type: "mousemove", handler: handler })
+    }
+  }
 
-            function update() {
-                var activeIdx = getActiveLineIndex();
-                allLines.forEach(function(line, i) {
-                    line.classList.remove('active', 'done');
-                    if (i === activeIdx) line.classList.add('active');
-                    else if (i < activeIdx) line.classList.add('done');
-                });
-            }
-            update();
-            setTimeout(update, 100);
-            setTimeout(update, 300);
-            setTimeout(update, 500);
-            window.addEventListener('scroll', update);
-            window.addEventListener('resize', update);
-        })();
-    </script>
+  function isTouchDevice() {
+    return matchMedia("(hover: none)").matches
+  }
 
-    <script>
-        var uid = '1147540007171670077';
-        var tag = '.gekkefries1';
+  function z(t) { return t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t }
+  function H(t, e, o) { return t + (e - t) * o }
 
-        function copyTag() {
-            navigator.clipboard.writeText(tag).then(function() {
-                var m = document.getElementById('cm');
-                m.style.display = 'inline';
-                setTimeout(function() { m.style.display = 'none'; }, 1500);
-            });
+  (function() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    
+    function hideLoading() {
+      loadingScreen.classList.add('hidden');
+      setTimeout(function() { loadingScreen.remove(); }, 500);
+    }
+    
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function() {
+        setTimeout(hideLoading, 300);
+      });
+    } else {
+      setTimeout(hideLoading, 1000);
+    }
+  })();
+
+  (function() {
+    let baseurl = null;
+    let hls = null;
+    const videoElement = document.getElementById('backgroundVideo');
+    const errorMessage = document.getElementById('errorMessage');
+    let isPageVisible = !document.hidden;
+    let shouldBePlaying = true;
+
+    async function fetchBaseUrl() {
+      try {
+        const response = await fetch(VpsURL);
+        if (response.ok) {
+          baseurl = await response.text();
+          baseurl = baseurl.trim();
+          return baseurl;
         }
+      } catch (e) {}
+      return null;
+    }
 
-        function uc(d) {
-            var u = d.discord_user;
-            var av = u.avatar ? 'https://cdn.discordapp.com/avatars/' + uid + '/' + u.avatar + '.png?size=256' : 'https://cdn.discordapp.com/embed/avatars/0.png';
-            document.getElementById('ca').src = av;
-            document.getElementById('cn').textContent = u.global_name || u.username;
-            document.getElementById('ctg').textContent = '@' + u.username;
-            tag = u.global_name ? u.username : '.' + u.username;
-            document.getElementById('cr').className = 'sr ' + (d.discord_status || 'of');
-            var p = document.getElementById('cp');
-            p.innerHTML = '';
-            if (d.active_on_discord_desktop) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg> Desktop';
-            else if (d.active_on_discord_mobile) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Mobile';
-            else if (d.active_on_discord_web) p.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> Web';
-        }
+    function getMasterPlaylistUrl() {
+      if (!baseurl) return null;
+      return `${baseurl}/video/JoostKlein/master.m3u8`;
+    }
 
-        async function fp() {
-            try {
-                var r = await fetch('https://api.lanyard.rest/v1/users/' + uid);
-                if (!r.ok) throw new Error('failed');
-                var d = await r.json();
-                if (d.success) uc(d.data);
-            } catch (e) {}
-        }
-        fp();
-        setInterval(fp, 30000);
-    </script>
+    function showError() {
+      errorMessage.classList.add('visible');
+      videoElement.style.display = 'none';
+      const loadingScreen = document.getElementById('loadingScreen');
+      if (loadingScreen) {
+        loadingScreen.classList.add('hidden');
+        setTimeout(function() { loadingScreen.remove(); }, 500);
+      }
+    }
 
-    <script>
-        (function() {
-            var c = document.getElementById('bt');
-            if (c) {
-                function gen() {
-                    c.innerHTML = '';
-                    var w = window.innerWidth,
-                        cols = 16,
-                        rows = 20;
-                    if (w < 768) { cols = 10;
-                        rows = 15; } else if (w > 1600) { cols = 20;
-                        rows = 24; }
-                    c.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-                    c.style.gridTemplateRows = 'repeat(' + rows + ', 1fr)';
-                    for (var i = 0; i < cols * rows; i++) {
-                        var d = document.createElement('div');
-                        d.textContent = 'gekke.org';
-                        c.appendChild(d);
-                    }
+    function playVideo() {
+      if (isPageVisible && shouldBePlaying) {
+        videoElement.play().catch((err) => {
+          videoElement.muted = true;
+          videoElement.play().catch(() => {});
+        });
+      }
+    }
+
+    function pauseVideo() {
+      videoElement.pause();
+    }
+
+    async function loadVideo() {
+      if (!baseurl) await fetchBaseUrl();
+      if (!baseurl) {
+        showError();
+        return;
+      }
+
+      const videoUrl = getMasterPlaylistUrl();
+      if (!videoUrl) {
+        showError();
+        return;
+      }
+
+      if (Hls.isSupported()) {
+        hls = new Hls({
+          enableWorker: true,
+          maxBufferLength: 30,
+          maxMaxBufferLength: 60,
+          autoStartLoad: true,
+          startPosition: -1,
+          debug: false,
+          capLevelToPlayerSize: true,
+          maxBufferSize: 60 * 1000 * 1000,
+          maxBufferHole: 0.5,
+          lowLatencyMode: false,
+          backBufferLength: 30
+        });
+
+        hls.loadSource(videoUrl);
+        hls.attachMedia(videoElement);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          playVideo();
+        });
+
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          if (data.fatal) {
+            switch(data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                if (isPageVisible) {
+                  hls.startLoad();
                 }
-                gen();
-                window.addEventListener('resize', function() { setTimeout(gen, 100); });
+                break;
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                if (isPageVisible) {
+                  hls.recoverMediaError();
+                }
+                break;
+              default:
+                hls.destroy();
+                showError();
+                break;
             }
-            var bar = document.getElementById('sb');
-            window.addEventListener('scroll', function() {
-                var h = document.documentElement.scrollHeight - window.innerHeight;
-                if (h > 0) bar.style.width = (window.scrollY / h) * 100 + '%';
-            });
-        })();
-    </script>
+          }
+        });
+
+      } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+        videoElement.src = videoUrl;
+        videoElement.addEventListener('loadedmetadata', () => {
+          playVideo();
+        });
+        videoElement.addEventListener('error', (e) => {
+          showError();
+        });
+      } else {
+        showError();
+      }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      isPageVisible = !document.hidden;
+      
+      if (isPageVisible) {
+        playVideo();
+        if (hls && hls.media) {
+          hls.startLoad();
+        }
+      } else {
+        pauseVideo();
+        if (hls && hls.media) {
+          hls.stopLoad();
+        }
+      }
+    });
+
+    window.addEventListener('blur', () => {
+      pauseVideo();
+      if (hls && hls.media) {
+        hls.stopLoad();
+      }
+    });
+
+    window.addEventListener('focus', () => {
+      if (isPageVisible) {
+        playVideo();
+        if (hls && hls.media) {
+          hls.startLoad();
+        }
+      }
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            shouldBePlaying = true;
+            if (isPageVisible) {
+              playVideo();
+            }
+          } else {
+            shouldBePlaying = false;
+            pauseVideo();
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+
+      observer.observe(videoElement);
+    }
+
+    window.addEventListener('load', function() {
+      setTimeout(loadVideo, 500);
+    });
+  })();
+
+  window.addEventListener('load', function() {
+    initHoverEffects();
+  });
+</script>
+
 </body>
 </html>
