@@ -199,13 +199,52 @@
       gap: 20px;
       padding: 20px 12px;
     }
+    
     .Tools-module__toolBlock {
-      display: grid;
-      grid-template-columns: subgrid;
       grid-column: 1 / -1;
-      gap: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
       margin-bottom: 40px;
     }
+    
+    .Tools-module__row {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+    }
+    
+    @media (min-width: 960px) {
+      .Tools-module__row {
+        display: grid;
+        grid-template-columns: repeat(24, 1fr);
+        gap: 20px;
+        align-items: center;
+      }
+      
+      .Tools-module__row.image-left .Tools-module__imagePlaceholder {
+        grid-column: 1 / 11;
+        grid-row: 1;
+      }
+      
+      .Tools-module__row.image-left .Tools-module__textContent {
+        grid-column: 12 / 25;
+        grid-row: 1;
+      }
+      
+      .Tools-module__row.text-left .Tools-module__imagePlaceholder {
+        grid-column: 15 / 25;
+        grid-row: 1;
+      }
+      
+      .Tools-module__row.text-left .Tools-module__textContent {
+        grid-column: 1 / 14;
+        grid-row: 1;
+        order: -1; /* This moves text before image visually */
+      }
+    }
+    
     .Tools-module__imagePlaceholder {
       border: 1px dashed var(--dottedBorderColor);
       border-radius: 4px;
@@ -221,6 +260,7 @@
       letter-spacing: 0.1em;
       overflow: hidden;
       background: #0c0f15;
+      width: 100%;
     }
     .Tools-module__imagePlaceholder img {
       width: 100%;
@@ -247,13 +287,13 @@
       line-height: 1.5;
     }
     .Tools-module__firstRow {
-      grid-column: 1 / -1;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       gap: 16px;
       margin-bottom: 10px;
+      width: 100%;
     }
     .Tools-module__firstRow .Tools-module__textContent {
       align-items: center;
@@ -286,77 +326,6 @@
       .Tools-module__toolDesc { font-size: 18px; }
       .Tools-module__firstRow .Tools-module__toolTitle { font-size: 40px; }
       .Tools-module__firstRow .Tools-module__toolDesc { font-size: 20px; }
-    }
-    
-    /* Mobile / tablet stacking: IMAGE ALWAYS ABOVE TEXT */
-    @media (max-width: 959px) {
-      .Tools-module__textContent,
-      .Tools-module__imagePlaceholder,
-      .Tools-module__firstRow,
-      .Tools-module__firstRow .Tools-module__textContent,
-      .Tools-module__firstRow .Tools-module__imagePlaceholder {
-        grid-column: 1 / -1 !important;
-        width: 100%;
-        max-width: 100%;
-      }
-      
-      .Tools-module__toolBlock {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-      
-      /* FirstRow: image then text */
-      .Tools-module__firstRow {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 16px;
-        margin-bottom: 10px;
-      }
-      .Tools-module__firstRow .Tools-module__textContent {
-        order: 2 !important;
-      }
-      .Tools-module__firstRow .Tools-module__imagePlaceholder {
-        order: 1 !important;
-      }
-      
-      /* Block 2: Network Routing (text first in DOM, image second) -> image above text */
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(1) { order: 2; }
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(2) { order: 1; }
-      
-      /* Block 3: Simple Switch (image first, text second) -> already image first, keep */
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(3) { order: 1; }
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(4) { order: 2; }
-      
-      /* Block 4: Fast (text first, image second) -> image above text */
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(5) { order: 2; }
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(6) { order: 1; }
-      
-      /* Block 5: Many Features (image first, text second) -> already image first, keep */
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(7) { order: 1; }
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(8) { order: 2; }
-      
-      .Tools-module__toolBlock > .Tools-module__textContent,
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder {
-        width: 100%;
-        margin: 0;
-      }
-      
-      .Tools-module__imagePlaceholder[data-adapt="true"] {
-        max-width: 420px;
-        margin: 0 auto;
-        min-height: 0;
-        max-height: 500px;
-      }
-    }
-    
-    @media (min-width: 960px) {
-      .Tools-module__textContent[style*="grid-column: 1 / 14"] { grid-column: 1 / 14 !important; }
-      .Tools-module__imagePlaceholder[style*="grid-column: 15 / 25"] { grid-column: 15 / 25 !important; }
-      .Tools-module__imagePlaceholder[style*="grid-column: 1 / 11"] { grid-column: 1 / 11 !important; }
-      .Tools-module__textContent[style*="grid-column: 12 / 25"] { grid-column: 12 / 25 !important; }
     }
 
     .Raider-module__invertDark {
@@ -509,7 +478,7 @@
 
         <div class="Tools-module__container">
           <div class="Tools-module__toolBlock" data-media-folder="Raider" id="raider">
-            <!-- First Row -->
+            <!-- First Row - Image then Text -->
             <div class="Tools-module__firstRow">
               <div class="Tools-module__imagePlaceholder" data-media-src="Raider.png" data-adapt="true">
                 [ IMAGE ]
@@ -526,50 +495,58 @@
               </div>
             </div>
 
-            <!-- Block 2: Network Routing -->
-            <div class="Tools-module__textContent" style="grid-column: 1 / 14;">
-              <div class="Tools-module__toolTitle hoverchar">Network Routing Methods</div>
-              <div class="Tools-module__toolDesc hoverchar">
-                Each token gets its own routing. Sticky proxies keep the same IP per account, Mullvad gives every token its own dedicated tunnel from the same location, rotating swaps IPs randomly, and proxyless uses your own connection. Every request stays consistent per session.
+            <!-- Block 2: Network Routing (Text left, Image right) -->
+            <div class="Tools-module__row text-left">
+              <div class="Tools-module__imagePlaceholder" data-media-src="ProxyModes.png" data-invert-dark>
+                [ IMAGE ]
               </div>
-            </div>
-            <div class="Tools-module__imagePlaceholder" style="grid-column: 15 / 25;" data-media-src="ProxyModes.png" data-invert-dark>
-              [ IMAGE ]
-            </div>
-
-            <!-- Block 3: Simple Switch -->
-            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;" data-media-src="SimpleSwitch.gif">
-              [ IMAGE ]
-            </div>
-            <div class="Tools-module__textContent" style="grid-column: 12 / 25;">
-              <div class="Tools-module__toolTitle hoverchar">Everything With A Simple Switch</div>
-              <div class="Tools-module__toolDesc hoverchar">
-                The UI is made to be super easy to use. Even if you're new, you can pick this up and use it with ease. Everything is toggles and buttons, nothing else to worry about.
+              <div class="Tools-module__textContent">
+                <div class="Tools-module__toolTitle hoverchar">Network Routing Methods</div>
+                <div class="Tools-module__toolDesc hoverchar">
+                  Each token gets its own routing. Sticky proxies keep the same IP per account, Mullvad gives every token its own dedicated tunnel from the same location, rotating swaps IPs randomly, and proxyless uses your own connection. Every request stays consistent per session.
+                </div>
               </div>
             </div>
 
-            <!-- Block 4: Fast -->
-            <div class="Tools-module__textContent" style="grid-column: 1 / 14;">
-              <div class="Tools-module__toolTitle hoverchar">Fast</div>
-              <div class="Tools-module__toolDesc hoverchar">
-                Built for speed. Every action is optimized to run as fast as possible so you can get things done quickly.
+            <!-- Block 3: Simple Switch (Image left, Text right) -->
+            <div class="Tools-module__row image-left">
+              <div class="Tools-module__imagePlaceholder" data-media-src="SimpleSwitch.gif">
+                [ IMAGE ]
               </div>
-            </div>
-            <div class="Tools-module__imagePlaceholder" style="grid-column: 15 / 25;" data-media-src="Joiner.gif">
-              [ IMAGE ]
+              <div class="Tools-module__textContent">
+                <div class="Tools-module__toolTitle hoverchar">Everything With A Simple Switch</div>
+                <div class="Tools-module__toolDesc hoverchar">
+                  The UI is made to be super easy to use. Even if you're new, you can pick this up and use it with ease. Everything is toggles and buttons, nothing else to worry about.
+                </div>
+              </div>
             </div>
 
-            <!-- Block 5: Many Features -->
-            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;">
-              <div class="Raider-module__featuresScroll">
-                <div class="Raider-module__featuresColumn" id="raiderCol1"></div>
-                <div class="Raider-module__featuresColumn" id="raiderCol2"></div>
+            <!-- Block 4: Fast (Text left, Image right) -->
+            <div class="Tools-module__row text-left">
+              <div class="Tools-module__imagePlaceholder" data-media-src="Joiner.gif">
+                [ IMAGE ]
+              </div>
+              <div class="Tools-module__textContent">
+                <div class="Tools-module__toolTitle hoverchar">Fast</div>
+                <div class="Tools-module__toolDesc hoverchar">
+                  Built for speed. Every action is optimized to run as fast as possible so you can get things done quickly.
+                </div>
               </div>
             </div>
-            <div class="Tools-module__textContent" style="grid-column: 12 / 25;">
-              <div class="Tools-module__toolTitle hoverchar">Many Features</div>
-              <div class="Tools-module__toolDesc hoverchar">
-                Everything you need in one place. Token management, guild tools, channel actions, VC controls, scraping, and bypasses all built in.
+
+            <!-- Block 5: Many Features (Image left, Text right) -->
+            <div class="Tools-module__row image-left">
+              <div class="Tools-module__imagePlaceholder">
+                <div class="Raider-module__featuresScroll">
+                  <div class="Raider-module__featuresColumn" id="raiderCol1"></div>
+                  <div class="Raider-module__featuresColumn" id="raiderCol2"></div>
+                </div>
+              </div>
+              <div class="Tools-module__textContent">
+                <div class="Tools-module__toolTitle hoverchar">Many Features</div>
+                <div class="Tools-module__toolDesc hoverchar">
+                  Everything you need in one place. Token management, guild tools, channel actions, VC controls, scraping, and bypasses all built in.
+                </div>
               </div>
             </div>
           </div>
