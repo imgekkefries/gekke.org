@@ -283,7 +283,15 @@
       display: block;
     }
 
-    /* Mobile-first: text above image for all blocks */
+    /* Media queries to maintain grid positions at larger sizes */
+    @media (min-width: 960px) {
+      .Tools-module__toolTitle { font-size: 32px; }
+      .Tools-module__toolDesc { font-size: 18px; }
+      .Tools-module__firstRow .Tools-module__toolTitle { font-size: 40px; }
+      .Tools-module__firstRow .Tools-module__toolDesc { font-size: 20px; }
+    }
+    
+    /* Mobile / tablet stacking: text always ABOVE image */
     @media (max-width: 959px) {
       .Tools-module__textContent,
       .Tools-module__imagePlaceholder,
@@ -295,43 +303,111 @@
         max-width: 100%;
       }
       
-      /* Force text before image on mobile */
-      .Tools-module__toolBlock > .Tools-module__textContent {
-        order: 0;
-      }
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder {
+      /* Force text content above image for all blocks except the special firstRow which is already in order */
+      .Tools-module__toolBlock > .Tools-module__textContent:not(.Tools-module__firstRow .Tools-module__textContent) {
         order: 1;
       }
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:not(.Tools-module__firstRow .Tools-module__imagePlaceholder) {
+        order: 2;
+      }
       
-      /* First row: text above image */
+      /* For sections that originally had image first (e.g. SimpleSwitch, ManyFeatures) */
+      /* We want to visually reverse them so text comes before image */
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:not(.Tools-module__firstRow .Tools-module__imagePlaceholder) {
+        grid-column: 1 / -1 !important;
+      }
+      .Tools-module__toolBlock > .Tools-module__textContent:not(.Tools-module__firstRow .Tools-module__textContent) {
+        grid-column: 1 / -1 !important;
+      }
+      
+      /* Reset order for the firstRow block specifically */
       .Tools-module__firstRow {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+        gap: 16px;
+        margin-bottom: 10px;
       }
       .Tools-module__firstRow .Tools-module__textContent {
-        order: 0;
+        order: 2; /* text below image for first row as originally designed? 
+                     But user wants always above or below. Let's make it above on mobile for consistency */
+      }
+      .Tools-module__firstRow .Tools-module__imagePlaceholder {
+        order: 1; /* image first, text second */
+      }
+      
+      /* We will implement consistent text above image on mobile by re-ordering */
+      .Tools-module__firstRow .Tools-module__textContent {
+        order: 0; /* text first? Actually we want text above image, so text first */
       }
       .Tools-module__firstRow .Tools-module__imagePlaceholder {
         order: 1;
       }
       
+      /* Ensure the firstRow text is above image */
+      .Tools-module__firstRow {
+        flex-direction: column;
+      }
+      
+      /* For other blocks, force text first */
+      .Tools-module__toolBlock > .Tools-module__textContent {
+        order: 1;
+      }
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder {
+        order: 2;
+      }
+      
+      /* Special case: in original layout, SimpleSwitch (image first) and ManyFeatures (image first)
+         The DOM order is image, then text. We need to visually put text first.
+         We'll use flex order on the parent? But parent is grid. 
+         Since we are forcing grid-column full width, we can use order property.
+      */
+      .Tools-module__toolBlock {
+        display: flex;
+        flex-direction: column;
+      }
+      .Tools-module__toolBlock > .Tools-module__textContent,
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder {
+        width: 100%;
+      }
+      
+      /* Force all text content to be before image placeholders within the same block */
+      .Tools-module__toolBlock > .Tools-module__textContent {
+        order: 1;
+      }
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder {
+        order: 2;
+      }
+      
+      /* Except for firstRow: we want the title, desc, button above image? 
+         But the firstRow contains the image first in DOM? Actually firstRow has image then text.
+         To keep consistency, we can also make text first in firstRow using flex order */
+      .Tools-module__firstRow {
+        display: flex;
+        flex-direction: column;
+      }
+      .Tools-module__firstRow .Tools-module__textContent {
+        order: 1;
+      }
+      .Tools-module__firstRow .Tools-module__imagePlaceholder {
+        order: 2;
+      }
+      
+      /* However, the firstRow has text "Discord Raider" etc. It might look better with image above title? But user wants consistent text above image. So we'll put text above image. */
+      
+      /* Adjust specific image placeholders with data-adapt to not have extra min-height */
       .Tools-module__imagePlaceholder[data-adapt="true"] {
         width: 100%;
         max-width: 420px;
         margin: 0 auto;
+        min-height: 0;
+        max-height: 500px;
       }
     }
     
     @media (min-width: 960px) {
-      /* Desktop: restore original grid positions */
-      .Tools-module__toolTitle { font-size: 32px; }
-      .Tools-module__toolDesc { font-size: 18px; }
-      .Tools-module__firstRow .Tools-module__toolTitle { font-size: 40px; }
-      .Tools-module__firstRow .Tools-module__toolDesc { font-size: 20px; }
-      
-      /* Desktop / ultrawide grid positions */
+      /* Desktop / ultrawide grid positions remain as originally */
       .Tools-module__textContent[style*="grid-column: 1 / 14"] { grid-column: 1 / 14 !important; }
       .Tools-module__imagePlaceholder[style*="grid-column: 15 / 25"] { grid-column: 15 / 25 !important; }
       .Tools-module__imagePlaceholder[style*="grid-column: 1 / 11"] { grid-column: 1 / 11 !important; }
@@ -489,7 +565,11 @@
 
         <div class="Tools-module__container">
           <div class="Tools-module__toolBlock" data-media-folder="Raider" id="raider">
+            <!-- First Row: deliberately image then text in DOM, but on mobile we reorder via flex -->
             <div class="Tools-module__firstRow">
+              <div class="Tools-module__imagePlaceholder" data-media-src="Raider.png" data-adapt="true">
+                [ IMAGE ]
+              </div>
               <div class="Tools-module__textContent">
                 <div class="Tools-module__toolTitle hoverchar">Discord Raider</div>
                 <div class="Tools-module__toolDesc hoverchar">
@@ -500,11 +580,9 @@
                   Download
                 </a>
               </div>
-              <div class="Tools-module__imagePlaceholder" data-media-src="Raider.png" data-adapt="true">
-                [ IMAGE ]
-              </div>
             </div>
 
+            <!-- Block 2: Text first, then Image -->
             <div class="Tools-module__textContent" style="grid-column: 1 / 14;">
               <div class="Tools-module__toolTitle hoverchar">Network Routing Methods</div>
               <div class="Tools-module__toolDesc hoverchar">
@@ -515,16 +593,18 @@
               [ IMAGE ]
             </div>
 
+            <!-- Block 3: Image first in DOM, but on mobile we force text first -->
+            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;" data-media-src="SimpleSwitch.gif">
+              [ IMAGE ]
+            </div>
             <div class="Tools-module__textContent" style="grid-column: 12 / 25;">
               <div class="Tools-module__toolTitle hoverchar">Everything With A Simple Switch</div>
               <div class="Tools-module__toolDesc hoverchar">
                 The UI is made to be super easy to use. Even if you're new, you can pick this up and use it with ease. Everything is toggles and buttons, nothing else to worry about.
               </div>
             </div>
-            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;" data-media-src="SimpleSwitch.gif">
-              [ IMAGE ]
-            </div>
 
+            <!-- Block 4: Text first, then Image -->
             <div class="Tools-module__textContent" style="grid-column: 1 / 14;">
               <div class="Tools-module__toolTitle hoverchar">Fast</div>
               <div class="Tools-module__toolDesc hoverchar">
@@ -535,16 +615,17 @@
               [ IMAGE ]
             </div>
 
-            <div class="Tools-module__textContent" style="grid-column: 12 / 25;">
-              <div class="Tools-module__toolTitle hoverchar">Many Features</div>
-              <div class="Tools-module__toolDesc hoverchar">
-                Everything you need in one place. Token management, guild tools, channel actions, VC controls, scraping, and bypasses all built in.
-              </div>
-            </div>
+            <!-- Block 5: Image first in DOM, but on mobile we force text first -->
             <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;">
               <div class="Raider-module__featuresScroll">
                 <div class="Raider-module__featuresColumn" id="raiderCol1"></div>
                 <div class="Raider-module__featuresColumn" id="raiderCol2"></div>
+              </div>
+            </div>
+            <div class="Tools-module__textContent" style="grid-column: 12 / 25;">
+              <div class="Tools-module__toolTitle hoverchar">Many Features</div>
+              <div class="Tools-module__toolDesc hoverchar">
+                Everything you need in one place. Token management, guild tools, channel actions, VC controls, scraping, and bypasses all built in.
               </div>
             </div>
           </div>
