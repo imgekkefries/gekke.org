@@ -283,15 +283,8 @@
       display: block;
     }
 
-    /* Media queries to maintain grid positions at larger sizes */
-    @media (min-width: 960px) {
-      .Tools-module__toolTitle { font-size: 32px; }
-      .Tools-module__toolDesc { font-size: 18px; }
-      .Tools-module__firstRow .Tools-module__toolTitle { font-size: 40px; }
-      .Tools-module__firstRow .Tools-module__toolDesc { font-size: 20px; }
-    }
+    /* Mobile-first: text above image for all blocks */
     @media (max-width: 959px) {
-      /* mobile / tablet stacking: all grid columns become full width */
       .Tools-module__textContent,
       .Tools-module__imagePlaceholder,
       .Tools-module__firstRow,
@@ -301,17 +294,43 @@
         width: 100%;
         max-width: 100%;
       }
+      
+      /* Force text before image on mobile */
+      .Tools-module__toolBlock > .Tools-module__textContent {
+        order: 0;
+      }
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder {
+        order: 1;
+      }
+      
+      /* First row: text above image */
       .Tools-module__firstRow {
+        display: flex;
+        flex-direction: column;
         align-items: center;
         text-align: center;
       }
+      .Tools-module__firstRow .Tools-module__textContent {
+        order: 0;
+      }
+      .Tools-module__firstRow .Tools-module__imagePlaceholder {
+        order: 1;
+      }
+      
       .Tools-module__imagePlaceholder[data-adapt="true"] {
         width: 100%;
         max-width: 420px;
         margin: 0 auto;
       }
     }
+    
     @media (min-width: 960px) {
+      /* Desktop: restore original grid positions */
+      .Tools-module__toolTitle { font-size: 32px; }
+      .Tools-module__toolDesc { font-size: 18px; }
+      .Tools-module__firstRow .Tools-module__toolTitle { font-size: 40px; }
+      .Tools-module__firstRow .Tools-module__toolDesc { font-size: 20px; }
+      
       /* Desktop / ultrawide grid positions */
       .Tools-module__textContent[style*="grid-column: 1 / 14"] { grid-column: 1 / 14 !important; }
       .Tools-module__imagePlaceholder[style*="grid-column: 15 / 25"] { grid-column: 15 / 25 !important; }
@@ -471,9 +490,6 @@
         <div class="Tools-module__container">
           <div class="Tools-module__toolBlock" data-media-folder="Raider" id="raider">
             <div class="Tools-module__firstRow">
-              <div class="Tools-module__imagePlaceholder" data-media-src="Raider.png" data-adapt="true">
-                [ IMAGE ]
-              </div>
               <div class="Tools-module__textContent">
                 <div class="Tools-module__toolTitle hoverchar">Discord Raider</div>
                 <div class="Tools-module__toolDesc hoverchar">
@@ -483,6 +499,9 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                   Download
                 </a>
+              </div>
+              <div class="Tools-module__imagePlaceholder" data-media-src="Raider.png" data-adapt="true">
+                [ IMAGE ]
               </div>
             </div>
 
@@ -496,14 +515,14 @@
               [ IMAGE ]
             </div>
 
-            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;" data-media-src="SimpleSwitch.gif">
-              [ IMAGE ]
-            </div>
             <div class="Tools-module__textContent" style="grid-column: 12 / 25;">
               <div class="Tools-module__toolTitle hoverchar">Everything With A Simple Switch</div>
               <div class="Tools-module__toolDesc hoverchar">
                 The UI is made to be super easy to use. Even if you're new, you can pick this up and use it with ease. Everything is toggles and buttons, nothing else to worry about.
               </div>
+            </div>
+            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;" data-media-src="SimpleSwitch.gif">
+              [ IMAGE ]
             </div>
 
             <div class="Tools-module__textContent" style="grid-column: 1 / 14;">
@@ -516,16 +535,16 @@
               [ IMAGE ]
             </div>
 
-            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;">
-              <div class="Raider-module__featuresScroll">
-                <div class="Raider-module__featuresColumn" id="raiderCol1"></div>
-                <div class="Raider-module__featuresColumn" id="raiderCol2"></div>
-              </div>
-            </div>
             <div class="Tools-module__textContent" style="grid-column: 12 / 25;">
               <div class="Tools-module__toolTitle hoverchar">Many Features</div>
               <div class="Tools-module__toolDesc hoverchar">
                 Everything you need in one place. Token management, guild tools, channel actions, VC controls, scraping, and bypasses all built in.
+              </div>
+            </div>
+            <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;">
+              <div class="Raider-module__featuresScroll">
+                <div class="Raider-module__featuresColumn" id="raiderCol1"></div>
+                <div class="Raider-module__featuresColumn" id="raiderCol2"></div>
               </div>
             </div>
           </div>
