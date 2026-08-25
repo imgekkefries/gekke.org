@@ -288,7 +288,7 @@
       .Tools-module__firstRow .Tools-module__toolDesc { font-size: 20px; }
     }
     
-    /* Mobile / tablet stacking: text always ABOVE image, with proper grouping */
+    /* Mobile / tablet stacking: IMAGE ALWAYS ABOVE TEXT */
     @media (max-width: 959px) {
       .Tools-module__textContent,
       .Tools-module__imagePlaceholder,
@@ -300,22 +300,13 @@
         max-width: 100%;
       }
       
-      /* Reset any order from previous attempts */
-      .Tools-module__toolBlock > * {
-        order: initial !important;
-      }
-      
-      /* Force flex layout on toolBlock to easily reorder pairs */
       .Tools-module__toolBlock {
         display: flex;
         flex-direction: column;
         gap: 20px;
       }
       
-      /* Each pair should be text followed by image */
-      /* We can use direct child combinators and nth-child logic, but simpler: wrap pairs? 
-         We'll use flex order to manually reorder each text/image pair */
-      
+      /* FirstRow: image then text */
       .Tools-module__firstRow {
         display: flex;
         flex-direction: column;
@@ -325,29 +316,28 @@
         margin-bottom: 10px;
       }
       .Tools-module__firstRow .Tools-module__textContent {
-        order: 1 !important;
+        order: 2 !important;
       }
       .Tools-module__firstRow .Tools-module__imagePlaceholder {
-        order: 0 !important;
+        order: 1 !important;
       }
       
-      /* Network Routing Methods (Block 2) – text already before image in DOM, but ensure order */
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(1) { order: 1; }
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(2) { order: 2; }
+      /* Block 2: Network Routing (text first in DOM, image second) -> image above text */
+      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(1) { order: 2; }
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(2) { order: 1; }
       
-      /* Everything With A Simple Switch (Block 3) – image is first in DOM, need text first */
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(3) { order: 3; }
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(4) { order: 4; }
+      /* Block 3: Simple Switch (image first, text second) -> already image first, keep */
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(3) { order: 1; }
+      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(4) { order: 2; }
       
-      /* Fast (Block 4) – text first, then image */
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(5) { order: 5; }
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(6) { order: 6; }
+      /* Block 4: Fast (text first, image second) -> image above text */
+      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(5) { order: 2; }
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(6) { order: 1; }
       
-      /* Many Features (Block 5) – image first, then text */
-      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(7) { order: 7; }
-      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(8) { order: 8; }
+      /* Block 5: Many Features (image first, text second) -> already image first, keep */
+      .Tools-module__toolBlock > .Tools-module__imagePlaceholder:nth-of-type(7) { order: 1; }
+      .Tools-module__toolBlock > .Tools-module__textContent:nth-of-type(8) { order: 2; }
       
-      /* Ensure all elements take full width */
       .Tools-module__toolBlock > .Tools-module__textContent,
       .Tools-module__toolBlock > .Tools-module__imagePlaceholder {
         width: 100%;
@@ -519,7 +509,7 @@
 
         <div class="Tools-module__container">
           <div class="Tools-module__toolBlock" data-media-folder="Raider" id="raider">
-            <!-- First Row: image then text in DOM, but on mobile we want text above image -->
+            <!-- First Row -->
             <div class="Tools-module__firstRow">
               <div class="Tools-module__imagePlaceholder" data-media-src="Raider.png" data-adapt="true">
                 [ IMAGE ]
@@ -536,7 +526,7 @@
               </div>
             </div>
 
-            <!-- Block 2: Text first, then Image -->
+            <!-- Block 2: Network Routing -->
             <div class="Tools-module__textContent" style="grid-column: 1 / 14;">
               <div class="Tools-module__toolTitle hoverchar">Network Routing Methods</div>
               <div class="Tools-module__toolDesc hoverchar">
@@ -547,7 +537,7 @@
               [ IMAGE ]
             </div>
 
-            <!-- Block 3: Image first in DOM, but on mobile we force text first -->
+            <!-- Block 3: Simple Switch -->
             <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;" data-media-src="SimpleSwitch.gif">
               [ IMAGE ]
             </div>
@@ -558,7 +548,7 @@
               </div>
             </div>
 
-            <!-- Block 4: Text first, then Image -->
+            <!-- Block 4: Fast -->
             <div class="Tools-module__textContent" style="grid-column: 1 / 14;">
               <div class="Tools-module__toolTitle hoverchar">Fast</div>
               <div class="Tools-module__toolDesc hoverchar">
@@ -569,7 +559,7 @@
               [ IMAGE ]
             </div>
 
-            <!-- Block 5: Image first in DOM, but on mobile we force text first -->
+            <!-- Block 5: Many Features -->
             <div class="Tools-module__imagePlaceholder" style="grid-column: 1 / 11;">
               <div class="Raider-module__featuresScroll">
                 <div class="Raider-module__featuresColumn" id="raiderCol1"></div>
