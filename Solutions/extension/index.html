@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gekke.org ~ Solutions</title>
+
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+<style>
+@font-face{font-family:"Terminal";src:url("https://imgekkefries.pythonanywhere.com/terminal.woff") format("woff");font-weight:normal;font-style:normal;font-display:swap}
+:root{
+--surface-0:#0e0f13;--surface-1:#15161c;--surface-2:#1b1d24;--surface-3:#22242d;--surface-4:#2a2d38;
+--line-1:#262932;--line-2:#323641;
+--text-1:#f4f5f8;--text-2:#b9bcc8;--text-3:#7c8091;--text-4:#50535e;
+--accent:#8ea3ff;--accent-hi:#ffffff;--good:#6ee7a8;--warn:#f5c76e;--bad:#ff7d7d;
+--page-max:1400px;--page-pad-x:clamp(16px,2.4vw,48px);--page-pad-y:clamp(24px,3vw,56px);
+--scale:1;--font-mono:"Terminal","SF Mono",Menlo,Consolas,monospace;
+--text-secondary:var(--text-2);--text-muted:var(--text-3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#14161d;color:var(--text-1);font-family:"Terminal","SF Mono",Menlo,Consolas,monospace;font-size:clamp(12px,0.5vw + 10px,17px);line-height:1.5;letter-spacing:0.01em;-webkit-font-smoothing:antialiased;padding:var(--page-pad-y) var(--page-pad-x);min-height:100vh;position:relative;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,0.05) 1px,transparent 1px);background-size:24px 24px}
+::selection{background:var(--accent);color:var(--surface-0)}
+html{scrollbar-width:none;-ms-overflow-style:none;scroll-behavior:smooth}
+html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0;display:none}
+.container{max-width:var(--page-max);margin:0 auto;position:relative;z-index:1;width:100%}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,2vw,32px);margin-bottom:clamp(28px,4vw,64px);padding-bottom:clamp(14px,1.6vw,22px);border-bottom:1px solid var(--line-1);animation:fadeDown 0.5s ease both}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.topbar-left{flex:1;display:flex;align-items:center;gap:clamp(6px,0.8vw,12px)}
+.topbar-center{display:flex;align-items:center;gap:clamp(4px,0.5vw,8px)}
+.topbar-right{flex:1;display:flex;align-items:center;justify-content:flex-end;gap:clamp(6px,0.8vw,12px)}
+.nav-btn{background:transparent;border:1px solid transparent;color:var(--text-3);font-family:inherit;font-size:clamp(11px,0.4vw + 8px,14px);letter-spacing:0.12em;text-transform:uppercase;padding:clamp(8px,0.7vw,12px) clamp(14px,1.2vw,22px);border-radius:clamp(6px,0.5vw,10px);cursor:pointer;transition:color 0.2s ease,background 0.2s ease,border-color 0.2s ease;text-decoration:none;display:inline-flex;align-items:center;gap:0.5em;position:relative}
+.nav-btn i{font-size:1.3em;line-height:1;display:inline-flex;align-items:center;justify-content:center}
+.nav-btn:hover{color:var(--text-1);background:var(--surface-2)}
+.nav-btn.is-active{color:var(--text-1);background:var(--surface-3);border-color:var(--line-2)}
+.nav-btn.auth{background:var(--surface-2);border:1px solid var(--line-1);color:var(--text-2)}
+.nav-btn.auth:hover{background:var(--surface-3);border-color:var(--line-2);color:var(--text-1)}
+.nav-btn.auth.primary{background:var(--accent);border-color:var(--accent);color:var(--surface-0);font-weight:600}
+.nav-btn.auth.primary:hover{background:var(--accent-hi);border-color:var(--accent-hi)}
+.nav-btn.auth.logout{background:rgba(255,125,125,0.08);border-color:rgba(255,125,125,0.25);color:var(--bad)}
+.nav-btn.auth.logout:hover{background:rgba(255,125,125,0.14);border-color:rgba(255,125,125,0.4);color:var(--bad)}
+.balance-chip{display:none;align-items:center;gap:0.55em;background:var(--surface-2);border:1px solid var(--line-1);color:var(--text-1);padding:clamp(7px,0.65vw,11px) clamp(12px,1.1vw,20px);border-radius:clamp(6px,0.5vw,10px);font-size:clamp(11px,0.4vw + 8px,14px);letter-spacing:0.05em;font-variant-numeric:tabular-nums}
+.balance-chip.is-visible{display:inline-flex}
+.balance-chip .label{color:var(--text-3);text-transform:uppercase;letter-spacing:0.15em;font-size:0.85em}
+.balance-chip .value{color:var(--accent-hi)}
+.topbar-right .auth-guest{display:inline-flex}
+.topbar-right .auth-user{display:none}
+.topbar.is-logged-in .topbar-right .auth-guest{display:none}
+.topbar.is-logged-in .topbar-right .auth-user{display:inline-flex}
+
+.coming-soon{display:flex;align-items:center;justify-content:center;min-height:clamp(280px,52vh,620px);text-align:center;animation:fadeUp 0.55s ease both}
+.coming-soon h1{font-size:clamp(38px,7vw + 12px,150px);color:var(--text-1);font-weight:normal;letter-spacing:0.02em;line-height:1}
+.coming-soon h1 .accent{color:var(--text-3)}
+
+@media (max-width:760px){
+.topbar{flex-wrap:wrap;row-gap:12px}
+.topbar-left{display:none}
+.topbar-right{order:1;flex:1 1 100%;justify-content:space-between}
+.topbar-center{order:2;flex:1 1 100%}
+.topbar-center .nav-btn{flex:1;justify-content:center;padding-left:8px;padding-right:8px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="topbar" id="topbar">
+        <div class="topbar-left"></div>
+        <div class="topbar-center">
+            <a class="nav-btn" href="/"><i class="ph-bold ph-house"></i> Home</a>
+            <a class="nav-btn" href="/topup"><i class="ph-bold ph-wallet"></i> Top Up</a>
+            <a class="nav-btn" href="/solves"><i class="ph-bold ph-puzzle-piece"></i> Solves</a>
+            <a class="nav-btn" href="/preferences"><i class="ph-bold ph-sliders"></i> Preferences</a>
+            <a class="nav-btn" href="/docs"><i class="ph-bold ph-book-open"></i> Docs</a>
+            <a class="nav-btn is-active" href="/extension"><i class="ph-bold ph-puzzle-piece"></i> Extension</a>
+        </div>
+        <div class="topbar-right">
+            <div class="balance-chip" id="balance-chip">
+                <span class="label">Balance</span>
+                <span class="value" id="balance-value">€0.00</span>
+            </div>
+            <a class="nav-btn auth auth-guest" href="/login" id="nav-login">Login</a>
+            <a class="nav-btn auth primary auth-guest" href="/register" id="nav-register">Register</a>
+            <button class="nav-btn auth logout auth-user" id="nav-logout" type="button">
+                <i class="ph-bold ph-sign-out"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="coming-soon">
+        <h1>Coming Soon<span class="accent">!</span></h1>
+    </div>
+</div>
+
+<script>
+window.APP = {
+    VpsUrl: "",
+    VpsResolver: "https://imgekkefries.pythonanywhere.com/vps",
+    storageKey: "GekkeSolutionsKey",
+};
+
+window.ready = (async () => {
+    try {
+        const res = await fetch(window.APP.VpsResolver, { cache: "no-store" });
+        const url = (await res.text()).trim();
+        if (url) window.APP.VpsUrl = url;
+    } catch (e) {
+        console.error("Failed to resolve VPS URL", e);
+    }
+})();
+window.getKey = () => localStorage.getItem(window.APP.storageKey);
+window.clearKey = () => localStorage.removeItem(window.APP.storageKey);
+window.api = (p) => window.APP.VpsUrl.replace(/\/$/, "") + p;
+window.postJSON = async (path, body) => {
+    if (window.ready) { try { await window.ready; } catch (e) {} }
+    const res = await fetch(api(path), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body || {}),
+    });
+    return res.json();
+};
+</script>
+
+<script>
+(function () {
+    "use strict";
+    const topbar = document.getElementById("topbar");
+    const chip = document.getElementById("balance-chip");
+    const value = document.getElementById("balance-value");
+    function formatBalance(n) {
+        return Number(Number(n).toFixed(4)).toString();
+    }
+    async function refreshBalance() {
+        const key = getKey();
+        if (!key) { topbar.classList.remove("is-logged-in"); chip.classList.remove("is-visible"); return; }
+        try {
+            const d = await postJSON("/solutions/login", { key });
+            if (d.code === 200 && typeof d.balance === "number") {
+                topbar.classList.add("is-logged-in");
+                value.textContent = "€" + formatBalance(d.balance);
+                chip.classList.add("is-visible");
+            } else if (d.code === 401) {
+                clearKey();
+                topbar.classList.remove("is-logged-in");
+                chip.classList.remove("is-visible");
+            }
+        } catch (e) {}
+    }
+    document.getElementById("nav-logout").addEventListener("click", () => {
+        clearKey();
+        window.location.href = "/";
+    });
+    refreshBalance();
+    setInterval(refreshBalance, 5000);
+})();
+</script>
+
+</body>
+</html>
